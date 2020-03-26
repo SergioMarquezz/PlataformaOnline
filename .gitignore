@@ -1,0 +1,5 @@
+material/
+videos/
+.vscode/
+configGeneral.php
+connection.php
