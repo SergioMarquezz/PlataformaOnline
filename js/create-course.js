@@ -690,8 +690,6 @@ function addNewModule(){
 
 
 function addNewTheme(){
-   
-    var show;
 
     $(document).on('click','.buton-new-theme',function(){
 
@@ -713,6 +711,12 @@ function addNewTheme(){
         
         });
 
+        $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+           
+            text_boton = $(this).text();
+            
+        });
+
         $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
 
             
@@ -728,6 +732,9 @@ function addNewTheme(){
                     allowOutsideClick: false
             
                 });
+            }
+            else if(text_boton == "Subir archivo o video"){
+                alert("incolrrec");
             }
             else{
     
@@ -807,10 +814,15 @@ function modalArchivos(){
             
                 });
             }
-            else if(text_boton == "Cambiar material o video para el tema"){
+            else if(text_boton == "Subir archivo o video"){
                 
+                uploadFilesVideos();
+            
+            }
 
-                $("#col-modules [role='alert'] .input-file"+clave+", .label-files"+clave+", #label-strong"+clave+"").each(function(){
+            else if(text_boton == "Cambiar material o video para el tema"){
+
+                 $("#col-modules [role='alert'] .input-file"+clave+", .label-files"+clave+", #label-strong"+clave+"").each(function(){
 
                     $(this).show();
                 });
@@ -818,8 +830,6 @@ function modalArchivos(){
 
                    $(this).remove();
                 });
-        
-        
             }
             else{
                 
@@ -831,6 +841,61 @@ function modalArchivos(){
     })
 }
 
+function uploadFilesVideos(){
+
+    var value_file_name;
+
+    $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
+
+        value_file = this.files[0];
+        value_file_name = this.files[0].name;
+    
+    });
+
+    Swal.fire({
+
+        title: "Archivo listo para subirse",
+        text: "El archivo "+value_file_name+" se guardará en la plataforma",
+        icon: "info",
+        showCancelButton: true,
+        cancelButtonColor: '#bb1825',
+        confirmButtonColor: '#70b52c',
+        confirmButtonText: '¡Si Guardar!',
+        cancelButtonText: 'No Guardar',
+        allowOutsideClick: false
+
+    }).then(result =>{
+
+        if(result.value){
+
+            var dataForm = new FormData();
+
+            dataForm.append('files_material', value_file);
+            dataForm.append('detect', "material save");
+    
+            $.ajax({
+                type: "POST",
+                url: "../php/create-course-poo.php",
+                data: dataForm,
+                contentType: false,
+                processData: false,
+                cache: false, 
+                success: function (response) {
+                    console.log(response)
+                }
+            });
+        }
+        else{
+            
+            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+
+           
+                $(this).text("Cambiar material o video para el tema");
+            });
+        }
+    })
+}
+
 function obtenerArchivos(){
 
     var name_file;
@@ -839,7 +904,7 @@ function obtenerArchivos(){
 
         $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
 
-            console.log(this.files[0]);
+            console.log(this.files);
             name_file = this.files[0].name;
             $(this).hide();
         
@@ -869,7 +934,7 @@ function obtenerArchivos(){
         $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
 
            
-            $(this).text("Cambiar material o video para el tema");
+            $(this).text("Subir archivo o video");
         });
 
      
@@ -895,110 +960,130 @@ function addModules(){
         
         });
 
-        if(course_value == ""){
+        $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
 
-            $.post("../php/create-course-poo.php",{
+            value_file = this.files[0];
 
-                detect: "course vacio",
+            if(course_value == ""){
 
-            },function(data){
-
-                console.log(data);
-
-                if(value_module == ""){
-
-                    Swal.fire({
-
-                        title: "No hay un nombre para el módulo",
-                        text: "Escribe el nombre que tendrá este módulo",
-                        icon: "error",
-                        confirmButtonColor: '#70b52c',
-                        confirmButtonText: 'Aceptar',
-                        allowOutsideClick: false
+                $.post("../php/create-course-poo.php",{
+    
+                    detect: "course vacio",
+    
+                },function(data){
+    
+                    console.log(data);
+    
+                    if(value_module == ""){
+    
+                        Swal.fire({
+    
+                            title: "No hay un nombre para el módulo",
+                            text: "Escribe el nombre que tendrá este módulo",
+                            icon: "error",
+                            confirmButtonColor: '#70b52c',
+                            confirmButtonText: 'Aceptar',
+                            allowOutsideClick: false
+                    
+                        });
+                    }
+                    else if(value_theme == ""){
+    
+                        Swal.fire({
+    
+                            title: "Faltan temas para este módulo",
+                            text: "Escribe el nombre del tema",
+                            icon: "error",
+                            confirmButtonColor: '#70b52c',
+                            confirmButtonText: 'Aceptar',
+                            allowOutsideClick: false
+                    
+                        });
+                    }
+                    else{
+                        Swal.fire({
+    
+                            title: "¿Estas seguro de guardar este módulo? ",
+                            text: "Al igual que el módulo todos sus temas quedaran guardados ",
+                            icon: "question",
+                            confirmButtonColor: '#70b52c',
+                            confirmButtonText: '¡SI!',
+                            showCancelButton: true,
+                            cancelButtonColor: '#bb1825',
+                            cancelButtonText: '¡NO!',
+                            allowOutsideClick: false
+                    
+                        }).then(result=>{
+                            if(result.value){
+    
+                                saveModule(value_module,data,catego);
+                            }
+                        })
+                    }
+                })
                 
-                    });
-                }
-                else if(value_theme == ""){
-
-                    Swal.fire({
-
-                        title: "Faltan temas para este módulo",
-                        text: "Escribe el nombre del tema",
-                        icon: "error",
-                        confirmButtonColor: '#70b52c',
-                        confirmButtonText: 'Aceptar',
-                        allowOutsideClick: false
+            }else if(value_module == ""){
+    
+                Swal.fire({
+    
+                    title: "No hay un nombre para el módulo",
+                    text: "Escribe el nombre que tendrá este módulo",
+                    icon: "error",
+                    confirmButtonColor: '#70b52c',
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: false
+            
+                });
                 
-                    });
-                }
-                else{
-                    Swal.fire({
-
-                        title: "¿Estas seguro de guardar este módulo? ",
-                        text: "Al igual que el módulo todos sus temas quedaran guardados ",
-                        icon: "question",
-                        confirmButtonColor: '#70b52c',
-                        confirmButtonText: '¡SI!',
-                        showCancelButton: true,
-                        cancelButtonColor: '#bb1825',
-                        cancelButtonText: '¡NO!',
-                        allowOutsideClick: false
+            }else if(value_theme == ""){
                 
-                    }).then(result=>{
-                        if(result.value){
-
-                            saveModule(value_module,data,catego);
-                        }
-                    })
-                }
-            })
+                Swal.fire({
+    
+                    title: "Faltan temas para este módulo",
+                    text: "Escribe el nombre del tema",
+                    icon: "error",
+                    confirmButtonColor: '#70b52c',
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: false
             
-        }else if(value_module == ""){
+                });
+            }
 
-            Swal.fire({
+            else if(value_file == undefined || $(this).is(":visible")){
 
-                title: "No hay un nombre para el módulo",
-                text: "Escribe el nombre que tendrá este módulo",
-                icon: "error",
-                confirmButtonColor: '#70b52c',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-        
-            });
+                Swal.fire({
+    
+                    title: "Falta material para el tema",
+                    text: "Selecciona material o video para este tema",
+                    icon: "error",
+                    confirmButtonColor: '#70b52c',
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: false
             
-        }else if(value_theme == ""){
+                });
+            }
+    
+            else{
+                Swal.fire({
+    
+                    title: "¿Estas seguro de guardar este módulo? ",
+                    text: "Al igual que el módulo todos sus temas quedaran guardados ",
+                    icon: "question",
+                    confirmButtonColor: '#70b52c',
+                    confirmButtonText: '¡SI!',
+                    showCancelButton: true,
+                    cancelButtonColor: '#bb1825',
+                    cancelButtonText: '¡NO!',
+                    allowOutsideClick: false
             
-            Swal.fire({
-
-                title: "Faltan temas para este módulo",
-                text: "Escribe el nombre del tema",
-                icon: "error",
-                confirmButtonColor: '#70b52c',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
+                }).then(result=>{
+                    if(result.value){
+                        saveModule(value_module,course_value,catego);
+                    }
+                })
+            }
         
-            });
-        }
-
-        else{
-            Swal.fire({
-
-                title: "¿Estas seguro de guardar este módulo? ",
-                text: "Al igual que el módulo todos sus temas quedaran guardados ",
-                icon: "question",
-                confirmButtonColor: '#70b52c',
-                confirmButtonText: '¡SI!',
-                showCancelButton: true,
-                cancelButtonColor: '#bb1825',
-                cancelButtonText: '¡NO!',
-                allowOutsideClick: false
-        
-            }).then(result=>{
-                if(result.value){
-                    saveModule(value_module,course_value,catego);
-                }
-            })
-        }
+        });
 
     })
     

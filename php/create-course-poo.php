@@ -38,6 +38,10 @@
                 case "course vacio":
                     $this->create_course->courseLasted();
                 break;
+
+                case "material save":
+                    $this->saveMaterialVideo();
+                break;
             }
 
         }
@@ -197,6 +201,18 @@
             }catch(Exception $e){
 
                 echo 'Excepción capturada (save Themes): ',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function saveMaterialVideo(){
+
+            try{
+
+                $this->create_course->materialInsertUpload();
+
+            }catch(Exception $e){
+             
+                echo 'Excepción capturada (save Material Video): ',  $e->getMessage(), "\n";
             }
         }
     }

@@ -215,6 +215,76 @@
             }
         }
 
+        public function materialInsertUpload(){
+        
+            try{
+
+                $directorio_word = '../material/Word/';
+                $directorio_pdf = '../material/PDF/';
+                $directorio_power = '../material/PowerPoint/';
+                $directorio_videos = '../videos/';
+                $directorio_img = '../img/upload/';
+            
+                $tmp_file = $_FILES['files_material']['tmp_name'];
+                $name_file = $_FILES['files_material']['name'];
+                $type_file = $_FILES['files_material']['type'];
+                $size_file = $_FILES['files_material']['size'];
+
+                
+                if($type_file == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+
+                     $path = $directorio_word.$name_file;
+                     $this->moveFile($tmp_file,$path);
+                }
+
+                else if($type_file == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+
+                    $path = $directorio_power.$name_file;
+                    $this->moveFile($tmp_file,$path);
+                }
+
+                else if($type_file == "application/pdf"){
+
+                    $path = $directorio_pdf.$name_file;
+                    $this->moveFile($tmp_file,$path);
+                }
+
+                else if($type_file == "image/png" || $type_file == "image/jpeg" ){
+
+                    $path = $directorio_img.$name_file;
+                    $this->moveFile($tmp_file,$path);
+                }
+
+                else if($type_file == "video/mp4"){
+
+                    if($size_file > 101102727){
+
+                        echo "Grande";
+                    }
+                    else{
+                        $path = $directorio_videos.$name_file;
+                        $this->moveFile($tmp_file,$path);
+                    }
+                }                
+              //  $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material,)"
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada ( material Insert):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function moveFile($tmp,$route){
+
+            if(move_uploaded_file($tmp, $route)) {	
+
+                echo "El archivo se ha almacenado en forma exitosa.<br>";
+            } else {
+
+                echo "Ha ocurrido un error, por favor inténtelo de nuevo.<br>";
+            }
+        }
+
     }
 
 
