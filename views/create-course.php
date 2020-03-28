@@ -222,6 +222,7 @@
     <?php require_once "../includes/footer.php"?>
     <?php require_once "../includes/scripts.php"?>
     <script src="../js/create-course.js"></script>
+    <script src="../js//messages-swal.js"></script>
     <script type="text/javascript" src="../js/ifpp-main.js"></script>
     <script src="../bootstrap/js/datepicker.min.js"></script>
     <script src="../bootstrap/js/datepicker.es.js"></script>

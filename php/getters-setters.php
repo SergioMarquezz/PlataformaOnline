@@ -278,10 +278,10 @@
 
             if(move_uploaded_file($tmp, $route)) {	
 
-                echo "El archivo se ha almacenado en forma exitosa.<br>";
+                echo "archivo almacenado";
             } else {
 
-                echo "Ha ocurrido un error, por favor inténtelo de nuevo.<br>";
+                echo "ocurrio un error";
             }
         }
 

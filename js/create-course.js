@@ -455,7 +455,7 @@ function saveModule(name,courses,categoria){
                 title: "Módulo registrado",
                 text: "Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo",
                 icon: "success",
-                confirmButtonColor: '#70b52c',
+                confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
                 allowOutsideClick: false
         
@@ -520,7 +520,7 @@ function executeInsert(decision_insert){
                 icon: "success",
                 timer: 10000,
                 timerProgressBar: true,
-                confirmButtonColor: '#70b52c',
+                confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
                 allowOutsideClick: false
         
@@ -603,7 +603,7 @@ function messageInsert(validate){
             title_swal = "¿Estas seguro de continuar?";
             text_swal = "El curso será registrado en la plataforma";
             icon_swal = "question";
-            button_color = '#70b52c';
+            button_color = '#092432';
     }
     message(title_swal, text_swal, icon_swal, button_color, validate);
 }
@@ -727,14 +727,24 @@ function addNewTheme(){
                     title: "No se puede asignar un nuevo tema",
                     text: "Escribe el nombre del tema y módulo actual, registra material y/o video para poder agregar un nuevo tema",
                     icon: "info",
-                    confirmButtonColor: '#70b52c',
+                    confirmButtonColor: '#092432',
                     confirmButtonText: 'Aceptar',
                     allowOutsideClick: false
             
                 });
             }
-            else if(text_boton == "Subir archivo o video"){
-                alert("incolrrec");
+            else if(text_boton == "Subir archivo o video" || text_boton == "Cambiar material o video para el tema"){
+                
+                Swal.fire({
+    
+                    title: "No se puede asignar un nuevo tema",
+                    text: "Suba el material o video correspondiente a este tema",
+                    icon: "info",
+                    confirmButtonColor: '#092432',
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: false
+            
+                });
             }
             else{
     
@@ -808,7 +818,7 @@ function modalArchivos(){
                     title: "No puede asignar material y/o video",
                     text: "Escribe primero el nombre del tema para asignar material y/o video",
                     icon: "warning",
-                    confirmButtonColor: '#70b52c',
+                    confirmButtonColor: '#092432',
                     confirmButtonText: 'Aceptar',
                     allowOutsideClick: false
             
@@ -859,7 +869,7 @@ function uploadFilesVideos(){
         icon: "info",
         showCancelButton: true,
         cancelButtonColor: '#bb1825',
-        confirmButtonColor: '#70b52c',
+        confirmButtonColor: '#092432',
         confirmButtonText: '¡Si Guardar!',
         cancelButtonText: 'No Guardar',
         allowOutsideClick: false
@@ -881,7 +891,36 @@ function uploadFilesVideos(){
                 processData: false,
                 cache: false, 
                 success: function (response) {
-                    console.log(response)
+                    
+                    if(response == "archivo almacenado"){
+
+                        Swal.fire({
+
+                            title: "El archivo fue guardado correctamente",
+                            text: "¿Deseas agregar otro archivo a este tema?",
+                            icon: "success",
+                            showCancelButton: true,
+                            cancelButtonColor: '#bb1825',
+                            confirmButtonColor: '#092432',
+                            confirmButtonText: '¡Si Agregar!',
+                            cancelButtonText: 'No Agregar',
+                            allowOutsideClick: false
+                    
+                        }).then(result =>{
+
+                            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+
+                                if(result.value){
+
+                                    $(this).text("Cambiar material o video para el tema");
+                                }
+                                else{
+                                    $(this).text("Seleccionar material o video para el tema");
+                                    $(this).attr('disabled', true);
+                                }
+                            });
+                        })
+                    }
                 }
             });
         }
@@ -947,6 +986,8 @@ function addModules(){
 
         var course_value = value_course.value;
         var catego = category.val();
+        var texto_boton;
+        
 
         $("#col-modules [role='alert'] input[id="+id+"]").each(function(){
 
@@ -962,6 +1003,12 @@ function addModules(){
 
         $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
 
+            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+
+                
+                texto_boton =  $(this).text();
+            });
+
             value_file = this.files[0];
 
             if(course_value == ""){
@@ -973,114 +1020,13 @@ function addModules(){
                 },function(data){
     
                     console.log(data);
-    
-                    if(value_module == ""){
-    
-                        Swal.fire({
-    
-                            title: "No hay un nombre para el módulo",
-                            text: "Escribe el nombre que tendrá este módulo",
-                            icon: "error",
-                            confirmButtonColor: '#70b52c',
-                            confirmButtonText: 'Aceptar',
-                            allowOutsideClick: false
-                    
-                        });
-                    }
-                    else if(value_theme == ""){
-    
-                        Swal.fire({
-    
-                            title: "Faltan temas para este módulo",
-                            text: "Escribe el nombre del tema",
-                            icon: "error",
-                            confirmButtonColor: '#70b52c',
-                            confirmButtonText: 'Aceptar',
-                            allowOutsideClick: false
-                    
-                        });
-                    }
-                    else{
-                        Swal.fire({
-    
-                            title: "¿Estas seguro de guardar este módulo? ",
-                            text: "Al igual que el módulo todos sus temas quedaran guardados ",
-                            icon: "question",
-                            confirmButtonColor: '#70b52c',
-                            confirmButtonText: '¡SI!',
-                            showCancelButton: true,
-                            cancelButtonColor: '#bb1825',
-                            cancelButtonText: '¡NO!',
-                            allowOutsideClick: false
-                    
-                        }).then(result=>{
-                            if(result.value){
-    
-                                saveModule(value_module,data,catego);
-                            }
-                        })
-                    }
+
+                    messageButtonSaveModule(value_module,value_theme,value_file,this,texto_boton,data,catego);
                 })
                 
-            }else if(value_module == ""){
+            }else {
+                messageButtonSaveModule(value_module,value_theme,value_file,this,texto_boton, course_value,catego);
     
-                Swal.fire({
-    
-                    title: "No hay un nombre para el módulo",
-                    text: "Escribe el nombre que tendrá este módulo",
-                    icon: "error",
-                    confirmButtonColor: '#70b52c',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
-                
-            }else if(value_theme == ""){
-                
-                Swal.fire({
-    
-                    title: "Faltan temas para este módulo",
-                    text: "Escribe el nombre del tema",
-                    icon: "error",
-                    confirmButtonColor: '#70b52c',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
-            }
-
-            else if(value_file == undefined || $(this).is(":visible")){
-
-                Swal.fire({
-    
-                    title: "Falta material para el tema",
-                    text: "Selecciona material o video para este tema",
-                    icon: "error",
-                    confirmButtonColor: '#70b52c',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
-            }
-    
-            else{
-                Swal.fire({
-    
-                    title: "¿Estas seguro de guardar este módulo? ",
-                    text: "Al igual que el módulo todos sus temas quedaran guardados ",
-                    icon: "question",
-                    confirmButtonColor: '#70b52c',
-                    confirmButtonText: '¡SI!',
-                    showCancelButton: true,
-                    cancelButtonColor: '#bb1825',
-                    cancelButtonText: '¡NO!',
-                    allowOutsideClick: false
-            
-                }).then(result=>{
-                    if(result.value){
-                        saveModule(value_module,course_value,catego);
-                    }
-                })
             }
         
         });
