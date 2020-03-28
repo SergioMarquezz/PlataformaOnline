@@ -1,5 +1,6 @@
 material/
 videos/
 .vscode/
+img/
 configGeneral.php
 connection.php

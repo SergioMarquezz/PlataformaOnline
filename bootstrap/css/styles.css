@@ -10,7 +10,7 @@ h3{
 hr{
     border-color: rgb(136, 136, 136);
 }
-.navbar-ifpp{
+.navbar-ifpp, #button-add-course{
     background-color: #092432; 
 }
 
@@ -49,7 +49,7 @@ hr{
 }
 
 #btn-save-course,#btn-evaluation,#show-material,#select-themes,#btn-themes,#btn-continue,#btn-start,
-#btn-modal-files,#button-video,#button-add-course,.save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
+#btn-modal-files,#button-vide,.save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
     background-color: #70b52c;
 }
 .form-control-feedback {
