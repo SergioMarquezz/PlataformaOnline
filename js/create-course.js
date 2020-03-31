@@ -373,7 +373,7 @@ function saveCourse(){
 
 function saveModule(name,courses,categoria){
 
-    
+
     $.post("../php/create-course-poo.php",{
 
         module: name,
@@ -381,8 +381,7 @@ function saveModule(name,courses,categoria){
         detect: "save modules",
     
     },function(params){
-       
-        TODO//Bloquear input de files
+        TODO://Bloquear input de files y checar su recorrido de los inputs por modulo y tema
         if(params == "guardado"){
 
             $("#ad-module").attr('disabled', false);
@@ -393,18 +392,10 @@ function saveModule(name,courses,categoria){
                     $(this).attr('disabled', true);
     
             });
+    
             themesSave(categoria,courses);
 
-            Swal.fire({
-
-                title: "Módulo registrado",
-                text: "Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo",
-                icon: "success",
-                confirmButtonColor: '#092432',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-        
-            });
+            swalSimple("modulo");
                 
         }
     
@@ -425,8 +416,43 @@ function themesSave(catego,key_courses){
         id_category: catego
         },function(params){
 
+            if(params == "exito"){
+
+                materialSave(key_courses);
+            }
+
         })
 
+    });
+}
+
+function materialSave(id_course){
+
+    $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
+
+        value_file = this.files[0];
+        value_file_name = this.files[0].name;
+    
+    });
+
+    var dataForm = new FormData();
+
+    dataForm.append('files_material', value_file);
+    dataForm.append('detect', "material insert");
+    dataForm.append('key_course', id_course);
+    
+    TODO://Insertar id de tema
+
+    $.ajax({
+        type: "POST",
+        url: "../php/create-course-poo.php",
+        data: dataForm,
+        contentType: false,
+        processData: false,
+        cache: false, 
+        success: function (response) {
+            console.log(response);
+        }
     });
 }
 
@@ -458,18 +484,7 @@ function executeInsert(decision_insert){
             messageInsert(param);
         }
         else{
-            Swal.fire({
-
-                title: "Curso registrado",
-                text: "Su curso fue registrado en la plataforma es momento de crear los módulos y temas",
-                icon: "success",
-                timer: 10000,
-                timerProgressBar: true,
-                confirmButtonColor: '#092432',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-        
-            });
+            swalSimple("curso");
         }
     })
 }
@@ -504,6 +519,8 @@ function addNewTheme(){
 
     $(document).on('click','.buton-new-theme',function(){
 
+        var boolean = false;
+
         $("#col-modules [role='alert'] input[id=input-name-theme"+id+"]").each(function(){
 
             value_theme =  $(this).val();
@@ -533,35 +550,23 @@ function addNewTheme(){
             
             if(value_module == "" || value_theme == "" || value_file == undefined || $(this).is(":visible")){
             
-                Swal.fire({
-    
-                    title: "No se puede asignar un nuevo tema",
-                    text: "Escribe el nombre del tema y módulo actual, registra material y/o video para poder agregar un nuevo tema",
-                    icon: "info",
-                    confirmButtonColor: '#092432',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
+                swalSimple("escribir tema");
             }
             else if(text_boton == "Subir archivo o video" || text_boton == "Cambiar material o video para el tema"){
                 
-                Swal.fire({
-    
-                    title: "No se puede asignar un nuevo tema",
-                    text: "Suba el material o video correspondiente a este tema",
-                    icon: "info",
-                    confirmButtonColor: '#092432',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
+                swalSimple("subir material");
             }
             else{
     
-                addButtonTheme();
+                boolean = true;
+                
             }
         });
+
+        if(boolean){
+
+            addButtonTheme();
+        }
     })
 }
 
@@ -603,6 +608,7 @@ function addButtonTheme() {
 
             }
         });
+
 }
 
 function modalArchivos(){
@@ -624,16 +630,7 @@ function modalArchivos(){
      
             if(name_theme == ""){
 
-                Swal.fire({
-
-                    title: "No puede asignar material y/o video",
-                    text: "Escribe primero el nombre del tema para asignar material y/o video",
-                    icon: "warning",
-                    confirmButtonColor: '#092432',
-                    confirmButtonText: 'Aceptar',
-                    allowOutsideClick: false
-            
-                });
+                swalSimple("tema vacio");
             }
             else if(text_boton == "Subir archivo o video"){
                 
@@ -719,17 +716,25 @@ function uploadFilesVideos(){
                     
                         }).then(result =>{
 
-                            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+                            if(result.value){
 
-                                if(result.value){
+                                $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
 
                                     $(this).text("Cambiar material o video para el tema");
-                                }
-                                else{
+                                });
+                            }
+                            else{
+
+                              
+                                $(this).attr('disabled', true);
+
+                                $("#col-modules [role='alert'] div[id=custom"+clave+"] input[id=input-name-file"+clave+"],button[id=button-files"+id+"]").each(function(){
+    
+                                    $(this).attr("disabled",true);
                                     $(this).text("Seleccionar material o video para el tema");
-                                    $(this).attr('disabled', true);
-                                }
-                            });
+                                })
+                            }
+                          
                         })
                     }
                 }
@@ -774,7 +779,7 @@ function obtenerArchivos(){
             }
         }
 
-        $("#col-modules [role='alert']  div[id=custom"+clave+"]").each(function(){
+        $("#col-modules [role='alert'] div[id=div-files"+id+"] div[id=custom"+clave+"]").each(function(){
 
             
             $(this).append('<input id=input-name-file'+clave+' type="text" class="form-control" value='+name_file+'>');
@@ -795,6 +800,7 @@ function addModules(){
 
     $(document).on('click','.save-module',function(){
 
+ 
         var course_value = value_course.value;
         var catego = category.val();
         var texto_boton;

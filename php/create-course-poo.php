@@ -42,6 +42,17 @@
                 case "material save":
                     $this->saveMaterialVideo();
                 break;
+
+                case "material insert":
+
+                    $course_id = $_POST['key_course'];
+                    $theme_id = $_POST['key_theme'];
+
+                    $this->create_course->setIdCourse($course_id);      
+                    $this->create_course->setIdTheme($theme_id) ;    
+
+                    $this->create_course->insertMaterial();
+                break;
             }
 
         }
@@ -143,28 +154,14 @@
                 
 
                 $this->create_course->setTitle($name_module);
-                $this->create_course->setIdCourse($key_course);            
+                $this->create_course->setIdCourse($key_course);       
 
                 $save_module = $this->create_course->modulesInsert();
 
                 if($save_module == "save modules"){
 
                     echo "guardado";
-                   /* $name_theme = utf8_decode($_POST['theme']);
-                    $id_module =  $this->create_course->moduleLasted();
-                    $id_category = $_POST['category'];
-
-                    $this->create_course->setTitle($name_theme);
-                    $this->create_course->setIdModule($id_module);
-                    $this->create_course->setCategory($id_category);
-
-
-                    $msj_themes = $this->create_course->themesInsert();
-
-                    if($msj_themes == "save theme"){
-
-                        echo "guardado";
-                    }*/
+                  
                 }
                 
 

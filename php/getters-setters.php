@@ -4,8 +4,18 @@
 
     class CreateCourse{
 
-        private $title, $lessons, $hours, $start, $end, $descripcion, $category, $decision, $id_cour, $id_modu;
+        private $title, $lessons, $hours, $start, $end, $descripcion, $category, $decision, $id_cour, $id_modu , $id_theme;
 
+        private $tmp_file;
+        private $name_file;
+        private $type_file;
+        private $size_file;
+   
+        private $directorio_word = '../material/Word/';
+        private $directorio_pdf = '../material/PDF/';
+        private $directorio_power = '../material/PowerPoint/';
+        private $directorio_videos = '../videos/';
+        private $directorio_img = '../img/upload/';
 
         public function getTitle(){
 
@@ -105,6 +115,11 @@
         public function setIdModule($new_id_module){
             
             $this->id_modu = $new_id_module;
+        }
+
+        public function setIdTheme($theme){
+            
+            $this->id_theme = $theme;
         }
 
         public function courseInsert(){
@@ -218,52 +233,46 @@
         public function materialInsertUpload(){
         
             try{
-
-                $directorio_word = '../material/Word/';
-                $directorio_pdf = '../material/PDF/';
-                $directorio_power = '../material/PowerPoint/';
-                $directorio_videos = '../videos/';
-                $directorio_img = '../img/upload/';
             
-                $tmp_file = $_FILES['files_material']['tmp_name'];
-                $name_file = $_FILES['files_material']['name'];
-                $type_file = $_FILES['files_material']['type'];
-                $size_file = $_FILES['files_material']['size'];
+                $this->tmp_file = $_FILES['files_material']['tmp_name'];
+                $this->name_file = $_FILES['files_material']['name'];
+                $this->type_file = $_FILES['files_material']['type'];
+                $this->size_file = $_FILES['files_material']['size'];
 
                 
-                if($type_file == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+                if($this->type_file == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
 
-                     $path = $directorio_word.$name_file;
-                     $this->moveFile($tmp_file,$path);
+                     $path = $this->directorio_word.$this->name_file;
+                     $this->moveFile($this->tmp_file,$path);
                 }
 
-                else if($type_file == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
+                else if($this->type_file == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
 
-                    $path = $directorio_power.$name_file;
-                    $this->moveFile($tmp_file,$path);
+                    $path = $this->directorio_power.$this->name_file;
+                    $this->moveFile($this->tmp_file,$path);
                 }
 
-                else if($type_file == "application/pdf"){
+                else if($this->type_file == "application/pdf"){
 
-                    $path = $directorio_pdf.$name_file;
-                    $this->moveFile($tmp_file,$path);
+                    $path = $this->directorio_pdf.$this->name_file;
+                    $this->moveFile($this->tmp_file,$path);
                 }
 
-                else if($type_file == "image/png" || $type_file == "image/jpeg" ){
+                else if($this->type_file == "image/png" || $this->type_file == "image/jpeg" ){
 
-                    $path = $directorio_img.$name_file;
-                    $this->moveFile($tmp_file,$path);
+                    $path = $this->directorio_img.$this->name_file;
+                    $this->moveFile($this->tmp_file,$path);
                 }
 
-                else if($type_file == "video/mp4"){
+                else if($this->type_file == "video/mp4"){
 
-                    if($size_file > 101102727){
+                    if($this->size_file > 101102727){
 
                         echo "Grande";
                     }
                     else{
-                        $path = $directorio_videos.$name_file;
-                        $this->moveFile($tmp_file,$path);
+                        $path = $this->directorio_videos.$this->name_file;
+                        $this->moveFile($this->tmp_file,$path);
                     }
                 }                
               //  $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material,)"
@@ -282,6 +291,79 @@
             } else {
 
                 echo "ocurrio un error";
+            }
+        }
+
+        public function insertMaterial(){
+
+            try{
+
+                $this->name_file = $_FILES['files_material']['name'];
+                $this->type_file = $_FILES['files_material']['type'];
+                $this->size_file = $_FILES['files_material']['size'];
+
+                switch($this->type_file){
+
+                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                        $route = $this->directorio_word.$this->name_file;
+                        $this->insertVideosMaterial("material",$route);
+                    break;
+
+                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.presentation":
+                        $route = $this->directorio_power.$this->name_file;
+                        $this->insertVideosMaterial("material",$route);
+                    break;
+                    TODO://Vetroificar porque insertar en bd solo esta ruta
+                    /*case "image/png" || "image/jpeg":
+                        $route = $this->directorio_img;
+                    break;*/
+
+                    case "application/pdf":
+                        $route = $this->directorio_pdf.$this->name_file;
+                        $this->insertVideosMaterial("material",$route);
+                    break;
+
+                    case "video/mp4":
+                        $route = $this->directorio_videos.$this->name_file;
+                        $this->insertVideosMaterial("video",$route);
+                    break;
+                }
+            
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (insert Material):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function insertVideosMaterial($option,$route_bd){
+
+            try{
+
+                TODO://Veridfifcar que se inseerte el material si se sube mas de 1
+                if($option == "material"){
+
+                    $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material)
+                    VALUES('$this->size_file', '$this->type_file', '$route_bd', '$this->id_cour', '$this->id_theme', '$this->name_file')";
+
+                    $result_insert = executeQuery($insert_material);
+
+                    if($result_insert){
+
+                        echo "insertado";
+                    }
+                }
+
+                else if($option == "video"){
+
+
+                }
+                
+
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (insert Videos Material):',  $e->getMessage(), "\n";
             }
         }
 

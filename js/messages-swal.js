@@ -270,4 +270,75 @@ function otherCategory(){
     
 }
 
+function swalSimple(condition){
+
+    switch(condition){
+
+        case "modulo":
+            Swal.fire({
+
+                title: "Módulo registrado",
+                text: "Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo",
+                icon: "success",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+        case "curso":
+            Swal.fire({
+
+                title: "Curso registrado",
+                text: "Su curso fue registrado en la plataforma es momento de crear los módulos y temas",
+                icon: "success",
+                timer: 10000,
+                timerProgressBar: true,
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+        case "escribir tema":
+            Swal.fire({
+    
+                title: "No se puede asignar un nuevo tema",
+                text: "Escribe el nombre del tema y módulo actual, registra material y/o video para poder agregar un nuevo tema",
+                icon: "info",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+
+        case "subir material":
+            Swal.fire({
+    
+                title: "No se puede asignar un nuevo tema",
+                text: "Suba el material o video correspondiente a este tema",
+                icon: "info",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+
+        case "tema vacio":
+            Swal.fire({
+
+                title: "No puede asignar material y/o video",
+                text: "Escribe primero el nombre del tema para asignar material y/o video",
+                icon: "warning",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+    }
+}
+
 

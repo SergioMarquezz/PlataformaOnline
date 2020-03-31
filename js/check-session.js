@@ -8,7 +8,7 @@ $(document).ready(function () {
         
             if(json.session == false){
 
-                window.location.href = "http://192.168.100.79/plataformaifpp/";
+                window.location.href = "http://192.168.1.76/plataformaifpp/";
             }
         }
     });
@@ -44,7 +44,7 @@ function closeSession(){
         
                         if(response == "cerrar"){
         
-                            window.location.href = "https://79de96e7.ngrok.io";
+                            window.location.href = "http://192.168.1.76/plataformaifpp/";
                         }
                     }
                 });
