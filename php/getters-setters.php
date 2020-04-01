@@ -314,9 +314,15 @@
                         $this->insertVideosMaterial("material",$route);
                     break;
                     TODO://Vetroificar porque insertar en bd solo esta ruta
-                    /*case "image/png" || "image/jpeg":
+                    case "image/png":
                         $route = $this->directorio_img;
-                    break;*/
+                        $this->insertVideosMaterial("material",$route);
+                    break;
+
+                    case "image/jpeg":
+                        $route = $this->directorio_img;
+                        $this->insertVideosMaterial("material",$route);
+                    break;
 
                     case "application/pdf":
                         $route = $this->directorio_pdf.$this->name_file;
@@ -364,6 +370,34 @@
             }catch(Exception $e){
 
                 echo 'Excepción capturada (insert Videos Material):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function idThemes(){
+
+            try{
+
+                $id_module = $this->moduleLasted();
+
+                $query_id_themes = "SELECT id_themes, name
+                                    FROM themes
+                                    WHERE id_module = $id_module";
+
+                $resul_id = executeQuery($query_id_themes);
+
+                if($resul_id){
+
+                    while($id = odbc_fetch_array($resul_id)){
+
+                        $json_id["id_themes"][] = array_map("utf8_encode", $id);
+                        $id_json = json_encode($json_id); 
+                    }
+                    echo $id_json;
+                }
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (id Themes):',  $e->getMessage(), "\n";
             }
         }
 

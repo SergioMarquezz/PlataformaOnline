@@ -1,4 +1,4 @@
-function messageButtonSaveModule(modules,theme,file,visible,texto_btn,curso,categoria){
+function messageButtonSaveModule(modules,theme,curso,categoria){
 
     if(modules == ""){
 
@@ -27,7 +27,7 @@ function messageButtonSaveModule(modules,theme,file,visible,texto_btn,curso,cate
         });
     }
 
-    else if(file == undefined || $(visible).is(":visible")){
+    /*else if(file == undefined || $(visible).is(":visible")){
 
         Swal.fire({
             
@@ -53,7 +53,7 @@ function messageButtonSaveModule(modules,theme,file,visible,texto_btn,curso,cate
             allowOutsideClick: false
     
         });
-    }
+    }*/
 
     else{
 
@@ -304,7 +304,7 @@ function swalSimple(condition){
             Swal.fire({
     
                 title: "No se puede asignar un nuevo tema",
-                text: "Escribe el nombre del tema y módulo actual, registra material y/o video para poder agregar un nuevo tema",
+                text: "Escribe el nombre del tema y módulo actual",
                 icon: "info",
                 confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
@@ -313,11 +313,11 @@ function swalSimple(condition){
             });
             break;
 
-        case "subir material":
+          case "subir material":
             Swal.fire({
     
-                title: "No se puede asignar un nuevo tema",
-                text: "Suba el material o video correspondiente a este tema",
+                title: "No se puede subir archivo",
+                text: "Elije archivo o video para un tema",
                 icon: "info",
                 confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
@@ -326,7 +326,7 @@ function swalSimple(condition){
             });
             break;
 
-        case "tema vacio":
+        /*case "tema vacio":
             Swal.fire({
 
                 title: "No puede asignar material y/o video",
@@ -337,7 +337,7 @@ function swalSimple(condition){
                 allowOutsideClick: false
         
             });
-            break;
+            break;*/
     }
 }
 

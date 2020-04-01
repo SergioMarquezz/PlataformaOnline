@@ -12,6 +12,7 @@ var value_module;
 var value_theme;
 var text_boton;
 var value_file;
+
 $(document).ready(function () {
    
     document.getElementById("category-instructor").addEventListener('change', otherCategory);
@@ -31,8 +32,9 @@ $(document).ready(function () {
     addModules();
     addNewTheme();
     addNewModule();
-    modalArchivos();
     obtenerArchivos();
+    butonMaterial();
+    selectThemes();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -381,18 +383,23 @@ function saveModule(name,courses,categoria){
         detect: "save modules",
     
     },function(params){
-        TODO://Bloquear input de files y checar su recorrido de los inputs por modulo y tema
+    
         if(params == "guardado"){
 
-            $("#ad-module").attr('disabled', false);
             $("#btn-new-theme").attr('disabled',true);
          
-            $("#col-modules [role='alert'],input[id=btn-new-theme"+id+"], input[id="+id+"], input[id=input-name-theme"+id+"], button[id=btn-modules-course"+id+"], button[id=button-files"+id+"]").each(function(){
+            $("#col-modules [role='alert'],input[id=btn-new-theme"+id+"], input[id="+id+"], input[id=input-name-theme"+id+"], button[id=btn-modules-course"+id+"]").each(function(){
 
                     $(this).attr('disabled', true);
     
             });
-    
+
+            $("#col-modules [role='alert'] button[id= btn-add-material"+id+"]").each(function(){
+
+                $(this).attr('disabled', false);
+
+            });
+            
             themesSave(categoria,courses);
 
             swalSimple("modulo");
@@ -416,32 +423,103 @@ function themesSave(catego,key_courses){
         id_category: catego
         },function(params){
 
-            if(params == "exito"){
-
-                materialSave(key_courses);
-            }
 
         })
 
     });
 }
 
+
+function selectThemes(){
+
+    $(document).on('change', '.custom-select',function(){
+
+        $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
+            
+            $(this).attr('disabled', false);
+        });
+    })
+}
+
+function butonMaterial(){
+
+
+    $(document).on('click','.material-add',function(){
+
+       var text_boton = $(this).text();
+
+       if(text_boton == "Subir material o video" && $(".file"+id+"").is(":visible")){
+
+            swalSimple("subir material");
+       }
+
+       else if(text_boton == "Subir material o video"){
+
+            uploadFilesVideos();
+       }
+       else{
+
+            $("#col-modules [role='alert'] div[id=div-material"+id+"]").each(function(){
+            
+                $(this).append('<select class="browser-default custom-select" id="themes-select'+id+'">'+
+                                '<option disabled selected>Seleccionar tema para subir material o video</option>'+
+                                '</select>');
+            
+            });
+            $("#col-modules [role='alert'] div[id=div-files"+id+"]").each(function(){
+            
+                $(this).append('<input disabled type="file" class="custom-file-input boton-file file'+id+'" id="input-files'+id+'" lang="es">'+
+                                '<label class="custom-file-label file'+id+'">Subir archivo</label>'+
+                                '<label class="file'+id+'"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>');
+            
+            });
+        
+            $.post("../php/create-course-poo.php",{
+
+                detect: "show themes"
+            },function(data){
+
+                var json = JSON.parse(data);
+
+                console.log(json);
+
+                var tamanio = json.id_themes.length;
+
+                for(var i = 0; i < tamanio; i++){
+
+                    $("#col-modules [role='alert'] div[id=div-material"+id+"] select[id=themes-select"+id+"]").each(function(){
+            
+                        $(this).append('<option value='+json.id_themes[i].id_themes+'>'+json.id_themes[i].name+'</option>');
+                    });
+                }
+            }); 
+       }
+       $(this).text("Subir material o video");
+    }) 
+}
+
 function materialSave(id_course){
 
-    $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
+    var value_file;
+    var them_id;
 
+    $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
+            
         value_file = this.files[0];
-        value_file_name = this.files[0].name;
     
+    });
+
+    $("#col-modules [role='alert'] div[id=div-material"+id+"] select[id=themes-select"+id+"] option:selected").each(function(){
+            
+        them_id = $(this).val();
     });
 
     var dataForm = new FormData();
 
     dataForm.append('files_material', value_file);
     dataForm.append('detect', "material insert");
-    dataForm.append('key_course', id_course);
-    
-    TODO://Insertar id de tema
+    dataForm.append('key_course', id_course);  
+    dataForm.append('key_theme', them_id);
 
     $.ajax({
         type: "POST",
@@ -545,23 +623,17 @@ function addNewTheme(){
             
         });
 
-        $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
 
             
-            if(value_module == "" || value_theme == "" || value_file == undefined || $(this).is(":visible")){
+            if(value_module == "" || value_theme == "" ){
             
                 swalSimple("escribir tema");
             }
-            else if(text_boton == "Subir archivo o video" || text_boton == "Cambiar material o video para el tema"){
-                
-                swalSimple("subir material");
-            }
+       
             else{
     
                 boolean = true;
-                
             }
-        });
 
         if(boolean){
 
@@ -580,100 +652,23 @@ function addButtonTheme() {
             $(this).append('<input id=input-name-theme'+id+' type="text" class="form-control mt-4 class'+clave+'" placeholder="Escribe el nombre del tema">');
         
         });
-
-        $("#col-modules [role='alert'] div[id=div-files"+id+"]").each(function(){
-
-            $(this).append('<div class="custom-file mt-4" id=custom'+clave+'>'+
-                                '<input disabled type="file" class="custom-file-input boton-file input-file'+clave+'" id=files-course'+id+' lang="es">'+
-                                '<label class="custom-file-label label-files'+clave+'" for="files-course">Subir archivo</label>'+
-                                '<label id=label-strong'+clave+'><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>'+
-                            '</div>');
-          
-        });
-
-        
-        $("#col-modules [role='alert'] div[id=div-buttons"+id+"]").each(function(){
-
-            $(this).append('<button id=button-files'+id+' class="btn btn-md text-white file-boton mt-3">Selecionar material o video para el tema</button>');
-        });
-
-        $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
-
-           
-            text_boton = $(this).text();
-            
-            if(text_boton == "Cambiar material o video para el tema"){
-
-                $(this).attr('disabled', true); 
-
-            }
-        });
-
 }
 
-function modalArchivos(){
-    
-
-    $(document).on('click', '.file-boton',function(){
-
-        
-        $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
-
-           
-            text_boton = $(this).text();
-        });
-
-            
-        $("#col-modules [role='alert'] div[id=div-themes"+id+"] .class"+clave+"").each(function(){
-
-            var name_theme = $(this).val();
-     
-            if(name_theme == ""){
-
-                swalSimple("tema vacio");
-            }
-            else if(text_boton == "Subir archivo o video"){
-                
-                uploadFilesVideos();
-            
-            }
-
-            else if(text_boton == "Cambiar material o video para el tema"){
-
-                 $("#col-modules [role='alert'] .input-file"+clave+", .label-files"+clave+", #label-strong"+clave+"").each(function(){
-
-                    $(this).show();
-                });
-                $("#col-modules [role='alert']  input[id=input-name-file"+clave+"]").each(function(){
-
-                   $(this).remove();
-                });
-            }
-            else{
-                
-        
-                $(".boton-file").attr('disabled', false);
-            }
-        });
-    
-    })
-}
 
 function uploadFilesVideos(){
 
-    var value_file_name;
+    var value_file;
 
-    $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
-
+    $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
+            
         value_file = this.files[0];
-        value_file_name = this.files[0].name;
     
     });
 
     Swal.fire({
 
         title: "Archivo listo para subirse",
-        text: "El archivo "+value_file_name+" se guardará en la plataforma",
+        text: "El archivo "+value_file.name+" se guardará en la plataforma",
         icon: "info",
         showCancelButton: true,
         cancelButtonColor: '#bb1825',
@@ -699,8 +694,13 @@ function uploadFilesVideos(){
                 processData: false,
                 cache: false, 
                 success: function (response) {
-                    
+                
                     if(response == "archivo almacenado"){
+
+                        var id_value = value_course.value;
+
+                        TODO://Checar porque no guarda el material para un mismo tema 
+                        materialSave(id_value);
 
                         Swal.fire({
 
@@ -718,21 +718,38 @@ function uploadFilesVideos(){
 
                             if(result.value){
 
-                                $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+                                $("#col-modules [role='alert'] div[id=div-files"+id+"] .file"+id+"").each(function(){
+            
+                                    $(this).show();
+                                 });
 
-                                    $(this).text("Cambiar material o video para el tema");
-                                });
+                                $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-file-name"+clave+"]").each(function(){
+                    
+                                    $(this).remove();
+                                 });
                             }
-                            else{
+                            else{ 
+                                
+                                Swal.fire({
 
-                              
-                                $(this).attr('disabled', true);
-
-                                $("#col-modules [role='alert'] div[id=custom"+clave+"] input[id=input-name-file"+clave+"],button[id=button-files"+id+"]").each(function(){
-    
-                                    $(this).attr("disabled",true);
-                                    $(this).text("Seleccionar material o video para el tema");
+                                    title: "Elegir otro tema",
+                                    text: "¿Quieres seleccionar otro tema para la subida de archivos y/o videos?",
+                                    icon: "info",
+                                    showCancelButton: true,
+                                    cancelButtonColor: '#bb1825',
+                                    confirmButtonColor: '#092432',
+                                    confirmButtonText: 'Si',
+                                    cancelButtonText: 'No',
+                                    allowOutsideClick: false
+                            
                                 })
+                               
+                              //  $("#ad-module").attr('disabled', false);
+
+                               // $("#col-modules [role='alert'] button[id= btn-add-material"+id+"], input[id=input-file-name"+clave+"]"/*, select[id=themes-select"+id+"]"*/).each(function(){
+                    
+                                 //   $(this).attr('disabled',true);
+                                // });
                             }
                           
                         })
@@ -741,12 +758,16 @@ function uploadFilesVideos(){
             });
         }
         else{
+            $("#col-modules [role='alert'] div[id=div-files"+id+"] .file"+id+"").each(function(){
             
-            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
+                $(this).show();
+             });
+            
+            $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-file-name"+clave+"]").each(function(){
 
-           
-                $(this).text("Cambiar material o video para el tema");
-            });
+                $(this).remove();
+             });
+
         }
     })
 }
@@ -757,41 +778,28 @@ function obtenerArchivos(){
 
     $(document).on('change','.boton-file',function(){
 
-        $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
-
-            console.log(this.files);
+            console.log(this.files[0]);
             name_file = this.files[0].name;
-            $(this).hide();
-        
-        });
-
-        $("#col-modules [role='alert'] .label-files"+clave+", #label-strong"+clave+"").each(function(){
-
-            $(this).hide();
-        
-        });
-
-        for(var i = 0; i < name_file.length; i++){
-
-            if(name_file.charAt(i) == ' '){
-
-                name_file = name_file.replace(" ", "-")
-            }
-        }
-
-        $("#col-modules [role='alert'] div[id=div-files"+id+"] div[id=custom"+clave+"]").each(function(){
-
-            
-            $(this).append('<input id=input-name-file'+clave+' type="text" class="form-control" value='+name_file+'>');
-
-        });
-
-        $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
-
            
-            $(this).text("Subir archivo o video");
-        });
+            $("#col-modules [role='alert'] div[id=div-files"+id+"] .file"+id+"").each(function(){
+            
+                $(this).hide();
+             });
+           // $(this).hide();
 
+            for(var i = 0; i < name_file.length; i++){
+
+                if(name_file.charAt(i) == ' '){
+    
+                    name_file = name_file.replace(" ", "-")
+                }
+            }
+
+            $("#col-modules [role='alert'] div[id=div-files"+id+"]").each(function(){
+         
+                $(this).append('<input type="text" class="form-control" id="input-file-name'+clave+'" value='+name_file+'>');
+            
+            });
      
     })
 }
@@ -803,9 +811,7 @@ function addModules(){
  
         var course_value = value_course.value;
         var catego = category.val();
-        var texto_boton;
         
-
         $("#col-modules [role='alert'] input[id="+id+"]").each(function(){
 
             value_module  = $(this).val();
@@ -818,38 +824,29 @@ function addModules(){
         
         });
 
-        $("#col-modules [role='alert'] .input-file"+clave+"").each(function(){
-
-            $("#col-modules [role='alert']  button[id=button-files"+id+"]").each(function(){
-
-                
-                texto_boton =  $(this).text();
-            });
-
-            value_file = this.files[0];
-
             if(course_value == ""){
 
+        
                 $.post("../php/create-course-poo.php",{
-    
+
                     detect: "course vacio",
     
                 },function(data){
     
                     console.log(data);
-
-                    messageButtonSaveModule(value_module,value_theme,value_file,this,texto_boton,data,catego);
+                    messageButtonSaveModule(value_module,value_theme,data,catego);
+                    
                 })
                 
-            }else {
-                messageButtonSaveModule(value_module,value_theme,value_file,this,texto_boton, course_value,catego);
-    
+                
+            }
+            else {
+              
+                messageButtonSaveModule(value_module,value_theme,course_value,catego);
+                
             }
         
-        });
-
-    })
-    
+        });    
 }
 
 function contentCourse(key){
@@ -862,24 +859,34 @@ function contentCourse(key){
                     "<input onkeyup=keypressModule() id="+key+" type='text' class='form-control' placeholder='Escribe el nombre del modulo'>"+
                 "</div>"+
                 "<div class='row'>"+
-                    "<div class='col-md-4 col-sm-12 mt-3'>"+
+                    "<div class='col-md-12 col-sm-12 mt-3'>"+
                         "<div class='form-group' id=div-themes"+key+">"+
                             "<input id=input-name-theme"+key+" type='text' class='form-control class"+clave+"' placeholder='Escribe el nombre del tema'>"+
                         "</div>"+
                     "</div>"+
-                    "<div class='col-md-4 col-sm-12 mt-3' id=div-files"+key+">"+
+                    "<div class='col-md-6 col-sm-12'>"+
+                        "<div class='form-group' id=div-material"+key+">"+
+                           
+                        "</div>"+
+                    "</div>"+
+                    "<div class='col-md-6 col-sm-12'>"+
+                           "<div class='custom-file' id=div-files"+key+">"+
+
+                           "</div>"+
+                    "</div>"+
+                "</div>"+
+                   /* "<div class='col-md-4 col-sm-12 mt-3' id=div-files"+key+">"+
                         "<div class='custom-file' id=custom"+clave+">"+
                             "<input disabled type='file' class='custom-file-input boton-file input-file"+clave+"' id=files-course"+key+" lang='es'>"+
                             "<label class='custom-file-label label-files"+clave+"' for=files-course"+key+">Subir archivo</label>"+
                             "<label id=label-strong"+clave+"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>"+
                         "</div>"+
-                    "</div>"+
-                    "<div class='col-md-4 col-sm-12 mt-2' id=div-buttons"+key+">"+
+                    "</div>"+*/
+                   /* "<div class='col-md-4 col-sm-12 mt-2' id=div-buttons"+key+">"+
                         "<button id=button-files"+key+" class='btn btn-md text-white file-boton'>Selecionar material o video para el tema</button>"+
-                    "</div>"+
-                "</div>"+
+                    "</div>"+*/
                 "<div class='row justify-content-center mt-3'>"+
-                    "<div class='col-md-3 col-sm-12'>"+
+                    "<div class='col-md-12 col-sm-12'>"+
                       /*  "<video  width='220' height='140' controls id='mivideo'>"+
                             "<source src='../videos/Desarrollo.mp4' type='video/mp4'>"+
                         "</video>"+*/
@@ -887,8 +894,11 @@ function contentCourse(key){
                 "</div>"+
             "</div>"+
             "<div class='row'>"+
-                "<div class='col-md-8 col-sm-12'>"+
+                "<div class='col-md-4 col-sm-12'>"+
                     "<button class='btn text-white save-module' id=btn-modules-course"+key+">Publicar módulo</button>"+
+                "</div>"+
+                "<div class='col-md-4 col-sm-12'>"+
+                    "<button disabled class='btn text-white material-add' id=btn-add-material"+key+">Agregar material o video</button>"+
                 "</div>"+
                 "<div class='col-md-4 col-sm-12'>"+
                     "<input id=btn-new-theme"+key+" class='mt-3 buton-new-theme' title='Agregar nuevo tema al módulo' type='image' src='../img/icons/new-theme.png' width='48' height='48'>"+

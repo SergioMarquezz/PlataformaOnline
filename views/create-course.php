@@ -187,6 +187,7 @@
                         </div>
                     </div>
                 </div>
+            
                 <!--Modal archivos-->
                 <!--<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalFiles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">

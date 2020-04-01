@@ -53,6 +53,10 @@
 
                     $this->create_course->insertMaterial();
                 break;
+
+                case "show themes":
+                    $this->create_course->idThemes();
+                break;
             }
 
         }
