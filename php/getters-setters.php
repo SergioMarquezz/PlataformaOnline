@@ -10,12 +10,24 @@
         private $name_file;
         private $type_file;
         private $size_file;
+        private $link_file;
    
         private $directorio_word = '../material/Word/';
         private $directorio_pdf = '../material/PDF/';
         private $directorio_power = '../material/PowerPoint/';
         private $directorio_videos = '../videos/';
         private $directorio_img = '../img/upload/';
+
+
+        public function getLink(){
+
+            return $this->link_file;
+        }
+
+        public function setLink($new_link){
+
+            $this->link_file = $new_link;
+        }
 
         public function getTitle(){
 
@@ -195,7 +207,7 @@
                 FROM courses";
 
                 $result_ultimo = executeQuery($query_ultimo);
-
+                
                 if($result_ultimo){
 
                     $utlimo = odbc_result($result_ultimo,"ultimo_curso");
@@ -307,34 +319,84 @@
                     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                         $route = $this->directorio_word.$this->name_file;
                         $this->insertVideosMaterial("material",$route);
-                    break;
 
-                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.presentation":
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+
+                            $this->insertLink();
+                        }
+
+                    break;
+                    
+                    case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
                         $route = $this->directorio_power.$this->name_file;
                         $this->insertVideosMaterial("material",$route);
+
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+
+                            $this->insertLink();
+                        }
+
                     break;
-                    TODO://Vetroificar porque insertar en bd solo esta ruta
+                  
                     case "image/png":
-                        $route = $this->directorio_img;
+                        $route = $this->directorio_img.$this->name_file;
                         $this->insertVideosMaterial("material",$route);
+
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+
+                            $this->insertLink();
+                        }
+
                     break;
 
                     case "image/jpeg":
-                        $route = $this->directorio_img;
+                        $route = $this->directorio_img.$this->name_file;
                         $this->insertVideosMaterial("material",$route);
+
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+                            
+
+                            $this->insertLink();
+                        }
+
                     break;
 
                     case "application/pdf":
                         $route = $this->directorio_pdf.$this->name_file;
                         $this->insertVideosMaterial("material",$route);
+
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+                            
+
+                            $this->insertLink();
+                        }
+
+                    break;
+                 
+                    case "video/mp4":
+                        $route = "videos/".$this->name_file;
+                        $this->insertVideosMaterial("video",$route);
+
+                        if($this->link_file != ""){
+
+                            $this->type_file = "link";
+
+                            $this->insertLink();
+                        }
+
                     break;
 
-                    case "video/mp4":
-                        $route = $this->directorio_videos.$this->name_file;
-                        $this->insertVideosMaterial("video",$route);
-                    break;
                 }
-            
 
             }catch(Exception $e){
 
@@ -342,11 +404,33 @@
             }
         }
 
+        public function insertLink(){
+
+            try{
+
+             
+                $this->type_file = "link";
+
+                $insert_link = "INSERT INTO support_material(type_material,id_course,id_themes,link)
+                                    VALUES('$this->type_file','$this->id_cour','$this->id_theme','$this->link_file')";
+                    
+                $result_link = executeQuery($insert_link);
+
+                if($result_link){
+
+                    echo "insertado link";
+                }
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (insert Link):',  $e->getMessage(), "\n";
+            }
+        }
+
         public function insertVideosMaterial($option,$route_bd){
 
             try{
 
-                TODO://Veridfifcar que se inseerte el material si se sube mas de 1
                 if($option == "material"){
 
                     $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material)
@@ -356,12 +440,23 @@
 
                     if($result_insert){
 
-                        echo "insertado";
+                        echo "insertado material";
                     }
                 }
 
                 else if($option == "video"){
 
+                    $hoy = date("Y-m-d");  
+
+                    $insert_video = "INSERT INTO video_url(url_video,id_course,percentage_video,date_upload,id_themes)
+                                    VALUES('$route_bd','$this->id_cour',1,'$hoy','$this->id_theme')";
+
+                    $result_video = executeQuery($insert_video);
+
+                    if($result_video){
+
+                       $this->urlMainEmpty();
+                    }
 
                 }
                 
@@ -370,6 +465,65 @@
             }catch(Exception $e){
 
                 echo 'Excepción capturada (insert Videos Material):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function urlMainEmpty(){
+
+            try{
+
+                $query_url_empty = "SELECT id_url_main 
+                                    FROM courses
+                                    WHERE id_course = $this->id_cour";
+
+                $result_url_main = executeQuery($query_url_empty);
+
+                if($result_url_main){
+                    
+                    $url_empty = odbc_result($result_url_main,"id_url_main");
+
+                    if($url_empty == ""){
+                        
+                        $id_url_main = $this->ultimoVideo();
+
+                        $update_course = "UPDATE courses SET id_url_main = $id_url_main
+                        WHERE id_course = $this->id_cour";
+
+                        $result_update = executeQuery($update_course);
+
+                        if($result_update){
+
+                            "url course actualizado";
+                        }
+                    }
+                }
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (url Main Empty):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function ultimoVideo(){
+
+            try{
+
+                $ultimo_video = "SELECT MAX(id_url) AS ultimo_url
+                                FROM video_url
+                                WHERE id_course = $this->id_cour";
+
+                $result_ultimo_video = executeQuery($ultimo_video);
+
+                if($result_ultimo_video){
+
+                    $video_ultimo = odbc_result($result_ultimo_video,"ultimo_url");
+                }
+
+                return $video_ultimo;
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (ultimo Video):',  $e->getMessage(), "\n";
             }
         }
 

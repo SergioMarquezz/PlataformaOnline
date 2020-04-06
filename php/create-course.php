@@ -37,6 +37,10 @@
         case "information video":
             informationVideo();
         break;
+
+        case "show modules themes":
+            showThemesModule();
+        break;
     }  
     //FUncion para mostrar todas las categorias
     function categoriesInstructor(){
@@ -287,6 +291,37 @@
         }catch(Exception $e){
 
             echo 'Excepción capturada (information Themes): ',  $e->getMessage(), "\n";
+        }
+    }
+
+    function showThemesModule(){
+
+        try{
+
+            $module = $_POST['id_module'];
+
+            $show_themes = "SELECT id_themes, name
+                            FROM themes
+                            WHERE id_module = $module";
+
+            $result_themes = executeQuery($show_themes);
+
+            if($result_themes){
+
+                while($themes = odbc_fetch_array($result_themes)){
+
+                    $json_themes["themes_module"][] = array_map("utf8_encode", $themes);
+                    $themes_json = json_encode($json_themes);  
+                }
+
+                echo $themes_json;
+
+            }
+
+
+        }catch(Exception $e){
+
+            echo 'Excepción capturada (show Themes Module): ',  $e->getMessage(), "\n";
         }
     }
 

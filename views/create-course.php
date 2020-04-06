@@ -15,6 +15,7 @@
     </header>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
+        <?php require_once "../includes/navigation.php"?>
         
         <div id="page-content-wrapper">
             <div class="container-fluid">

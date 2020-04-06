@@ -21,6 +21,9 @@
         <a href="../views/all-courses" class="list-group-item list-group-item-action text-white">Todos los cursos
             <img src="../img/icons/teacher.png" class="ml-4">
         </a>
+        <a href="../views/exam" id="exam" class="list-group-item list-group-item-action text-white">Crear examen
+           <!-- <img src="../img/icons/teacher.png" class="ml-4">-->
+        </a>
     </div>
     <input type="hidden" id="value-user" value="<?php echo  $_SESSION['num_employee']?>">
     <input type="hidden" id="value-pass" value="<?php echo  $_SESSION['password']?>">

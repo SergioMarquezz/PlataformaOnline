@@ -47,15 +47,29 @@
 
                     $course_id = $_POST['key_course'];
                     $theme_id = $_POST['key_theme'];
-
+                    $link = $_POST['links'];
+                  
                     $this->create_course->setIdCourse($course_id);      
-                    $this->create_course->setIdTheme($theme_id) ;    
+                    $this->create_course->setIdTheme($theme_id);
+                    $this->create_course->setLink($link);  
+                   
 
                     $this->create_course->insertMaterial();
                 break;
 
                 case "show themes":
                     $this->create_course->idThemes();
+                break;
+
+                case "only link":
+                    $id_course = $_POST['key_course'];
+                    $id_theme = $_POST['key_theme'];
+                    $links = $_POST['links'];
+
+                    $this->create_course->setIdCourse($id_course);      
+                    $this->create_course->setIdTheme($id_theme);
+                    $this->create_course->setLink($links);
+                    $this->create_course->insertLink();
                 break;
             }
 

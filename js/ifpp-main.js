@@ -31,6 +31,7 @@ function hideButtonInstructor(){
 
     else{
         $("#button-instructor").hide();
+        $("#exam").hide();
     }
      
 }

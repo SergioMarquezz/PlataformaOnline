@@ -35,6 +35,7 @@ $(document).ready(function () {
     obtenerArchivos();
     butonMaterial();
     selectThemes();
+    showThemesModuleSelect();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -118,6 +119,8 @@ function modulesInformation(){
         $("#row-modules").slideDown();
         $("#btn-save-course").hide();
 
+       // showThemesModuleSelect();
+
     $.ajax({
         type: "POST",
         url: "../php/create-course.php",
@@ -127,6 +130,7 @@ function modulesInformation(){
         },
 
         success: function (response) {
+            console.log(response);
             
             if(response != "sin modulos"){
 
@@ -137,9 +141,10 @@ function modulesInformation(){
     
                     id++;
                     var string = json.modules_course[j].name
+                    var module_id = json.modules_course[j].id_module
                     var leer_espacios_blancos = string.trim();
                   
-                    contentCourseModules(leer_espacios_blancos,id);
+                    contentCourseModules(leer_espacios_blancos,id,module_id);
                     
                 }
             }
@@ -147,6 +152,48 @@ function modulesInformation(){
         }
     });
 
+}
+
+function showThemesModuleSelect(){
+
+    var option;
+    var id_theme;
+
+    $(document).on('click', '.btn-update-module',function(){
+
+        $("#col-modules [role='alert'] div[id=div-select-themes"+id+"] input[id=input-id-module"+id+"]").each(function(){
+            
+            console.log($(this).val());
+
+        });
+   
+       $.post("../php/create-course.php",{
+   
+           id_module: 3186,
+           identy: 'show modules themes',
+       },function(response){
+   
+           var json = JSON.parse(response);
+   
+           //console.log(json);
+   
+           var tamanio = json.themes_module.length;
+   
+           for(var i = 0; i < tamanio; i++){
+   
+               option = json.themes_module[i].name;
+               id_theme = json.themes_module[i].id_themes;
+             
+       
+               //input-id-module
+               /* $("#col-modules [role='alert'] div[id=div-material"+id+"] select[id=select-theme-module"+id+"]").each(function(){
+               
+                      $(this).append('<option value='+id_theme+'>'+option+'</option>');
+                });*/
+   
+           }
+       })
+    }) 
 }
 
 function themesInformation(){
@@ -171,6 +218,7 @@ function themesInformation(){
 
             json = JSON.parse(param);
 
+            
             if(json.msj == "sin temas"){
 
                 $("#sin-temas").append("<h3>No hay temas para este modulo</h3>");
@@ -212,6 +260,7 @@ function videoTheme(){
             identy: 'information video'
         },function(param){
 
+            console.log(param)
             if(param != ""){
 
                 $("#video-modal").append("<source src=../"+param+" type='video/mp4'>");
@@ -263,7 +312,7 @@ function materialTheme(){
 
                     if(json.information_material[i].link != ""){
 
-                        $("#ol-material").append('<li><a  href='+json.information_material[i].link+' target="_blank">'+json.information_material[i].name_material+'</a></li>');
+                        $("#ol-material").append('<li><a  href='+json.information_material[i].link+' target="_blank">'+json.information_material[i].link+'</a></li>');
                     }
                     else{
                         $("#ol-material").append('<li><a href=../material/'+json.information_material[i].path_material+' target="_blank">'+json.information_material[i].name_material+'</a></li>');
@@ -383,7 +432,7 @@ function saveModule(name,courses,categoria){
         detect: "save modules",
     
     },function(params){
-    
+     
         if(params == "guardado"){
 
             $("#btn-new-theme").attr('disabled',true);
@@ -434,12 +483,79 @@ function selectThemes(){
 
     $(document).on('change', '.custom-select',function(){
 
-        $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
+        $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"], input[id=input-links"+id+"] ").each(function(){
             
             $(this).attr('disabled', false);
         });
     })
 }
+
+
+function saveOnlyLink(){
+
+    var id_theme;
+    var link;
+
+    $("#col-modules [role='alert'] div[id=div-material"+id+"] select[id=themes-select"+id+"] option:selected").each(function(){
+            
+        id_theme = $(this).val();
+    });
+
+    $("#col-modules [role='alert'] div[id=div-links"+id+"] input[id=input-links"+id+"]").each(function(){
+            
+        link  = $(this).val();
+    });
+
+    var id_value = value_course.value;
+
+
+    $.post("../php/create-course-poo.php",{
+
+        detect: "only link",
+        links: link,
+        key_theme: id_theme,
+        key_course: id_value
+
+    },function(datos){
+
+        if(datos == "insertado link"){
+
+            Swal.fire({
+
+                title: "Link guardado correctamente",
+                text: "¿Deseas agregar otro archivo o link a este tema?",
+                icon: "success",
+                showCancelButton: true,
+                cancelButtonColor: '#bb1825',
+                confirmButtonColor: '#092432',
+                confirmButtonText: '¡Si Agregar!',
+                cancelButtonText: 'No Agregar',
+                allowOutsideClick: false
+        
+            }).then(result =>{
+
+                if(result.value){
+
+                    $("#col-modules [role='alert']  input[id=input-links"+id+"]").each(function(){
+                            
+                        $(this).val("");
+                    });
+                }
+                else{
+                        swalSimple("otro modulo");
+                        $("#ad-module").attr('disabled', false);
+
+                       $("#col-modules [role='alert'] button[id= btn-add-material"+id+"], .boton-file, input[id=input-links"+id+"], select[id=themes-select"+id+"]").each(function(){
+                            
+                            $(this).attr('disabled',true);
+                        });
+                }
+            })
+        }
+    })
+    
+}
+
 
 function butonMaterial(){
 
@@ -448,12 +564,16 @@ function butonMaterial(){
 
        var text_boton = $(this).text();
 
-       if(text_boton == "Subir material o video" && $(".file"+id+"").is(":visible")){
+       if(text_boton == "Subir material o video" && $(".file"+id+"").is(":visible") && $(".liks"+id+"").val() == ""){
 
             swalSimple("subir material");
        }
 
-       else if(text_boton == "Subir material o video"){
+       else if(text_boton == "Subir material o video"  && $(".liks"+id+"").val() != "" && $(".file"+id+"").is(":visible")){
+
+            swalSimple("link only");
+       }
+       else if(text_boton == "Subir material o video" && !$(".file"+id+"").is(":visible") || !$(".file"+id+"").is(":visible") && $(".liks"+id+"").val() != "" && text_boton == "Subir material o video"){
 
             uploadFilesVideos();
        }
@@ -462,7 +582,7 @@ function butonMaterial(){
             $("#col-modules [role='alert'] div[id=div-material"+id+"]").each(function(){
             
                 $(this).append('<select class="browser-default custom-select" id="themes-select'+id+'">'+
-                                '<option disabled selected>Seleccionar tema para subir material o video</option>'+
+                                '<option disabled selected>Seleccionar tema</option>'+
                                 '</select>');
             
             });
@@ -471,6 +591,11 @@ function butonMaterial(){
                 $(this).append('<input disabled type="file" class="custom-file-input boton-file file'+id+'" id="input-files'+id+'" lang="es">'+
                                 '<label class="custom-file-label file'+id+'">Subir archivo</label>'+
                                 '<label class="file'+id+'"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>');
+            
+            });
+            $("#col-modules [role='alert'] div[id=div-links"+id+"]").each(function(){
+            
+                $(this).append('<input disabled id=input-links'+id+' type="text" class="form-control liks'+id+'" placeholder="Link en internet">');
             
             });
         
@@ -502,6 +627,7 @@ function materialSave(id_course){
 
     var value_file;
     var them_id;
+    var link;
 
     $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
             
@@ -514,12 +640,22 @@ function materialSave(id_course){
         them_id = $(this).val();
     });
 
+    $("#col-modules [role='alert'] div[id=div-links"+id+"] input[id=input-links"+id+"]").each(function(){
+            
+        link  = $(this).val();
+    });
+
     var dataForm = new FormData();
 
     dataForm.append('files_material', value_file);
     dataForm.append('detect', "material insert");
     dataForm.append('key_course', id_course);  
     dataForm.append('key_theme', them_id);
+
+    if(link != undefined){
+
+        dataForm.append('links', link);
+    }
 
     $.ajax({
         type: "POST",
@@ -659,11 +795,13 @@ function uploadFilesVideos(){
 
     var value_file;
 
+
     $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-files"+id+"]").each(function(){
             
         value_file = this.files[0];
-    
+       
     });
+
 
     Swal.fire({
 
@@ -679,7 +817,7 @@ function uploadFilesVideos(){
 
     }).then(result =>{
 
-        if(result.value){
+        if(result.value){   
 
             var dataForm = new FormData();
 
@@ -727,6 +865,12 @@ function uploadFilesVideos(){
                     
                                     $(this).remove();
                                  });
+
+                                 $("#col-modules [role='alert']  input[id=input-links"+id+"]").each(function(){
+                            
+                                    $(this).val("");
+                                });
+                                 
                             }
                             else{ 
                                 
@@ -742,14 +886,38 @@ function uploadFilesVideos(){
                                     cancelButtonText: 'No',
                                     allowOutsideClick: false
                             
-                                })
-                               
-                              //  $("#ad-module").attr('disabled', false);
+                                }).then(result =>{
 
-                               // $("#col-modules [role='alert'] button[id= btn-add-material"+id+"], input[id=input-file-name"+clave+"]"/*, select[id=themes-select"+id+"]"*/).each(function(){
-                    
-                                 //   $(this).attr('disabled',true);
-                                // });
+                                    if(result.value){
+
+                                        $("#col-modules [role='alert'] div[id=div-files"+id+"] .file"+id+"").each(function(){
+            
+                                            $(this).show();
+                                         });
+                                        
+                                        $("#col-modules [role='alert'] div[id=div-files"+id+"] input[id=input-file-name"+clave+"]").each(function(){
+                            
+                                            $(this).remove();
+                                         });
+                                         $("#col-modules [role='alert']  input[id=input-links"+id+"]").each(function(){
+                            
+                                            $(this).val("");
+                                        });
+                                        
+                                    }
+
+                                    else{
+                                        
+                                        swalSimple("otro modulo");
+                                        $("#ad-module").attr('disabled', false);
+
+                                        $("#col-modules [role='alert'] button[id= btn-add-material"+id+"], input[id=input-file-name"+clave+"], input[id=input-links"+id+"], select[id=themes-select"+id+"]").each(function(){
+                            
+                                            $(this).attr('disabled',true);
+                                        });
+                                    }
+                                });
+                            
                             }
                           
                         })
@@ -864,32 +1032,25 @@ function contentCourse(key){
                             "<input id=input-name-theme"+key+" type='text' class='form-control class"+clave+"' placeholder='Escribe el nombre del tema'>"+
                         "</div>"+
                     "</div>"+
-                    "<div class='col-md-6 col-sm-12'>"+
+                    "<div class='col-md-4 col-sm-12'>"+
                         "<div class='form-group' id=div-material"+key+">"+
                            
                         "</div>"+
                     "</div>"+
-                    "<div class='col-md-6 col-sm-12'>"+
+                    "<div class='col-md-4 col-sm-12'>"+
                            "<div class='custom-file' id=div-files"+key+">"+
 
                            "</div>"+
                     "</div>"+
+                    "<div class='col-md-4 col-sm-12'>"+
+                           "<div class='from-group' id=div-links"+key+">"+
+
+                           "</div>"+
+                    "</div>"+
                 "</div>"+
-                   /* "<div class='col-md-4 col-sm-12 mt-3' id=div-files"+key+">"+
-                        "<div class='custom-file' id=custom"+clave+">"+
-                            "<input disabled type='file' class='custom-file-input boton-file input-file"+clave+"' id=files-course"+key+" lang='es'>"+
-                            "<label class='custom-file-label label-files"+clave+"' for=files-course"+key+">Subir archivo</label>"+
-                            "<label id=label-strong"+clave+"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>"+
-                        "</div>"+
-                    "</div>"+*/
-                   /* "<div class='col-md-4 col-sm-12 mt-2' id=div-buttons"+key+">"+
-                        "<button id=button-files"+key+" class='btn btn-md text-white file-boton'>Selecionar material o video para el tema</button>"+
-                    "</div>"+*/
                 "<div class='row justify-content-center mt-3'>"+
                     "<div class='col-md-12 col-sm-12'>"+
-                      /*  "<video  width='220' height='140' controls id='mivideo'>"+
-                            "<source src='../videos/Desarrollo.mp4' type='video/mp4'>"+
-                        "</video>"+*/
+                     
                     "</div>"+
                 "</div>"+
             "</div>"+
@@ -910,7 +1071,7 @@ function contentCourse(key){
 }
 
 
-function contentCourseModules(module, key){
+function contentCourseModules(module, key, id_modules){
     
     var nav = "navbar";
 
@@ -924,30 +1085,34 @@ function contentCourseModules(module, key){
                     '</div>'+
                 '</nav>'+
                 '<div class="row">'+
-                    '<div class="col-md-6 col-sm-12 mt-3">'+
+                    '<div class="col-md-12 col-sm-12 mt-3">'+
                         '<div class="form-group">'+
-                            '<input id="input-name-theme" type="text" class="form-control" placeholder="Escribe el nombre del tema">'+
+                            '<input  type="text" class="form-control" placeholder="Escribe el nombre del tema">'+
                         '</div>'+
                     '</div>'+
-                    '<div class="col-md-6 col-sm-12 mt-3">'+
-                        '<div class="custom-file">'+
+                    '<div class="col-md-12 col-sm-12 mt-3">'+
+                        "<div class='form-group' id=div-select-themes"+key+">"+
+                           '<input type ="text" value='+id_modules+' id=input-id-module'+key+'>'+
+                           "<select class='browser-default custom-select' id=select-theme-module"+key+">"+
+                                "<option selected disabled>Seleccionar tema</option>"+
+                           "</select>"+
+                        "</div>"+
+                        /*'<div class="custom-file">'+
                             '<input type="file" class="custom-file-input" id="files-course" lang="es">'+
                             '<label class="custom-file-label" for="files-course">Seleccionar material o video</label>'+
                             '<label><strong>Nota:</strong>El video debe de pesar menos de 4 GB.</label>'+
-                        '</div>'+
+                        '</div>'+*/
                     '</div>'+
                 '</div>'+
                 '<div class="row justify-content-center mt-3">'+
                     '<div class="col-md-3 col-sm-12">'+
-                        '<video  width="220" height="140" controls id="mivideo">'+
-                            '<source src="../videos/Desarrollo.mp4" type="video/mp4">'+
-                        '</video>'+
+                       
                     '</div>'+
                 '</div>'+
             '</div>'+
             '<div class="row">'+
                 '<div class="col-md-8 col-sm-12">'+
-                    '<button class="btn text-white" id="btn-modules-course">Actualizar módulo</button>'+
+                    '<button class="btn text-white btn-update-module" id="btn-modules-course">Actualizar módulo</button>'+
                 '</div>'+
                 '<div class="col-md-4 col-sm-12">'+
                     '<input class="mt-3" title="Agregar nuevo tema al módulo" type="image" src="../img/icons/new-theme.png" width="48" height="48">'+

@@ -20,40 +20,12 @@ function messageButtonSaveModule(modules,theme,curso,categoria){
             title: "Faltan temas para este módulo",
             text: "Escribe el nombre del tema",
             icon: "error",
-            confirmButtonColor: '#70b52c',
-            confirmButtonText: 'Aceptar',
-            allowOutsideClick: false
-    
-        });
-    }
-
-    /*else if(file == undefined || $(visible).is(":visible")){
-
-        Swal.fire({
-            
-            title: "Falta material para el tema",
-            text: "Selecciona material o video para este tema",
-            icon: "error",
-            confirmButtonColor: '#70b52c',
-            confirmButtonText: 'Aceptar',
-            allowOutsideClick: false
-    
-        });
-    }
-
-    else if(texto_btn == "Subir archivo o video" || texto_btn == "Cambiar material o video para el tema"){
-
-        Swal.fire({
-    
-            title: "No has subido el material",
-            text: "Antes de guardar el módulo sube el material correspondiente",
-            icon: "error",
             confirmButtonColor: '#092432',
             confirmButtonText: 'Aceptar',
             allowOutsideClick: false
     
         });
-    }*/
+    }
 
     else{
 
@@ -278,7 +250,20 @@ function swalSimple(condition){
             Swal.fire({
 
                 title: "Módulo registrado",
-                text: "Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo",
+                text: "Es momento de agregar material y/o video a los temas del módulo",//"Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo",
+                icon: "success",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
+
+        case "otro modulo":
+            Swal.fire({
+
+                title: "Material registrado",
+                text: "Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo o simplemente cierra sesión en la plataforma",
                 icon: "success",
                 confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
@@ -316,8 +301,8 @@ function swalSimple(condition){
           case "subir material":
             Swal.fire({
     
-                title: "No se puede subir archivo",
-                text: "Elije archivo o video para un tema",
+                title: "No se puede subir archivo o link",
+                text: "Elije archivo, video o link para un tema",
                 icon: "info",
                 confirmButtonColor: '#092432',
                 confirmButtonText: 'Aceptar',
@@ -326,18 +311,26 @@ function swalSimple(condition){
             });
             break;
 
-        /*case "tema vacio":
+        case "link only":
+           
             Swal.fire({
-
-                title: "No puede asignar material y/o video",
-                text: "Escribe primero el nombre del tema para asignar material y/o video",
-                icon: "warning",
+                title: 'El link quedara guardado para este tema',
+                text: '¿Quieres continuar?',
+                icon: 'question',
+                confirmButtonText: 'Si',
                 confirmButtonColor: '#092432',
-                confirmButtonText: 'Aceptar',
+                cancelButtonColor: '#bb1825',
+                cancelButtonText: 'No',
+                showCancelButton: true,
                 allowOutsideClick: false
-        
-            });
-            break;*/
+
+            }).then(result=>{
+
+                if(result.value){
+                    saveOnlyLink();
+                }
+            })
+            break;
     }
 }
 
