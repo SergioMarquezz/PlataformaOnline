@@ -35,7 +35,6 @@ $(document).ready(function () {
     obtenerArchivos();
     butonMaterial();
     selectThemes();
-    showThemesModuleSelect();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -143,6 +142,8 @@ function modulesInformation(){
                     var string = json.modules_course[j].name
                     var module_id = json.modules_course[j].id_module
                     var leer_espacios_blancos = string.trim();
+
+                   
                   
                     contentCourseModules(leer_espacios_blancos,id,module_id);
                     
@@ -154,47 +155,7 @@ function modulesInformation(){
 
 }
 
-function showThemesModuleSelect(){
 
-    var option;
-    var id_theme;
-
-    $(document).on('click', '.btn-update-module',function(){
-
-        $("#col-modules [role='alert'] div[id=div-select-themes"+id+"] input[id=input-id-module"+id+"]").each(function(){
-            
-            console.log($(this).val());
-
-        });
-   
-       $.post("../php/create-course.php",{
-   
-           id_module: 3186,
-           identy: 'show modules themes',
-       },function(response){
-   
-           var json = JSON.parse(response);
-   
-           //console.log(json);
-   
-           var tamanio = json.themes_module.length;
-   
-           for(var i = 0; i < tamanio; i++){
-   
-               option = json.themes_module[i].name;
-               id_theme = json.themes_module[i].id_themes;
-             
-       
-               //input-id-module
-               /* $("#col-modules [role='alert'] div[id=div-material"+id+"] select[id=select-theme-module"+id+"]").each(function(){
-               
-                      $(this).append('<option value='+id_theme+'>'+option+'</option>');
-                });*/
-   
-           }
-       })
-    }) 
-}
 
 function themesInformation(){
     
@@ -837,8 +798,23 @@ function uploadFilesVideos(){
 
                         var id_value = value_course.value;
 
-                        TODO://Checar porque no guarda el material para un mismo tema 
-                        materialSave(id_value);
+                        if(id_value == ""){
+                                
+                            $.post("../php/create-course-poo.php",{
+
+                                detect: "course vacio",
+                
+                            },function(data){
+            
+                                materialSave(data);
+                                
+                            })
+                        }
+                        else{
+                            materialSave(id_value);
+                        }
+
+                      
 
                         Swal.fire({
 
@@ -994,7 +970,6 @@ function addModules(){
 
             if(course_value == ""){
 
-        
                 $.post("../php/create-course-poo.php",{
 
                     detect: "course vacio",
@@ -1084,24 +1059,24 @@ function contentCourseModules(module, key, id_modules){
                         '<a class="nav-item nav-link active text-danger" id="nav-themes-tabs" data-toggle="tab" href=#'+nav+key+' role="tab" aria-controls="nav-home" aria-selected="true">Ver temas del módulo '+module+'</a>'+
                     '</div>'+
                 '</nav>'+
-                '<div class="row">'+
+               /* '<div class="row">'+
                     '<div class="col-md-12 col-sm-12 mt-3">'+
                         '<div class="form-group">'+
                             '<input  type="text" class="form-control" placeholder="Escribe el nombre del tema">'+
                         '</div>'+
                     '</div>'+
                     '<div class="col-md-12 col-sm-12 mt-3">'+
-                        "<div class='form-group' id=div-select-themes"+key+">"+
-                           '<input type ="text" value='+id_modules+' id=input-id-module'+key+'>'+
+                        "<div class='form-group' id=div-select-themes>"+
+                           '<input type ="text" value='+id_modules+' class=input-id-module>'+
                            "<select class='browser-default custom-select' id=select-theme-module"+key+">"+
                                 "<option selected disabled>Seleccionar tema</option>"+
                            "</select>"+
                         "</div>"+
-                        /*'<div class="custom-file">'+
+                        '<div class="custom-file">'+
                             '<input type="file" class="custom-file-input" id="files-course" lang="es">'+
                             '<label class="custom-file-label" for="files-course">Seleccionar material o video</label>'+
                             '<label><strong>Nota:</strong>El video debe de pesar menos de 4 GB.</label>'+
-                        '</div>'+*/
+                        '</div>'+
                     '</div>'+
                 '</div>'+
                 '<div class="row justify-content-center mt-3">'+
@@ -1117,7 +1092,7 @@ function contentCourseModules(module, key, id_modules){
                 '<div class="col-md-4 col-sm-12">'+
                     '<input class="mt-3" title="Agregar nuevo tema al módulo" type="image" src="../img/icons/new-theme.png" width="48" height="48">'+
                 '</div>'+
-            '</div>'+
+            '</div>'+*/
         '</div>'
     );
  

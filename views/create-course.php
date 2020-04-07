@@ -35,7 +35,7 @@
                                         <div class="form-group" id="category">
                                             <label for="course-category" class="col-form-label"><strong>¿A que categoría pertenece?</strong></label>
                                             <select class="browser-default custom-select" id="category-instructor">
-                                                <option selected disabled>Seleccionar</option>
+                                                <option selected>Seleccionar</option>
                                             </select>
                                         </div>
                                     </div>
