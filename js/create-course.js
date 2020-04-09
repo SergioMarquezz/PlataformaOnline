@@ -35,6 +35,7 @@ $(document).ready(function () {
     obtenerArchivos();
     butonMaterial();
     selectThemes();
+    news();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -215,6 +216,8 @@ function videoTheme(){
 
         $("#h5-modal-video").text("Video del tema: " + text_substr);
         
+        console.log(text_substr);
+
         $.post("../php/create-course.php",{
 
             theme_name: text_substr,
@@ -380,6 +383,7 @@ function categoryNew(category_new){
 function saveCourse(){
 
     executeInsert("no");
+    $("#ad-module").attr('disabled', true);
     
 }
 
@@ -1048,8 +1052,6 @@ function contentCourse(key){
 
 function contentCourseModules(module, key, id_modules){
     
-    var nav = "navbar";
-
     $("#col-modules").append(
         '<div class="alert" role="alert">'+
             '<h4>Módulo '+key+': '+module+'</h4>'+
@@ -1059,41 +1061,33 @@ function contentCourseModules(module, key, id_modules){
                         '<a class="nav-item nav-link active text-danger" id="nav-themes-tabs" data-toggle="tab" href=#'+nav+key+' role="tab" aria-controls="nav-home" aria-selected="true">Ver temas del módulo '+module+'</a>'+
                     '</div>'+
                 '</nav>'+
-               /* '<div class="row">'+
-                    '<div class="col-md-12 col-sm-12 mt-3">'+
-                        '<div class="form-group">'+
-                            '<input  type="text" class="form-control" placeholder="Escribe el nombre del tema">'+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="col-md-12 col-sm-12 mt-3">'+
-                        "<div class='form-group' id=div-select-themes>"+
-                           '<input type ="text" value='+id_modules+' class=input-id-module>'+
-                           "<select class='browser-default custom-select' id=select-theme-module"+key+">"+
-                                "<option selected disabled>Seleccionar tema</option>"+
-                           "</select>"+
-                        "</div>"+
-                        '<div class="custom-file">'+
-                            '<input type="file" class="custom-file-input" id="files-course" lang="es">'+
-                            '<label class="custom-file-label" for="files-course">Seleccionar material o video</label>'+
-                            '<label><strong>Nota:</strong>El video debe de pesar menos de 4 GB.</label>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'+
-                '<div class="row justify-content-center mt-3">'+
+                '<div class="row">'+
                     '<div class="col-md-3 col-sm-12">'+
-                       
+                    
+                    '</div>'+
+                    '<div class="col-md-3 col-sm-12">'+
+                    
+                    '</div>'+
+                    '<div class="col-md-3 col-sm-12">'+
+                        '<a href='+id_modules+' class="btn text-white new-button">Actualizar módulo</a>'+
+                    '</div>'+
+                    '<div class="col-md-3 col-sm-12">'+
+                    '   <a href='+id_modules+' class="btn text-white new-button">Eliminar módulo</a>'+
                     '</div>'+
                 '</div>'+
             '</div>'+
-            '<div class="row">'+
-                '<div class="col-md-8 col-sm-12">'+
-                    '<button class="btn text-white btn-update-module" id="btn-modules-course">Actualizar módulo</button>'+
-                '</div>'+
-                '<div class="col-md-4 col-sm-12">'+
-                    '<input class="mt-3" title="Agregar nuevo tema al módulo" type="image" src="../img/icons/new-theme.png" width="48" height="48">'+
-                '</div>'+
-            '</div>'+*/
         '</div>'
     );
  
+}
+
+function news(){
+
+    $(document).on('click','.new-button',function(e){
+
+        e.preventDefault();
+        
+        alert($(this).attr('href'));
+        
+    })
 }

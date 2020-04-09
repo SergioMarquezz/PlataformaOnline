@@ -122,8 +122,8 @@ function showVideos(){
 
                 Swal.fire({
                     icon: 'info',
-                    title: 'No hay cursos disponibles todavía',
-                    text: 'Cuando se registren los cursos mas recientes se podrán ver aquí',
+                    title: 'No hay videos de cursos disponibles todavía',
+                    text: 'Cuando se registren los videos de los cursos mas recientes se podrán ver aquí',
                     confirmButtonColor: '#092432',
                     confirmButtonText: 'Aceptar!',
                     allowOutsideClick: false

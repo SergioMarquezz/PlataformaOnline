@@ -2,6 +2,10 @@
 
     require_once "../core/main-bd.php";
 
+    $new_course = new CreateCourse();
+
+    $new_course->deleteThemesModule();
+
     class CreateCourse{
 
         private $title, $lessons, $hours, $start, $end, $descripcion, $category, $decision, $id_cour, $id_modu , $id_theme;
@@ -283,7 +287,9 @@
                         echo "Grande";
                     }
                     else{
-                        $path = $this->directorio_videos.$this->name_file;
+                        $str_name = str_replace(" ","-",$this->name_file);
+
+                        $path = $this->directorio_videos.$str_name;
                         $this->moveFile($this->tmp_file,$path);
                     }
                 }                
@@ -384,7 +390,11 @@
                     break;
                  
                     case "video/mp4":
-                        $route = "videos/".$this->name_file;
+
+                        $str_name = str_replace(" ","-",$this->name_file);
+
+                        $route = "videos/".$str_name;
+
                         $this->insertVideosMaterial("video",$route);
 
                         if($this->link_file != ""){
@@ -552,6 +562,65 @@
             }catch(Exception $e){
 
                 echo 'Excepción capturada (id Themes):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function idThemesDelete(){
+
+            try{
+
+                $this->setIdModule(3200);
+
+                $id_themes_delete = "SELECT id_themes
+                                    FROM themes
+                                    WHERE id_module = $this->id_modu";
+
+                $resul_id_themes = executeQuery($id_themes_delete);
+
+                if($resul_id_themes){
+
+                    while($id_themes = odbc_fetch_array($resul_id_themes)){
+
+                        $json_id["themes"][] = array_map("utf8_encode", $id_themes);
+                    }
+
+                    return $json_id["themes"];
+                    
+                }
+
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (id Themes):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function deleteThemesModule(){
+
+           
+            $size = count($this->idThemesDelete());
+
+            for($i = 0; $i < $size; $i++){
+
+                $id = $this->idThemesDelete()[$i]["id_themes"];
+
+                $delete = "DELETE FROM support_material WHERE id_themes = $id";
+
+                $resul_delet = executeQuery($delete);
+
+                if($resul_delet){
+                    echo "correct";
+                }
+
+               /* $result_select = executeQuery($select);
+
+                if($result_select){
+
+                    while($name = odbc_fetch_array($result_select)){
+
+                        $json_name["themes"][] = array_map("utf8_encode", $name);
+                    }
+                    print_r($json_name);
+                }*/
             }
         }
 
