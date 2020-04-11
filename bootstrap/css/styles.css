@@ -49,7 +49,8 @@ hr{
 }
 
 #btn-save-course,#btn-evaluation,#show-material,#select-themes,#btn-themes,#btn-continue,#btn-start,
-#btn-modules-course,#button-video,#btn-modal-files,#button-vide,.material-add,.save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
+#btn-update-actualizacion,#btn-modules-course,#button-video,#btn-modal-files,#button-vide,.btn-update,.material-add,
+.save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
     background-color: #70b52c;
 }
 .form-control-feedback {

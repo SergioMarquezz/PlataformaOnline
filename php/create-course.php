@@ -41,6 +41,10 @@
         case "show modules themes":
             showThemesModule();
         break;
+
+        case "update name module":
+            updateNameModule();
+        break;
     }  
     //FUncion para mostrar todas las categorias
     function categoriesInstructor(){
@@ -388,6 +392,28 @@
         }catch(Exception $e){
 
             echo 'Excepción capturada (information Video): ',  $e->getMessage(), "\n";
+        }
+    }
+
+    function updateNameModule(){
+
+        try{
+
+            $name_module = $_POST['name_module'];
+            $id_module = $_POST['id_module'];
+
+            $update_name_module = "UPDATE modules SET name = '$name_module' WHERE id_module = $id_module";
+
+            $result_name_module = executeQuery($update_name_module);
+
+            if($result_name_module){
+
+                echo "name update";
+            }
+
+        }catch(Exception $e){
+
+            echo 'Excepción capturada (update Name Module): ',  $e->getMessage(), "\n";
         }
     }
 ?>

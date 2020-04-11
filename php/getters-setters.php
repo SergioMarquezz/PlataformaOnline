@@ -2,9 +2,11 @@
 
     require_once "../core/main-bd.php";
 
-    $new_course = new CreateCourse();
+  // $new_course = new CreateCourse();
 
-    $new_course->deleteThemesModule();
+    //print_r($new_course->deleteMaterialServer(3284));
+
+   // echo $new_course->deleteThemesModule();
 
     class CreateCourse{
 
@@ -569,8 +571,6 @@
 
             try{
 
-                $this->setIdModule(3200);
-
                 $id_themes_delete = "SELECT id_themes
                                     FROM themes
                                     WHERE id_module = $this->id_modu";
@@ -594,33 +594,110 @@
             }
         }
 
+        public function deleteMaterialServer($theme){
+
+            try{
+
+                $select_name_material = "SELECT path_material FROM support_material
+                                        WHERE id_themes = $theme";
+
+                $result_select_material = executeQuery($select_name_material);
+
+                if($result_select_material){
+
+                    while($name_material = odbc_fetch_array($result_select_material)){
+
+                        $json_material["material"][] = array_map("utf8_encode", $name_material);
+                    }
+                    return $json_material["material"];
+                }
+
+                            
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (delete Material Server):',  $e->getMessage(), "\n";
+            }
+        }
+
+        public function deleteVideoServer($theme){
+
+            try{
+
+                $select_name_video = "SELECT url_video FROM video_url
+                                        WHERE id_themes = $theme";
+
+                $result_select_video = executeQuery($select_name_video);
+
+                if($result_select_video){
+
+                    while($name_video = odbc_fetch_array($result_select_video)){
+
+                        $json_video["videos"][] = array_map("utf8_encode", $name_video);
+                    }
+                    return $json_video["videos"];
+                }
+
+                            
+            }catch(Exception $e){
+
+                echo 'Excepción capturada (delete Material Server):',  $e->getMessage(), "\n";
+            }
+        }
+
         public function deleteThemesModule(){
 
            
             $size = count($this->idThemesDelete());
+        
 
             for($i = 0; $i < $size; $i++){
 
                 $id = $this->idThemesDelete()[$i]["id_themes"];
+                
+                $length_material = count($this->deleteMaterialServer($id));
+                $length_video = count($this->deleteVideoServer($id));
 
-                $delete = "DELETE FROM support_material WHERE id_themes = $id";
+                for($j = 0; $j < $length_material; $j++){
 
-                $resul_delet = executeQuery($delete);
+                    $material_path =  $this->deleteMaterialServer($id)[$j]["path_material"];
 
-                if($resul_delet){
-                    echo "correct";
+                     unlink($material_path);
                 }
 
-               /* $result_select = executeQuery($select);
+                for($x = 0; $x < $length_video; $x++){
 
-                if($result_select){
+                    $video_path =  $this->deleteVideoServer($id)[$x]["url_video"];
 
-                    while($name = odbc_fetch_array($result_select)){
+                     unlink("../".$video_path);
+                }
+    
+                $delete_material = "DELETE FROM support_material WHERE id_themes = $id";
+                $delete_video = "DELETE FROM video_url WHERE id_themes = $id";
+               
+                executeQuery($delete_material);
+                executeQuery($delete_video);
 
-                        $json_name["themes"][] = array_map("utf8_encode", $name);
-                    }
-                    print_r($json_name);
-                }*/
+            }
+           
+            $delete_themes = "DELETE FROM themes WHERE id_module = $this->id_modu";
+            executeQuery($delete_themes);
+
+            $delete_module = "DELETE FROM modules WHERE id_module = $this->id_modu";
+            executeQuery($delete_module);
+        }
+
+        public function nameModule(){
+
+            $query_name_module = "SELECT name
+            FROM modules WHERE id_module = $this->id_modu";
+
+            $result_name_module = executeQuery($query_name_module);
+
+            if($result_name_module){
+
+                $name_module = odbc_result($result_name_module, "name");
+
+                echo $name_module;
             }
         }
 

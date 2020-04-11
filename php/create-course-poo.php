@@ -71,6 +71,24 @@
                     $this->create_course->setLink($links);
                     $this->create_course->insertLink();
                 break;
+
+                case "delete module":
+
+                    $key_module = $_POST['key_module'];
+                    
+                    $this->create_course->setIdModule($key_module);
+
+                    $this->create_course->deleteThemesModule();
+
+                break;
+
+                case "update module":
+                    $key = $_POST['key'];
+                    
+                    $this->create_course->setIdModule($key);
+
+                    $this->create_course->nameModule();
+                break;
             }
 
         }

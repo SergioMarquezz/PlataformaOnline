@@ -189,35 +189,82 @@
                     </div>
                 </div>
             
-                <!--Modal archivos-->
-                <!--<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalFiles" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                <!--Modal update course-->
+                <div class="modal fade top" data-backdrop="static" data-keyboard="false" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-notify modal-success" role="document">
+                    <div class="modal-dialog modal-frame modal-notify modal-top modal-success" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title text-white" id="h5-modal-files"></h5>
+                                <h5 class="modal-title text-white" id="">Actualización de módulo</h5>
                                 <button id="" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="files-course" lang="es">
-                                    <label class="custom-file-label" for="files-course">Seleccionar material o video para el tema</label>
-                                    <label><strong>Nota:</strong> El video debe de pesar menos de 100 MB.</label>"
+                                <input type="hidden" id="value-id-module">
+                                <p><strong> Puedes realizar cambios para este módulo.</strong>
+                                    <ul>
+                                        <li>
+                                            <strong>Cambiar nombre del módulo:</strong> Solo escribe el nuevo nombre del módulo y presiona el botón guardar actualización
+                                        </li>
+                                        <li>
+                                            <strong>Cambiar nombre de algún tema:</strong> Selecciona el tema que deseas actualizar, cambia el nombre y despues presiona el botón guardar actualización
+                                        </li>
+                                        <li>
+                                            <strong>Agregar material de apoyo o video para un tema:</strong> Selecciona el tema al que desea agregar material o video y suba el contenido 
+                                        </li>
+                                        <li>
+                                            <strong>Agregar nuevo tema para el módulo:</strong> Simplemente escribe el nombre de un nuevo tema y presiona el botón de guardar actualización
+                                        </li>
+                                    </ul>
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="course-start" class="">Cambiar nombre del módulo</label>
+                                            <input type="text" class="form-control" id="update_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="course-start" class="">Temas del módulo</label>
+                                            <select class="browser-default custom-select" id="update-themes">
+                                                    
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="files-course" lang="es">
-                                    <label class="custom-file-label" for="files-course">Seleccionar material o video para el tema</label>
-                                    <label><strong>Nota:</strong> El video debe de pesar menos de 100 MB.</label>"
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="course-start" class="">Cambiar nombre del tema</label>
+                                            <input disabled type="text" class="form-control" id="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="course-start" class="">Nombre de un nuevo tema</label>
+                                            <input disabled type="text" class="form-control" id="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-12">
+                                        <label class="" for="">Subir archivo o video</label>
+                                        <div class="custom-file">
+                                            <input disabled type="file" class="custom-file-input" id="customFileLang" lang="es">
+                                            <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" id="btn-modal-files" class="btn text-white">Aceptar</button>
+                                <button type="button" id="btn-modal-files" class="btn text-white">Agregar el nuevo tema</button>
+                                <button type="button" id="btn-modal-files" class="btn text-white">Eliminar tema seleccionado</button>
+                                <button type="button" id="btn-update-actualizacion" class="btn text-white">Guardar actualización</button>       
                             </div>
                         </div>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
     </div>

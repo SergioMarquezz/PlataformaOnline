@@ -35,7 +35,9 @@ $(document).ready(function () {
     obtenerArchivos();
     butonMaterial();
     selectThemes();
-    news();
+    deleteModule();
+    updateModule();
+    saveUpdateNameModule();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -119,7 +121,6 @@ function modulesInformation(){
         $("#row-modules").slideDown();
         $("#btn-save-course").hide();
 
-       // showThemesModuleSelect();
 
     $.ajax({
         type: "POST",
@@ -149,6 +150,9 @@ function modulesInformation(){
                     contentCourseModules(leer_espacios_blancos,id,module_id);
                     
                 }
+            }
+            else{
+                swalSimple("sin modulos");
             }
                 
         }
@@ -1052,6 +1056,8 @@ function contentCourse(key){
 
 function contentCourseModules(module, key, id_modules){
     
+    var nav = "navbar";
+
     $("#col-modules").append(
         '<div class="alert" role="alert">'+
             '<h4>Módulo '+key+': '+module+'</h4>'+
@@ -1069,10 +1075,10 @@ function contentCourseModules(module, key, id_modules){
                     
                     '</div>'+
                     '<div class="col-md-3 col-sm-12">'+
-                        '<a href='+id_modules+' class="btn text-white new-button">Actualizar módulo</a>'+
+                        '<a href='+id_modules+' class="btn text-white btn-update">Actualizar módulo</a>'+
                     '</div>'+
                     '<div class="col-md-3 col-sm-12">'+
-                    '   <a href='+id_modules+' class="btn text-white new-button">Eliminar módulo</a>'+
+                    '   <a href='+id_modules+' class="btn text-white btn-danger btn-delete">Eliminar módulo</a>'+
                     '</div>'+
                 '</div>'+
             '</div>'+
@@ -1081,13 +1087,105 @@ function contentCourseModules(module, key, id_modules){
  
 }
 
-function news(){
 
-    $(document).on('click','.new-button',function(e){
+function updateModule(){
+
+    $(document).on('click','.btn-update',function(e){
 
         e.preventDefault();
+
+         $("#update-themes").empty();
+        $("#value-id-module").val($(this).attr('href'));
+
+        $.post("../php/create-course-poo.php",{
+
+            detect: "update module",
+            key: $(this).attr('href')
+        },function(data){
+
+            $("#update_name").val(data);
+        })
+
+        $.post("../php/create-course.php",{
+
+            identy: "show modules themes",
+            id_module: $(this).attr('href')
+        },function(response){
+
+            var json = JSON.parse(response);
+            console.log(json)
+            
+            var tamanio = json.themes_module.length;
+
+            for(var i = 0; i < tamanio; i++){
+
+                $("#update-themes").append('<option value='+json.themes_module[i].id_themes+'>'+json.themes_module[i].name+'</option>');
+               
+            }
+        })
+     
+        $("#modalUpdate").modal('show');
+        $("#update-themes").append('<option value="0" selected disabled>Seleccionar tema</option>');
+      
+    })
+}
+
+function saveUpdateNameModule(){
+
+    $("#btn-update-actualizacion").click(function (e) { 
+        e.preventDefault();
+
+        var module_name = $("#update_name").val();
+        var keys_module = $("#value-id-module").val();
         
-        alert($(this).attr('href'));
+        $.post("../php/create-course.php",{
+
+            name_module: module_name,
+            id_module: keys_module,
+            identy: "update name module"
+        },function(data){
+
+            console.log(data);
+        })
+    });
+}
+
+function deleteModule(){
+
+    $(document).on('click','.btn-delete',function(e){
+
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Eliminación del módulo',
+            text: 'Todos los temas, material de apoyo, links y videos de este módulo se eliminaran definitivamente. ¿Seguro que quieres eliminar este módulo del curso?',
+            icon: 'warning',
+            confirmButtonText: 'Eliminar',
+            confirmButtonColor: '#092432',
+            cancelButtonColor: '#bb1825',
+            cancelButtonText: 'Cancelar',
+            showCancelButton: true,
+            allowOutsideClick: false
+
+        }).then(result =>{
+
+            if(result.value){
+
+                var module_key = $(this).attr('href');
+
+                $.post("../php/create-course-poo.php",{
+        
+                    detect: "delete module",
+                    key_module: module_key
+        
+                },function(data){
+                    
+                   console.log(data);
+                })
+
+              //  location.reload();
+            }
+        })
         
     })
 }

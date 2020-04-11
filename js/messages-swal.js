@@ -331,6 +331,19 @@ function swalSimple(condition){
                 }
             })
             break;
+
+        case "sin modulos":
+            Swal.fire({
+    
+                title: "El curso aún no tiene módulos registrados",
+                text: "Presiona el botón de agregar nuevo módulo",
+                icon: "info",
+                confirmButtonColor: '#092432',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+        
+            });
+            break;
     }
 }
 
