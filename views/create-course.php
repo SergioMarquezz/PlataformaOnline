@@ -219,16 +219,28 @@
                                     </ul>
                                 </p>
                                 <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <select class="browser-default custom-select options" id="select-options">
+                                            <option selected disabled value="0">¿Qué desea actualizar?</option>
+                                            <option value="1">El nombre del módulo</option>
+                                            <option value="2">El nombre de un tema</option>
+                                            <option value="3">Agregar un nuevo tema</option>
+                                            <option value="4">Eliminar un tema</option>
+                                            <option value="5">Agregar material de apoyo o video para un tema</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-5">
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="course-start" class="">Cambiar nombre del módulo</label>
-                                            <input type="text" class="form-control" id="update_name">
+                                            <input disabled type="text" class="form-control" id="update_name">
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="course-start" class="">Temas del módulo</label>
-                                            <select class="browser-default custom-select" id="update-themes">
+                                            <select disabled class="browser-default custom-select" id="update-themes">
                                                     
                                             </select>
                                         </div>
@@ -238,13 +250,13 @@
                                     <div class="col-md-4 col-sm-12">
                                         <div class="form-group">
                                             <label for="course-start" class="">Cambiar nombre del tema</label>
-                                            <input disabled type="text" class="form-control" id="">
+                                            <input disabled type="text" class="form-control" id="input-new-theme">
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
                                         <div class="form-group">
                                             <label for="course-start" class="">Nombre de un nuevo tema</label>
-                                            <input disabled type="text" class="form-control" id="">
+                                            <input disabled type="text" class="form-control" id="input-new-theme-update">
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-12">
@@ -258,9 +270,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" id="btn-modal-files" class="btn text-white">Agregar el nuevo tema</button>
-                                <button type="button" id="btn-modal-files" class="btn text-white">Eliminar tema seleccionado</button>
-                                <button type="button" id="btn-update-actualizacion" class="btn text-white">Guardar actualización</button>       
+                                <button disabled type="button" id="btn-update-new-theme" class="btn text-white">Agregar tema</button>
+                                <button disabled type="button" id="btn-delete-theme" class="btn text-white">Eliminar tema seleccionado</button>
+                                <button disabled type="button" id="btn-update-actualizacion" class="btn text-white">Guardar actualización</button>       
                             </div>
                         </div>
                     </div>

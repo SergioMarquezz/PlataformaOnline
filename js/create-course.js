@@ -38,6 +38,9 @@ $(document).ready(function () {
     deleteModule();
     updateModule();
     saveUpdateNameModule();
+    disableUpdateInputs();
+    disabledUpdateNewTheme();
+    selectOptions();
     $("#row-modules").slideUp();
     $("#modalCreateCourse").modal('show');
   
@@ -402,6 +405,7 @@ function saveModule(name,courses,categoria){
     
     },function(params){
      
+      
         if(params == "guardado"){
 
             $("#btn-new-theme").attr('disabled',true);
@@ -1130,6 +1134,72 @@ function updateModule(){
     })
 }
 
+function selectOptions(){
+
+    $("#select-options").change(function (e) { 
+        e.preventDefault();
+        
+        var value_select = $("#select-options").val();
+
+        switch(value_select){
+
+            case "1":
+                $("#update_name").attr('disabled', false);
+                $("#btn-update-actualizacion").attr('disabled', false);
+                $("#update-themes").attr('disabled', true);
+                $("#customFileLang").attr('disabled', true);
+                $("#input-new-theme-update").attr('disabled', true);
+                $("#btn-update-new-theme").attr('disabled', true);
+                $("#btn-delete-theme").attr('disabled', true);
+                $("#input-new-theme").attr('disabled', true);
+                break;
+
+            case "2":
+                $("#btn-update-actualizacion").attr('disabled', false);
+                $("#update-themes").attr('disabled', false);
+                $("#update_name").attr('disabled', true);
+                $("#customFileLang").attr('disabled', true);
+                $("#input-new-theme-update").attr('disabled', true);
+                $("#btn-update-new-theme").attr('disabled', true);
+                $("#btn-delete-theme").attr('disabled', true);
+                break;
+
+            case "3":
+                $("#input-new-theme-update").attr('disabled', false);
+                $("#btn-update-new-theme").attr('disabled', false);
+                $("#btn-delete-theme").attr('disabled', true);
+                $("#btn-update-actualizacion").attr('disabled', true);
+                $("#update-themes").attr('disabled', true);
+                $("#update_name").attr('disabled', true);
+                $("#customFileLang").attr('disabled', true);
+                $("#input-new-theme").attr('disabled', true);
+                break;
+
+            case "4":
+                $("#update-themes").attr('disabled', false);
+                $("#btn-delete-theme").attr('disabled', false);
+                $("#input-new-theme-update").attr('disabled', true);
+                $("#btn-update-new-theme").attr('disabled', true);
+                $("#btn-update-actualizacion").attr('disabled', true);
+                $("#customFileLang").attr('disabled', true);
+                $("#input-new-theme").attr('disabled', true);
+                $("#update_name").attr('disabled', true);
+                break;
+
+            case "5":
+                $("#update-themes").attr('disabled', false);
+                $("#customFileLang").attr('disabled', false);
+                $("#btn-update-actualizacion").attr('disabled', false);
+                $("#update_name").attr('disabled', true);
+                $("#input-new-theme").attr('disabled', true);
+                $("#btn-update-new-theme").attr('disabled', true);
+                $("#input-new-theme-update").attr('disabled', true);
+                $("#btn-delete-theme").attr('disabled', true);
+                break;
+        }
+    });
+}
+
 function saveUpdateNameModule(){
 
     $("#btn-update-actualizacion").click(function (e) { 
@@ -1147,6 +1217,27 @@ function saveUpdateNameModule(){
 
             console.log(data);
         })
+    });
+}
+
+function disableUpdateInputs(){
+
+    $("#update-themes").change(function (e) { 
+        e.preventDefault();
+       
+        var text_select = $("#update-themes option:selected").text();
+        $("#input-new-theme").val(text_select);
+
+        $("#input-new-theme").attr('disabled', false);
+    });
+}
+
+function disabledUpdateNewTheme(){
+
+    $("#btn-update-new-theme").click(function (e) { 
+        e.preventDefault();
+
+        $("#input-new-theme-update").attr('disabled', false);
     });
 }
 
@@ -1183,7 +1274,7 @@ function deleteModule(){
                    console.log(data);
                 })
 
-              //  location.reload();
+                location.reload();
             }
         })
         

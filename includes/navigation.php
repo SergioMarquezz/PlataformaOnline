@@ -22,7 +22,7 @@
             <img src="../img/icons/teacher.png" class="ml-4">
         </a>
         <a href="../views/create-exam" id="exam" class="list-group-item list-group-item-action text-white">Crear examen
-           <!-- <img src="../img/icons/teacher.png" class="ml-4">-->
+            <img src="../img/icons/test.png" class="icon-text">
         </a>
     </div>
     <input type="hidden" id="value-user" value="<?php echo  $_SESSION['num_employee']?>">

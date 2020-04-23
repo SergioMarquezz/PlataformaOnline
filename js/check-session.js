@@ -8,7 +8,7 @@ $(document).ready(function () {
         
             if(json.session == false){
 
-                window.location.href = "http://192.168.1.76/PlataformaIFPP";
+                window.location.href = "http://192.168.100.79/PlataformaIFPP";
             }
         }
     });
@@ -44,7 +44,7 @@ function closeSession(){
         
                         if(response == "cerrar"){
         
-                            window.location.href = "http://192.168.1.76/PlataformaIFPP";
+                            window.location.href = "http://192.168.100.79/PlataformaIFPP";
                         }
                     }
                 });
