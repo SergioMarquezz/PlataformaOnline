@@ -28,7 +28,7 @@
                                     <h5 class="">Cursos en la plataforma</h5>
                                 </div>
                                 <div class="col-md-9 col-sm-12">
-                                    <select class="browser-default custom-select" id="">
+                                    <select class="browser-default custom-select" id="title-select-course">
                                             <option selected disabled>Seleccionar curso</option>
                                     </select>
                                 </div>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-12 col-sm-12">
+                                    <div class="col-md-12 col-sm-12 disabled" id="div-questions">
                                         <ol>
                                             <li>
                                                 <div class="form-group">
@@ -45,19 +45,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-1-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-1" id="answer-1-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-1-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-1" id="answer-1-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-1-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-1"  id="answer-1-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-1-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-1"  id="answer-1-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-1">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-1">Guardar pregunta 1</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -66,19 +66,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-2-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-2" id="answer-2-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-2-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-2" id="answer-2-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-2-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-2" id="answer-2-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-2-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-2" id="answer-2-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-2">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-2">Guardar pregunta 2</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -87,19 +87,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-3-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-3" id="answer-3-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-3-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-3" id="answer-3-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-3-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-3" id="answer-3-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-3-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-3" id="answer-3-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-3">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-3">Guardar pregunta 3</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -108,19 +108,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-4-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-4" id="answer-4-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-4-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-4" id="answer-4-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-4-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-4" id="answer-4-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-4-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-4" id="answer-4-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-4">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-4">Guardar pregunta 4</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -129,19 +129,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-5-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-5" id="answer-5-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-5-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-5" id="answer-5-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-5-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-5" id="answer-5-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-5-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-5" id="answer-5-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-5">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-5">Guardar pregunta 5</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -150,19 +150,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-6-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-6" id="answer-6-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-6-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-6" id="answer-6-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-6-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-6" id="answer-6-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-6-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-6" id="answer-6-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-6">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-6">Guardar pregunta 6</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -171,19 +171,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-7-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-7" id="answer-7-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-7-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-7" id="answer-7-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-7-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-7" id="answer-7-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-7-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-7" id="answer-7-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-7">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-7">Guardar pregunta 7</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -192,19 +192,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-8-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-8" id="answer-8-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-8-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-8" id="answer-8-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-8-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-8" id="answer-8-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-8-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-8" id="answer-8-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-8">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-8">Guardar pregunta 8</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -213,19 +213,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-9-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-9" id="answer-9-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-9-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-9" id="answer-9-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-9-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-9" id="answer-9-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-9-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-9" id="answer-9-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-9">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-9">Guardar pregunta 9</button></h5>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
@@ -234,19 +234,19 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-10-1" placeholder="Respuesta 1">
+                                                        <input type="text" class="form-control answer-question-10" id="answer-10-1" placeholder="Respuesta 1">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-10-2" placeholder="Respuesta 2">
+                                                        <input type="text" class="form-control answer-question-10" id="answer-10-2" placeholder="Respuesta 2">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-10-3" placeholder="Respuesta 3">
+                                                        <input type="text" class="form-control answer-question-10" id="answer-10-3" placeholder="Respuesta 3">
                                                     </div>
                                                     <div class="col-md-3 col-sm-12">
-                                                        <input type="text" class="form-control" id="answer-10-4" placeholder="Respuesta 4">
+                                                        <input type="text" class="form-control answer-question-10" id="answer-10-4" placeholder="Respuesta 4">
                                                     </div>
                                                 </div>
-                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-10">Guardar pregunta</button></h5>
+                                                <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-10">Guardar pregunta 10</button></h5>
                                             </li>
                                         </ol>
                                     </div>
@@ -287,6 +287,8 @@
                                </div>
                             </div>
                             <div class="modal-footer">
+                                <input type="text" id="input-value-question">
+                                <input type="text" id="input-text-question">
                                 <button class="btn text-white" id="btn-answer-correct">Aceptar</button>
                             </div>
                         </div>
