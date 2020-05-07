@@ -27,9 +27,7 @@
         function showCourses(){
 
                 $query_courses = "SELECT id_course, title
-                                FROM courses";
-
-                $result_courses = executeQuery($query_courses);
+                                FROM courses";$result_courses = executeQuery($query_courses);
 
                 if($result_courses){
 
@@ -50,8 +48,10 @@
                 $question = $_POST['question'];
                 $key_course = $_POST['id_course'];
 
+                $utf_8_question = utf8_decode($question);
+
                 $insert_question = "INSERT INTO questions(number_question,question,id_course)
-                                VALUES('$number_question','$question','$key_course')";
+                                VALUES('$number_question','$utf_8_question','$key_course')";
 
                 $result_insert_question = executeQuery($insert_question);
 
@@ -68,8 +68,10 @@
                 $id_question = latestQuestion();
                 $id_course = $_POST['key_course'];
 
+                $utf_8_answer = utf8_decode($answer);
+
                 $insert_answers = "INSERT INTO answers(number_answers,answer,id_question,id_course)
-                                VALUES('$number_answer','$answer','$id_question','$id_course')";
+                                VALUES('$number_answer','$utf_8_answer','$id_question','$id_course')";
 
                 $result_insert_answer = executeQuery($insert_answers);
 
@@ -118,7 +120,7 @@
 
               
                 $question_key = keyQuestion($answers);
-                $respuesta =  $_POST['respuesta'];
+                $respuesta = utf8_decode($_POST['respuesta']);
 
                 $query_number_correct = "SELECT number_answers
                                         FROM answers
@@ -137,11 +139,11 @@
         function saveAnswerCorreect(){
 
                 
-                $answers = $_POST['text_answer'];
+                $answers = utf8_decode($_POST['text_answer']);
                 $question_key = keyQuestion($answers);
                 $correct_answer =  numberAnswerCorrect($answers);
 
-                $insert_answer_correct = "INSERT INTO answers_corrects(id_question,correct_answer)
+               $insert_answer_correct = "INSERT INTO answers_corrects(id_question,correct_answer)
                                         VALUES($question_key,$correct_answer)";
 
                 $result_answer_correct = executeQuery($insert_answer_correct);

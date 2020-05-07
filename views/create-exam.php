@@ -251,7 +251,7 @@
                                         </ol>
                                     </div>
                                 </div>
-                            </div>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -263,9 +263,6 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title text-white" id="title-question-modal"></h5>
-                                <button id="btn-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
                             </div>
                             <div class="modal-body">
                                <p>Elije la respuesta correcta para esta pregunta</p>
@@ -287,9 +284,41 @@
                                </div>
                             </div>
                             <div class="modal-footer">
-                                <input type="text" id="input-value-question">
-                                <input type="text" id="input-text-question">
+                                <input type="hidden" class="input-value-question">
+                                <input type="hidden" class="input-text-question">
                                 <button class="btn text-white" id="btn-answer-correct">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                   <!--Modal answers-->
+            <div class="modal fade"  data-backdrop="static" data-keyboard="false" id="modal-answers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-notify modal-success" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-white" id="title-question-answers"></h5>
+                            </div>
+                            <div class="modal-body">
+                               <p id="parrafo-answer"></p>
+                                <ol id="ol-answers">
+
+                                </ol>
+                                <div id="div-new-answers">
+                                    <input type="text" class="form-control new-answer" id="new-asnwers-1" placeholder="Respuesta 1">
+                                    <input type="text" class="form-control new-answer mt-3" id="new-asnwers-2" placeholder="Respuesta 2">
+                                    <input type="text" class="form-control new-answer mt-3" id="new-asnwers-3" placeholder="Respuesta 3">
+                                    <input type="text" class="form-control new-answer mt-3" id="new-asnwers-4" placeholder="Respuesta 4">
+                                </div>
+                                <p id="parrafo-question"><strong>¿Estás seguro de guardar estás respuestas?</strong></p>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" class="input-value-question answers-news">
+                                <input type="hidden" class="input-text-question">
+                                <button class="btn text-white" id="btn-yes">Si</button>
+                                <button class="btn text-white" id="btn-not">No</button>
+                                <button class="btn text-white" id="btn-accept-new">Aceptar</button>
                             </div>
                         </div>
                     </div>
