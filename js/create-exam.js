@@ -656,7 +656,7 @@ function btnAnswerCorrect() {
 												contador++;
 											}
 										}
-										if(contador == 10){
+										if (contador == 10) {
 											Swal.fire({
 												title: 'Examen creado',
 												text: 'Has terminado de agregar las 10 preguntas del examen',
@@ -664,7 +664,7 @@ function btnAnswerCorrect() {
 												confirmButtonText: 'Finalizar',
 												confirmButtonColor: '#092432',
 												allowOutsideClick: false,
-											})
+											});
 										}
 									}
 								});
