@@ -78,6 +78,7 @@ $(document).ready(function () {
 	btnAnswerCorrect();
 	saveAllAnswers();
 	showNewAnswer();
+	changeInputsAnswer();
 });
 
 function showTitleCourses() {
@@ -126,9 +127,7 @@ function saveQuestions(number, questions, id) {
 					question: questions,
 					id_course: id,
 				},
-				function (response) {
-					console.log(response);
-				}
+				function (response) {}
 			);
 		} else {
 			$('#btn-' + number).attr('disabled', false);
@@ -319,9 +318,7 @@ function answers(number_answer, num) {
 				answer: $('#answer-' + num + '-' + i).val(),
 				key_course: $('#title-select-course option:selected').val(),
 			},
-			function (datos) {
-				console.log(datos);
-			}
+			function (datos) {}
 		);
 	}
 }
@@ -464,77 +461,134 @@ function showNewAnswer() {
 	});
 }
 
-function changeInputsAnswer(value) {
+function changeInputsAnswer() {
 	var new_answer = document.getElementsByClassName('new-answer').length;
 
 	for (var i = 1; i <= new_answer; i++) {
 		$('#new-asnwers-' + i).keyup(function (e) {
-			var value_new_answer_1 = $('#new-asnwers-1').val();
-			var value_new_answer_2 = $('#new-asnwers-2').val();
-			var value_new_answer_3 = $('#new-asnwers-3').val();
-			var value_new_answer_4 = $('#new-asnwers-4').val();
+			var value_new_answer = $(this).val();
+			var number_question = $('.answers-news').val();
+			var id_input = $(this).attr('id');
 
-			switch (value) {
+			switch (number_question) {
 				case '1':
-					value_answer_1_1.val(value_new_answer_1);
-					value_answer_1_2.val(value_new_answer_2);
-					value_answer_1_3.val(value_new_answer_3);
-					value_answer_1_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_1_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_1_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_1_2.val(value_new_answer);
+					} else {
+						value_answer_1_1.val(value_new_answer);
+					}
 
 					break;
 				case '2':
-					value_answer_2_1.val(value_new_answer_1);
-					value_answer_2_2.val(value_new_answer_2);
-					value_answer_2_3.val(value_new_answer_3);
-					value_answer_2_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_2_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_2_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_2_2.val(value_new_answer);
+					} else {
+						value_answer_2_1.val(value_new_answer);
+					}
 					break;
 				case '3':
-					value_answer_3_1.val(value_new_answer_1);
-					value_answer_3_2.val(value_new_answer_2);
-					value_answer_3_3.val(value_new_answer_3);
-					value_answer_3_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_3_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_3_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_3_2.val(value_new_answer);
+					} else {
+						value_answer_3_1.val(value_new_answer);
+					}
+
 					break;
 				case '4':
-					value_answer_4_1.val(value_new_answer_1);
-					value_answer_4_2.val(value_new_answer_2);
-					value_answer_4_3.val(value_new_answer_3);
-					value_answer_4_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_4_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_4_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_4_2.val(value_new_answer);
+					} else {
+						value_answer_4_1.val(value_new_answer);
+					}
+
 					break;
 				case '5':
-					value_answer_5_1.val(value_new_answer_1);
-					value_answer_5_2.val(value_new_answer_2);
-					value_answer_5_3.val(value_new_answer_3);
-					value_answer_5_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_5_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_5_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_5_2.val(value_new_answer);
+					} else {
+						value_answer_5_1.val(value_new_answer);
+					}
+
 					break;
 				case '6':
-					value_answer_6_1.val(value_new_answer_1);
-					value_answer_6_2.val(value_new_answer_2);
-					value_answer_6_3.val(value_new_answer_3);
-					value_answer_6_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_6_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_6_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_6_2.val(value_new_answer);
+					} else {
+						value_answer_6_1.val(value_new_answer);
+					}
+
 					break;
 				case '7':
-					value_answer_7_1.val(value_new_answer_1);
-					value_answer_7_2.val(value_new_answer_2);
-					value_answer_7_3.val(value_new_answer_3);
-					value_answer_7_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_7_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_7_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_7_2.val(value_new_answer);
+					} else {
+						value_answer_7_1.val(value_new_answer);
+					}
+
 					break;
 				case '8':
-					value_answer_8_1.val(value_new_answer_1);
-					value_answer_8_2.val(value_new_answer_2);
-					value_answer_8_3.val(value_new_answer_3);
-					value_answer_8_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_8_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_8_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_8_2.val(value_new_answer);
+					} else {
+						value_answer_8_1.val(value_new_answer);
+					}
+
 					break;
 				case '9':
-					value_answer_9_1.val(value_new_answer_1);
-					value_answer_9_2.val(value_new_answer_2);
-					value_answer_9_3.val(value_new_answer_3);
-					value_answer_9_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_9_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_9_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_9_2.val(value_new_answer);
+					} else {
+						value_answer_9_1.val(value_new_answer);
+					}
+
 					break;
 				case '10':
-					value_answer_10_1.val(value_new_answer_1);
-					value_answer_10_2.val(value_new_answer_2);
-					value_answer_10_3.val(value_new_answer_3);
-					value_answer_10_4.val(value_new_answer_4);
+					if (id_input == 'new-asnwers-4') {
+						value_answer_10_4.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-3') {
+						value_answer_10_3.val(value_new_answer);
+					} else if (id_input == 'new-asnwers-2') {
+						value_answer_10_2.val(value_new_answer);
+					} else {
+						value_answer_10_1.val(value_new_answer);
+					}
+
 					break;
 			}
 		});
@@ -548,43 +602,78 @@ function btnAnswerCorrect() {
 		var text_question = $('.input-text-question').val();
 		var radio_select = $('input:radio[name=name-radio-answers]:checked').val();
 
-		Swal.fire({
-			title: '¿Esta seguro de la respuesta?',
-			text: 'La respuesta quedara guardada',
-			icon: 'question',
-			confirmButtonText: 'Si',
-			confirmButtonColor: '#092432',
-			cancelButtonColor: '#bb1825',
-			cancelButtonText: 'No',
-			showCancelButton: true,
-			allowOutsideClick: false,
-		}).then((result) => {
-			if (result.value) {
-				$('#modal-answer-correct').modal('hide');
+		if (!$('[name=name-radio-answers]:checked').length) {
+			Swal.fire({
+				title: 'No has elegido respuesta',
+				text: 'Selecciona una respuesta correcta para esta pregunta',
+				icon: 'error',
+				confirmButtonText: 'Aceptar',
+				confirmButtonColor: '#092432',
+				allowOutsideClick: false,
+			});
+		} else {
+			Swal.fire({
+				title: '¿Esta seguro de la respuesta?',
+				text: 'La respuesta quedara guardada',
+				icon: 'question',
+				confirmButtonText: 'Si',
+				confirmButtonColor: '#092432',
+				cancelButtonColor: '#bb1825',
+				cancelButtonText: 'No',
+				showCancelButton: true,
+				allowOutsideClick: false,
+			}).then((result) => {
+				if (result.value) {
+					$('#modal-answer-correct').modal('hide');
+					$('input:radio[name=name-radio-answers]').prop('checked', false);
 
-				$.post(
-					'../php/create-exam.php',
-					{
-						respuesta: radio_select,
-						text_answer: text_question,
-						option: 'answer correct',
-					},
-					function (data) {
-                        
-                        if(data == "ok"){
-                            Swal.fire({
-                                title: 'Pregunta y respuestas guardadas',
-                                text: 'Continua con las otras preguntas hasta finalizar',
-                                icon: 'success',
-                                confirmButtonText: 'Continuar',
-                                confirmButtonColor: '#092432',
-                                allowOutsideClick: false,
-                            })
-                        }
-					}
-				);
-			}
-		});
+					$.post(
+						'../php/create-exam.php',
+						{
+							respuesta: radio_select,
+							text_answer: text_question,
+							option: 'answer correct',
+						},
+						function (data) {
+							if (data == 'ok') {
+								Swal.fire({
+									title: 'Pregunta y respuestas guardadas',
+									text: 'Continua con las otras preguntas hasta finalizar',
+									icon: 'success',
+									confirmButtonText: 'Continuar',
+									confirmButtonColor: '#092432',
+									allowOutsideClick: false,
+								}).then((result) => {
+									if (result.value) {
+										var btns = document.getElementsByClassName('btn-save-questions').length;
+										var contador = 0;
+
+										for (var i = 1; i <= btns; i++) {
+											var id_btn = $('#btn-' + i).attr('id');
+											var bool = $('#' + id_btn).is(':disabled');
+
+											if (bool) {
+												contador++;
+											}
+										}
+										if(contador == 10){
+											Swal.fire({
+												title: 'Examen creado',
+												text: 'Has terminado de agregar las 10 preguntas del examen',
+												icon: 'info',
+												confirmButtonText: 'Finalizar',
+												confirmButtonColor: '#092432',
+												allowOutsideClick: false,
+											})
+										}
+									}
+								});
+							}
+						}
+					);
+				}
+			});
+		}
 	});
 }
 
@@ -598,8 +687,6 @@ function chooseAswerCorrect() {
 			var id_btn = $(this).attr('id');
 			var number_button = $(this).text().substr(17);
 			var option_id = $('#title-select-course option:selected').val();
-
-			changeInputsAnswer(number_button);
 
 			switch (id_btn) {
 				case 'btn-1':
@@ -663,6 +750,7 @@ function chooseAswerCorrect() {
 					break;
 
 				case 'btn-4':
+					var question_four = value_question_four.val();
 					if (
 						label_four.text() != '' &&
 						value_answer_4_1.val() != '' &&

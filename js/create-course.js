@@ -14,21 +14,13 @@ var text_boton;
 var value_file;
 
 $(document).ready(function () {
-	document
-		.getElementById('category-instructor')
-		.addEventListener('change', otherCategory);
-	document
-		.getElementById('btn-save-course')
-		.addEventListener('click', saveCourse);
-	document
-		.getElementById('button-add-course')
-		.addEventListener('click', function () {
-			$('#modalCreateCourse').modal('hide');
-		});
+	document.getElementById('category-instructor').addEventListener('change', otherCategory);
+	document.getElementById('btn-save-course').addEventListener('click', saveCourse);
+	document.getElementById('button-add-course').addEventListener('click', function () {
+		$('#modalCreateCourse').modal('hide');
+	});
 
-	document
-		.getElementById('select-courses-existentes')
-		.addEventListener('change', closeModal);
+	document.getElementById('select-courses-existentes').addEventListener('change', closeModal);
 
 	datePicker();
 	validateLettersNumbers();
@@ -134,8 +126,6 @@ function modulesInformation() {
 		},
 
 		success: function (response) {
-			console.log(response);
-
 			if (response != 'sin modulos') {
 				var json = JSON.parse(response);
 				var size = json.modules_course.length;
@@ -183,9 +173,7 @@ function themesInformation() {
 
 					for (j = 0; j < size; j++) {
 						$('#ol-themes').append(
-							'<li id="list-themes"><a>' +
-								json.information_themes[j].name +
-								'</a></li>'
+							'<li id="list-themes"><a>' + json.information_themes[j].name + '</a></li>'
 						);
 					}
 				}
@@ -208,8 +196,6 @@ function videoTheme() {
 
 		$('#h5-modal-video').text('Video del tema: ' + text_substr);
 
-		console.log(text_substr);
-
 		$.post(
 			'../php/create-course.php',
 			{
@@ -217,15 +203,10 @@ function videoTheme() {
 				identy: 'information video',
 			},
 			function (param) {
-				console.log(param);
 				if (param != '') {
-					$('#video-modal').append(
-						'<source src=../' + param + " type='video/mp4'>"
-					);
+					$('#video-modal').append('<source src=../' + param + " type='video/mp4'>");
 				} else {
-					$('#div-modal-video').append(
-						'<h3>No hay un video para este tema</h3>'
-					);
+					$('#div-modal-video').append('<h3>No hay un video para este tema</h3>');
 				}
 			}
 		);
@@ -258,9 +239,7 @@ function materialTheme() {
 				var json = JSON.parse(param);
 
 				if (json.msj == 'sin material') {
-					$('#sin-material').append(
-						'<h3>No hay material de apoyo para este tema</h3>'
-					);
+					$('#sin-material').append('<h3>No hay material de apoyo para este tema</h3>');
 				} else {
 					var size = json.information_material.length;
 
@@ -348,9 +327,7 @@ function selectCategory() {
 					);
 				}
 			}
-			$('#category-instructor').append(
-				'<option value="otra">Otra categoría</option>'
-			);
+			$('#category-instructor').append('<option value="otra">Otra categoría</option>');
 		},
 	});
 }
@@ -368,11 +345,7 @@ function categoryNew(category_new) {
 
 			if (json.data.message == 'category save') {
 				$('#category-instructor').append(
-					'<option value=' +
-						json.data.lastes_id +
-						' selected>' +
-						category_new +
-						'</option>'
+					'<option value=' + json.data.lastes_id + ' selected>' + category_new + '</option>'
 				);
 				$('#category-instructor').attr('disabled', true);
 			}
@@ -411,9 +384,7 @@ function saveModule(name, courses, categoria) {
 					$(this).attr('disabled', true);
 				});
 
-				$(
-					"#col-modules [role='alert'] button[id= btn-add-material" + id + ']'
-				).each(function () {
+				$("#col-modules [role='alert'] button[id= btn-add-material" + id + ']').each(function () {
 					$(this).attr('disabled', false);
 				});
 
@@ -426,22 +397,20 @@ function saveModule(name, courses, categoria) {
 }
 
 function themesSave(catego, key_courses) {
-	$("#col-modules [role='alert'] input[id=input-name-theme" + id + ']').each(
-		function () {
-			var themes = $(this).val();
+	$("#col-modules [role='alert'] input[id=input-name-theme" + id + ']').each(function () {
+		var themes = $(this).val();
 
-			$.post(
-				'../php/create-course-poo.php',
-				{
-					theme: themes,
-					id_course: key_courses,
-					detect: 'save themes',
-					id_category: catego,
-				},
-				function (params) {}
-			);
-		}
-	);
+		$.post(
+			'../php/create-course-poo.php',
+			{
+				theme: themes,
+				id_course: key_courses,
+				detect: 'save themes',
+				id_category: catego,
+			},
+			function (params) {}
+		);
+	});
 }
 
 function selectThemes() {
@@ -474,15 +443,11 @@ function saveOnlyLink() {
 		id_theme = $(this).val();
 	});
 
-	$(
-		"#col-modules [role='alert'] div[id=div-links" +
-			id +
-			'] input[id=input-links' +
-			id +
-			']'
-	).each(function () {
-		link = $(this).val();
-	});
+	$("#col-modules [role='alert'] div[id=div-links" + id + '] input[id=input-links' + id + ']').each(
+		function () {
+			link = $(this).val();
+		}
+	);
 
 	var id_value = value_course.value;
 
@@ -508,9 +473,7 @@ function saveOnlyLink() {
 					allowOutsideClick: false,
 				}).then((result) => {
 					if (result.value) {
-						$(
-							"#col-modules [role='alert']  input[id=input-links" + id + ']'
-						).each(function () {
+						$("#col-modules [role='alert']  input[id=input-links" + id + ']').each(function () {
 							$(this).val('');
 						});
 					} else {
@@ -552,53 +515,46 @@ function butonMaterial() {
 		) {
 			swalSimple('link only');
 		} else if (
-			(text_boton == 'Subir material o video' &&
-				!$('.file' + id + '').is(':visible')) ||
+			(text_boton == 'Subir material o video' && !$('.file' + id + '').is(':visible')) ||
 			(!$('.file' + id + '').is(':visible') &&
 				$('.liks' + id + '').val() != '' &&
 				text_boton == 'Subir material o video')
 		) {
 			uploadFilesVideos();
 		} else {
-			$("#col-modules [role='alert'] div[id=div-material" + id + ']').each(
-				function () {
-					$(this).append(
-						'<select class="browser-default custom-select" id="themes-select' +
-							id +
-							'">' +
-							'<option disabled selected>Seleccionar tema</option>' +
-							'</select>'
-					);
-				}
-			);
-			$("#col-modules [role='alert'] div[id=div-files" + id + ']').each(
-				function () {
-					$(this).append(
-						'<input disabled type="file" class="custom-file-input boton-file file' +
-							id +
-							'" id="input-files' +
-							id +
-							'" lang="es">' +
-							'<label class="custom-file-label file' +
-							id +
-							'">Subir archivo</label>' +
-							'<label class="file' +
-							id +
-							'"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>'
-					);
-				}
-			);
-			$("#col-modules [role='alert'] div[id=div-links" + id + ']').each(
-				function () {
-					$(this).append(
-						'<input disabled id=input-links' +
-							id +
-							' type="text" class="form-control liks' +
-							id +
-							'" placeholder="Link en internet">'
-					);
-				}
-			);
+			$("#col-modules [role='alert'] div[id=div-material" + id + ']').each(function () {
+				$(this).append(
+					'<select class="browser-default custom-select" id="themes-select' +
+						id +
+						'">' +
+						'<option disabled selected>Seleccionar tema</option>' +
+						'</select>'
+				);
+			});
+			$("#col-modules [role='alert'] div[id=div-files" + id + ']').each(function () {
+				$(this).append(
+					'<input disabled type="file" class="custom-file-input boton-file file' +
+						id +
+						'" id="input-files' +
+						id +
+						'" lang="es">' +
+						'<label class="custom-file-label file' +
+						id +
+						'">Subir archivo</label>' +
+						'<label class="file' +
+						id +
+						'"><strong>Nota:</strong> Un video debe de pesar menos de 100 MB.</label>'
+				);
+			});
+			$("#col-modules [role='alert'] div[id=div-links" + id + ']').each(function () {
+				$(this).append(
+					'<input disabled id=input-links' +
+						id +
+						' type="text" class="form-control liks' +
+						id +
+						'" placeholder="Link en internet">'
+				);
+			});
 
 			$.post(
 				'../php/create-course-poo.php',
@@ -607,8 +563,6 @@ function butonMaterial() {
 				},
 				function (data) {
 					var json = JSON.parse(data);
-
-					console.log(json);
 
 					var tamanio = json.id_themes.length;
 
@@ -641,15 +595,11 @@ function materialSave(id_course) {
 	var them_id;
 	var link;
 
-	$(
-		"#col-modules [role='alert'] div[id=div-files" +
-			id +
-			'] input[id=input-files' +
-			id +
-			']'
-	).each(function () {
-		value_file = this.files[0];
-	});
+	$("#col-modules [role='alert'] div[id=div-files" + id + '] input[id=input-files' + id + ']').each(
+		function () {
+			value_file = this.files[0];
+		}
+	);
 
 	$(
 		"#col-modules [role='alert'] div[id=div-material" +
@@ -661,15 +611,11 @@ function materialSave(id_course) {
 		them_id = $(this).val();
 	});
 
-	$(
-		"#col-modules [role='alert'] div[id=div-links" +
-			id +
-			'] input[id=input-links' +
-			id +
-			']'
-	).each(function () {
-		link = $(this).val();
-	});
+	$("#col-modules [role='alert'] div[id=div-links" + id + '] input[id=input-links' + id + ']').each(
+		function () {
+			link = $(this).val();
+		}
+	);
 
 	var dataForm = new FormData();
 
@@ -718,7 +664,6 @@ function executeInsert(decision_insert) {
 			detect: 'save course',
 		},
 		function (param) {
-			console.log(param);
 			if (param != 'curso insert') {
 				messageInsert(param);
 			} else {
@@ -750,11 +695,9 @@ function addNewTheme() {
 	$(document).on('click', '.buton-new-theme', function () {
 		var boolean = false;
 
-		$("#col-modules [role='alert'] input[id=input-name-theme" + id + ']').each(
-			function () {
-				value_theme = $(this).val();
-			}
-		);
+		$("#col-modules [role='alert'] input[id=input-name-theme" + id + ']').each(function () {
+			value_theme = $(this).val();
+		});
 
 		$("#col-modules [role='alert'] input[id=" + id + ']').each(function () {
 			value_module = $(this).val();
@@ -764,11 +707,9 @@ function addNewTheme() {
 			value_file = this.files[0];
 		});
 
-		$("#col-modules [role='alert']  button[id=button-files" + id + ']').each(
-			function () {
-				text_boton = $(this).text();
-			}
-		);
+		$("#col-modules [role='alert']  button[id=button-files" + id + ']').each(function () {
+			text_boton = $(this).text();
+		});
 
 		if (value_module == '' || value_theme == '') {
 			swalSimple('escribir tema');
@@ -785,31 +726,25 @@ function addNewTheme() {
 function addButtonTheme() {
 	clave++;
 
-	$("#col-modules [role='alert'] div[id=div-themes" + id + ']').each(
-		function () {
-			$(this).append(
-				'<input id=input-name-theme' +
-					id +
-					' type="text" class="form-control mt-4 class' +
-					clave +
-					'" placeholder="Escribe el nombre del tema">'
-			);
-		}
-	);
+	$("#col-modules [role='alert'] div[id=div-themes" + id + ']').each(function () {
+		$(this).append(
+			'<input id=input-name-theme' +
+				id +
+				' type="text" class="form-control mt-4 class' +
+				clave +
+				'" placeholder="Escribe el nombre del tema">'
+		);
+	});
 }
 
 function uploadFilesVideos() {
 	var value_file;
 
-	$(
-		"#col-modules [role='alert'] div[id=div-files" +
-			id +
-			'] input[id=input-files' +
-			id +
-			']'
-	).each(function () {
-		value_file = this.files[0];
-	});
+	$("#col-modules [role='alert'] div[id=div-files" + id + '] input[id=input-files' + id + ']').each(
+		function () {
+			value_file = this.files[0];
+		}
+	);
 
 	Swal.fire({
 		title: 'Archivo listo para subirse',
@@ -865,15 +800,11 @@ function uploadFilesVideos() {
 							allowOutsideClick: false,
 						}).then((result) => {
 							if (result.value) {
-								$(
-									"#col-modules [role='alert'] div[id=div-files" +
-										id +
-										'] .file' +
-										id +
-										''
-								).each(function () {
-									$(this).show();
-								});
+								$("#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + '').each(
+									function () {
+										$(this).show();
+									}
+								);
 
 								$(
 									"#col-modules [role='alert'] div[id=div-files" +
@@ -885,16 +816,13 @@ function uploadFilesVideos() {
 									$(this).remove();
 								});
 
-								$(
-									"#col-modules [role='alert']  input[id=input-links" + id + ']'
-								).each(function () {
+								$("#col-modules [role='alert']  input[id=input-links" + id + ']').each(function () {
 									$(this).val('');
 								});
 							} else {
 								Swal.fire({
 									title: 'Elegir otro tema',
-									text:
-										'¿Quieres seleccionar otro tema para la subida de archivos y/o videos?',
+									text: '¿Quieres seleccionar otro tema para la subida de archivos y/o videos?',
 									icon: 'info',
 									showCancelButton: true,
 									cancelButtonColor: '#bb1825',
@@ -905,11 +833,7 @@ function uploadFilesVideos() {
 								}).then((result) => {
 									if (result.value) {
 										$(
-											"#col-modules [role='alert'] div[id=div-files" +
-												id +
-												'] .file' +
-												id +
-												''
+											"#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + ''
 										).each(function () {
 											$(this).show();
 										});
@@ -923,13 +847,11 @@ function uploadFilesVideos() {
 										).each(function () {
 											$(this).remove();
 										});
-										$(
-											"#col-modules [role='alert']  input[id=input-links" +
-												id +
-												']'
-										).each(function () {
-											$(this).val('');
-										});
+										$("#col-modules [role='alert']  input[id=input-links" + id + ']').each(
+											function () {
+												$(this).val('');
+											}
+										);
 									} else {
 										swalSimple('otro modulo');
 										$('#ad-module').attr('disabled', false);
@@ -955,15 +877,11 @@ function uploadFilesVideos() {
 				},
 			});
 		} else {
-			$(
-				"#col-modules [role='alert'] div[id=div-files" +
-					id +
-					'] .file' +
-					id +
-					''
-			).each(function () {
-				$(this).show();
-			});
+			$("#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + '').each(
+				function () {
+					$(this).show();
+				}
+			);
 
 			$(
 				"#col-modules [role='alert'] div[id=div-files" +
@@ -982,12 +900,9 @@ function obtenerArchivos() {
 	var name_file;
 
 	$(document).on('change', '.boton-file', function () {
-		console.log(this.files[0]);
 		name_file = this.files[0].name;
 
-		$(
-			"#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + ''
-		).each(function () {
+		$("#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + '').each(function () {
 			$(this).hide();
 		});
 		// $(this).hide();
@@ -998,17 +913,15 @@ function obtenerArchivos() {
 			}
 		}
 
-		$("#col-modules [role='alert'] div[id=div-files" + id + ']').each(
-			function () {
-				$(this).append(
-					'<input type="text" class="form-control" id="input-file-name' +
-						clave +
-						'" value=' +
-						name_file +
-						'>'
-				);
-			}
-		);
+		$("#col-modules [role='alert'] div[id=div-files" + id + ']').each(function () {
+			$(this).append(
+				'<input type="text" class="form-control" id="input-file-name' +
+					clave +
+					'" value=' +
+					name_file +
+					'>'
+			);
+		});
 	});
 }
 
@@ -1020,9 +933,7 @@ function addModules() {
 		$("#col-modules [role='alert'] input[id=" + id + ']').each(function () {
 			value_module = $(this).val();
 
-			$(
-				"#col-modules [role='alert'] input[id=input-name-theme" + id + ']'
-			).each(function () {
+			$("#col-modules [role='alert'] input[id=input-name-theme" + id + ']').each(function () {
 				value_theme = $(this).val();
 			});
 		});
@@ -1034,7 +945,6 @@ function addModules() {
 					detect: 'course vacio',
 				},
 				function (data) {
-					console.log(data);
 					messageButtonSaveModule(value_module, value_theme, data, catego);
 				}
 			);
@@ -1183,7 +1093,6 @@ function updateModule() {
 			},
 			function (response) {
 				var json = JSON.parse(response);
-				console.log(json);
 
 				var tamanio = json.themes_module.length;
 
@@ -1200,9 +1109,7 @@ function updateModule() {
 		);
 
 		$('#modalUpdate').modal('show');
-		$('#update-themes').append(
-			'<option value="0" selected disabled>Seleccionar tema</option>'
-		);
+		$('#update-themes').append('<option value="0" selected disabled>Seleccionar tema</option>');
 	});
 }
 
