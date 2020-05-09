@@ -79,7 +79,40 @@ $(document).ready(function () {
 	saveAllAnswers();
 	showNewAnswer();
 	changeInputsAnswer();
+	selectCreateExam();
 });
+
+function selectCreateExam() {
+	$('#title-select-course').change(function (e) {
+		e.preventDefault();
+
+		var value_course = document.getElementById('title-select-course').value;
+
+		 $.post("../php/create-exam.php",{
+            option: 'verify modules',
+            key: value_course
+        },function(response){
+			if(response == "sin modulos"){
+
+				Swal.fire({
+					title: 'Este curso no tiene módulos',
+					text: 'Para crear el examen de este curso primero debe agregar los módulos correspondientes',
+					icon: 'info',
+					confirmButtonText: 'De acuerdo',
+					confirmButtonColor: '#092432',
+					allowOutsideClick: false,
+				}).then(result=>{
+					if(result.value){
+						window.location.href = '../views/create-course'
+					}
+				})
+			}
+			
+		})
+
+		
+	});
+}
 
 function showTitleCourses() {
 	$.post(

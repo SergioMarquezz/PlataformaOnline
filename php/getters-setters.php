@@ -2,11 +2,6 @@
 
     require_once "../core/main-bd.php";
 
-  // $new_course = new CreateCourse();
-
-    //print_r($new_course->deleteMaterialServer(3284));
-
-   // echo $new_course->deleteThemesModule();
 
     class CreateCourse{
 
@@ -257,28 +252,29 @@
                 $this->type_file = $_FILES['files_material']['type'];
                 $this->size_file = $_FILES['files_material']['size'];
 
-                
+                $str_name = str_replace(" ","-",$this->name_file);
+
                 if($this->type_file == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
 
-                     $path = $this->directorio_word.$this->name_file;
+                     $path = $this->directorio_word.$str_name;
                      $this->moveFile($this->tmp_file,$path);
                 }
 
                 else if($this->type_file == "application/vnd.openxmlformats-officedocument.presentationml.presentation"){
 
-                    $path = $this->directorio_power.$this->name_file;
+                    $path = $this->directorio_power.$str_name;
                     $this->moveFile($this->tmp_file,$path);
                 }
 
                 else if($this->type_file == "application/pdf"){
 
-                    $path = $this->directorio_pdf.$this->name_file;
+                    $path = $this->directorio_pdf.$str_name;
                     $this->moveFile($this->tmp_file,$path);
                 }
 
                 else if($this->type_file == "image/png" || $this->type_file == "image/jpeg" ){
 
-                    $path = $this->directorio_img.$this->name_file;
+                    $path = $this->directorio_img.$str_name;
                     $this->moveFile($this->tmp_file,$path);
                 }
 
@@ -289,13 +285,12 @@
                         echo "Grande";
                     }
                     else{
-                        $str_name = str_replace(" ","-",$this->name_file);
+                        
 
                         $path = $this->directorio_videos.$str_name;
                         $this->moveFile($this->tmp_file,$path);
                     }
                 }                
-              //  $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material,)"
 
             }catch(Exception $e){
 
@@ -322,10 +317,13 @@
                 $this->type_file = $_FILES['files_material']['type'];
                 $this->size_file = $_FILES['files_material']['size'];
 
+                $utf_8_name = utf8_decode($this->name_file);
+                $str_name = str_replace(" ","-",$utf_8_name);
+
                 switch($this->type_file){
 
                     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                        $route = $this->directorio_word.$this->name_file;
+                        $route = $this->directorio_word.$str_name;
                         $this->insertVideosMaterial("material",$route);
 
                         if($this->link_file != ""){
@@ -338,7 +336,7 @@
                     break;
                     
                     case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-                        $route = $this->directorio_power.$this->name_file;
+                        $route = $this->directorio_power.$str_name;
                         $this->insertVideosMaterial("material",$route);
 
                         if($this->link_file != ""){
@@ -351,7 +349,7 @@
                     break;
                   
                     case "image/png":
-                        $route = $this->directorio_img.$this->name_file;
+                        $route = $this->directorio_img.$str_name;
                         $this->insertVideosMaterial("material",$route);
 
                         if($this->link_file != ""){
@@ -364,7 +362,7 @@
                     break;
 
                     case "image/jpeg":
-                        $route = $this->directorio_img.$this->name_file;
+                        $route = $this->directorio_img.$str_name;
                         $this->insertVideosMaterial("material",$route);
 
                         if($this->link_file != ""){
@@ -378,7 +376,7 @@
                     break;
 
                     case "application/pdf":
-                        $route = $this->directorio_pdf.$this->name_file;
+                        $route = $this->directorio_pdf.$str_name;
                         $this->insertVideosMaterial("material",$route);
 
                         if($this->link_file != ""){
@@ -392,8 +390,6 @@
                     break;
                  
                     case "video/mp4":
-
-                        $str_name = str_replace(" ","-",$this->name_file);
 
                         $route = "videos/".$str_name;
 
@@ -445,8 +441,10 @@
 
                 if($option == "material"){
 
+                    $file_name = utf8_decode($this->name_file);
+
                     $insert_material = "INSERT INTO support_material(size_material,type_material,path_material,id_course,id_themes,name_material)
-                    VALUES('$this->size_file', '$this->type_file', '$route_bd', '$this->id_cour', '$this->id_theme', '$this->name_file')";
+                    VALUES('$this->size_file', '$this->type_file', '$route_bd', '$this->id_cour', '$this->id_theme', '$file_name')";
 
                     $result_insert = executeQuery($insert_material);
 

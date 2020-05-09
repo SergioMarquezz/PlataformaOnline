@@ -22,6 +22,10 @@
                 case "answer correct":
                         saveAnswerCorreect();
                 break;
+
+                case "verify modules":
+                        modulesCourse();
+                break;
         }
 
         function showCourses(){
@@ -153,6 +157,42 @@
                         echo "ok";
                 }
         }
+
+        function modulesCourse(){
+
+                try{
+        
+                    $key_course = $_POST['key'];
+        
+                    $information_modules = "SELECT name,id_module 
+                                            FROM modules 
+                                            WHERE id_course = $key_course";
+        
+                    $result_modules = executeQuery($information_modules);
+        
+                    if($result_modules){
+        
+                        while($modules = odbc_fetch_array($result_modules)){
+        
+                            $json_modules["course_modules"][] = array_map("utf8_encode", $modules);
+                            $modules_json = json_encode($json_modules);  
+                        }
+        
+                        if(!isset($modules_json)){
+        
+                            echo "sin modulos"; 
+                        }
+                        else{
+        
+                            echo $modules_json;
+                        }
+                    }
+        
+                }catch(Exception $e){
+        
+                    echo 'Excepción capturada (modules Course): ',  $e->getMessage(), "\n";
+                }
+            }
         
 
 ?>

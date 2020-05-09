@@ -203,6 +203,7 @@ function videoTheme() {
 				identy: 'information video',
 			},
 			function (param) {
+				console.log(param);
 				if (param != '') {
 					$('#video-modal').append('<source src=../' + param + " type='video/mp4'>");
 				} else {
@@ -463,7 +464,7 @@ function saveOnlyLink() {
 			if (datos == 'insertado link') {
 				Swal.fire({
 					title: 'Link guardado correctamente',
-					text: '¿Deseas agregar otro archivo o link a este tema?',
+					text: '¿Deseas agregar más archivos/links a este tema u otros temas?',
 					icon: 'success',
 					showCancelButton: true,
 					cancelButtonColor: '#bb1825',
@@ -759,6 +760,7 @@ function uploadFilesVideos() {
 	}).then((result) => {
 		if (result.value) {
 			var dataForm = new FormData();
+			console.log(value_file)
 
 			dataForm.append('files_material', value_file);
 			dataForm.append('detect', 'material save');
@@ -771,6 +773,7 @@ function uploadFilesVideos() {
 				processData: false,
 				cache: false,
 				success: function (response) {
+					console.log(response);
 					if (response == 'archivo almacenado') {
 						var id_value = value_course.value;
 
@@ -790,7 +793,7 @@ function uploadFilesVideos() {
 
 						Swal.fire({
 							title: 'El archivo fue guardado correctamente',
-							text: '¿Deseas agregar otro archivo a este tema?',
+							text: '¿Deseas agregar más archivos a este tema u otros temas?',
 							icon: 'success',
 							showCancelButton: true,
 							cancelButtonColor: '#bb1825',

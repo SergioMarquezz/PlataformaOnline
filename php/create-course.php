@@ -386,7 +386,7 @@
 
                 $url = odbc_result($result_video, "url_video");
 
-                echo $url;
+                echo utf8_encode($url);
             }
 
         }catch(Exception $e){
