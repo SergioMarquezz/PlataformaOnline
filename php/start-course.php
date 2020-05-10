@@ -48,7 +48,7 @@
 
                 $lessons = odbc_result($result_lessons,"total_lessons");
                 $students = odbc_result($result_lessons,"signed_student");
-                $video = odbc_result($result_lessons,"url_video");
+                $video = utf8_encode(odbc_result($result_lessons,"url_video"));
 
                 $json_lessons["lessons"] = array("total_lessons"=>$lessons, "url"=>$video, "students"=>$students);
                 $lesson_json= json_encode($json_lessons);
@@ -143,7 +143,7 @@
 
             if($result_videos){
 
-                $url = odbc_result($result_videos, "url_video");
+                $url = utf8_encode(odbc_result($result_videos, "url_video"));
                 $duration = odbc_result($result_videos,"duration_video");
 
                 $data['videos'] = array('video' => $url, "duration"=>$duration);

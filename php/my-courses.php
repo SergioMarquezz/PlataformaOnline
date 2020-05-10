@@ -25,7 +25,7 @@
     
                     $json_list["my_courses"][] = array_map("utf8_encode", $list);
                     $list_json= json_encode($json_list); 
-                    
+
                 }
                 
                 if(!isset($list_json)){

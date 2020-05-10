@@ -36,12 +36,14 @@ $(document).ready(function () {
 	selectThemes();
 	deleteModule();
 	updateModule();
-	saveUpdateNameModule();
+	saveUpdateModule();
 	disableUpdateInputs();
 	disabledUpdateNewTheme();
 	selectOptions();
+	finishCreateCourse();
 	$('#row-modules').slideUp();
 	$('#modalCreateCourse').modal('show');
+	$('#btn-finish-program').hide();
 });
 
 function coursesSelect() {
@@ -407,6 +409,7 @@ function themesSave(catego, key_courses) {
 				theme: themes,
 				id_course: key_courses,
 				detect: 'save themes',
+				modificador: 'theme normal',
 				id_category: catego,
 			},
 			function (params) {}
@@ -689,6 +692,15 @@ function addNewModule() {
 		contentCourse(id);
 
 		$(this).attr('disabled', true);
+		$('#btn-finish-program').show();
+	});
+}
+
+function finishCreateCourse() {
+	$('#btn-finish-program').click(function (e) {
+		e.preventDefault();
+
+		swalSimple('finish course');
 	});
 }
 
@@ -760,7 +772,7 @@ function uploadFilesVideos() {
 	}).then((result) => {
 		if (result.value) {
 			var dataForm = new FormData();
-			console.log(value_file)
+			console.log(value_file);
 
 			dataForm.append('files_material', value_file);
 			dataForm.append('detect', 'material save');
@@ -908,7 +920,6 @@ function obtenerArchivos() {
 		$("#col-modules [role='alert'] div[id=div-files" + id + '] .file' + id + '').each(function () {
 			$(this).hide();
 		});
-		// $(this).hide();
 
 		for (var i = 0; i < name_file.length; i++) {
 			if (name_file.charAt(i) == ' ') {
@@ -1134,7 +1145,7 @@ function selectOptions() {
 				break;
 
 			case '2':
-				$('#btn-update-actualizacion').attr('disabled', false);
+				$('#btn-update-actualizacion').attr('disabled', true);
 				$('#update-themes').attr('disabled', false);
 				$('#update_name').attr('disabled', true);
 				$('#customFileLang').attr('disabled', true);
@@ -1168,7 +1179,7 @@ function selectOptions() {
 			case '5':
 				$('#update-themes').attr('disabled', false);
 				$('#customFileLang').attr('disabled', false);
-				$('#btn-update-actualizacion').attr('disabled', false);
+				$('#btn-update-actualizacion').attr('disabled', true);
 				$('#update_name').attr('disabled', true);
 				$('#input-new-theme').attr('disabled', true);
 				$('#btn-update-new-theme').attr('disabled', true);
@@ -1179,35 +1190,129 @@ function selectOptions() {
 	});
 }
 
-function saveUpdateNameModule() {
+function saveUpdateModule() {
 	$('#btn-update-actualizacion').click(function (e) {
 		e.preventDefault();
 
-		var module_name = $('#update_name').val();
-		var keys_module = $('#value-id-module').val();
+		var name_new_theme = $('#input-new-theme').val();
+		var title, msj, options;
 
-		$.post(
-			'../php/create-course.php',
-			{
-				name_module: module_name,
-				id_module: keys_module,
-				identy: 'update name module',
-			},
-			function (data) {
-				console.log(data);
+		if (!$('#update_name').is(':disabled')) {
+			title = 'Actualizar nombre del módulo';
+			msj = '¿Quieres cambiar el nombre del módulo?';
+			options = 'name module';
+		} else if (!$('#update-themes').is(':disabled') && !$('#input-new-theme').is(':disabled')) {
+			title = 'Actualizar nombre del tema';
+			msj = 'El nuevo tema del módulo es ' + name_new_theme + ' ¿estas seguro/a de cambiarlo?';
+			options = 'name theme';
+		}
+
+		Swal.fire({
+			title: title,
+			text: msj,
+			icon: 'question',
+			showCancelButton: true,
+			cancelButtonColor: '#bb1825',
+			confirmButtonColor: '#092432',
+			confirmButtonText: 'Si',
+			cancelButtonText: 'No',
+			allowOutsideClick: false,
+		}).then((result) => {
+			if (result.value) {
+				optionsUpdate(options);
 			}
-		);
+		});
 	});
+	$('#btn-update-new-theme').click(function (e) {
+		e.preventDefault();
+
+		if ($('#input-new-theme-update').val() == '') {
+			swalSimple('empty new theme');
+		} else {
+			Swal.fire({
+				title: 'Se agregara un nuevo tema',
+				text: 'El tema '+ $('#input-new-theme-update').val()+' se guardara para este módulo ¿Quieres continuar?',
+				icon: 'question',
+				showCancelButton: true,
+				cancelButtonColor: '#bb1825',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Continuar',
+				cancelButtonText: 'Cancelar',
+				allowOutsideClick: false,
+			}).then(result=>{
+				if(result.value){
+					optionsUpdate('add theme new');
+				}
+			})
+		}
+	});
+}
+
+function optionsUpdate(option) {
+	var module_name = $('#update_name').val();
+	var keys_module = $('#value-id-module').val();
+	var key_modules = $('#update-themes').val();
+	var theme_new = $('#input-new-theme').val();
+
+	switch (option) {
+		case 'name module':
+			$.post(
+				'../php/create-course.php',
+				{
+					name_module: module_name,
+					id_module: keys_module,
+					identy: 'update name module',
+				},
+				function (data) {
+					console.log(data);
+				}
+			);
+			break;
+
+		case 'name theme':
+			$.post(
+				'../php/create-course.php',
+				{
+					new_theme: theme_new,
+					id_theme: key_modules,
+					identy: 'update name theme',
+				},
+				function (data) {
+					console.log(data);
+				}
+			);
+			break;
+
+		case 'add theme new':
+			$.post(
+				'../php/create-course-poo.php',
+				{
+					theme: $('#input-new-theme-update').val(),
+					id_course: value_course.value,
+					val_module: $('#value-id-module').val(),
+					detect: 'save themes',
+					modificador: 'theme distinto',
+					id_category: 2007,
+				},
+				function (params) {
+					console.log(params);
+				}
+			);
+			break;
+	}
 }
 
 function disableUpdateInputs() {
 	$('#update-themes').change(function (e) {
 		e.preventDefault();
 
-		var text_select = $('#update-themes option:selected').text();
-		$('#input-new-theme').val(text_select);
-
-		$('#input-new-theme').attr('disabled', false);
+		if($("#btn-delete-theme").is(':disabled')){
+			var text_select = $('#update-themes option:selected').text();
+			$('#input-new-theme').val(text_select);
+	
+			$('#input-new-theme').attr('disabled', false);
+			$('#btn-update-actualizacion').attr('disabled', false);
+		}
 	});
 }
 
@@ -1222,6 +1327,8 @@ function disabledUpdateNewTheme() {
 function deleteModule() {
 	$(document).on('click', '.btn-delete', function (e) {
 		e.preventDefault();
+
+		console.log(value_course.value);
 
 		Swal.fire({
 			title: 'Eliminación del módulo',
@@ -1238,16 +1345,14 @@ function deleteModule() {
 			if (result.value) {
 				var module_key = $(this).attr('href');
 
-				$.post(
-					'../php/create-course-poo.php',
-					{
-						detect: 'delete module',
-						key_module: module_key,
-					},
-					function (data) {
-						console.log(data);
-					}
-				);
+				$.post('../php/create-course-poo.php', {
+					detect: 'delete module',
+					key_module: module_key,
+				});
+				$.post('../php/create-course.php', {
+					identy: 'update url course',
+					key_course: value_course.value,
+				});
 
 				location.reload();
 			}

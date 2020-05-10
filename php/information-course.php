@@ -117,8 +117,9 @@
 
                 $students = odbc_result($result_url,"signed_student");
                 $url_video = odbc_result($result_url,"url_video");
+                $utf8_url_video = utf8_encode($url_video);
 
-                $json_url["url_singned"] = array("students"=>$students, "url"=>$url_video);
+                $json_url["url_singned"] = array("students"=>$students, "url"=>$utf8_url_video);
                 $url_json= json_encode($json_url);
             
                 echo  $url_json;
@@ -150,7 +151,6 @@
 
             }else{
                 echo "Row insertion failed.\n";  
-                die(print_r(sqlsrv_errors(), true));
             }
 
         }catch(Exception $e){
@@ -215,7 +215,7 @@
 
             else{
                 echo "Row insertion failed.\n";  
-                die(print_r(sqlsrv_errors(), true));
+            
             }
 
 

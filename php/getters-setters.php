@@ -492,7 +492,7 @@
                     
                     $url_empty = odbc_result($result_url_main,"id_url_main");
 
-                    if($url_empty == ""){
+                    if($url_empty == "" || $url_empty == 0){
                         
                         $id_url_main = $this->ultimoVideo();
 
@@ -644,7 +644,6 @@
 
         public function deleteThemesModule(){
 
-           
             $size = count($this->idThemesDelete());
         
 

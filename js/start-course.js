@@ -38,7 +38,7 @@ function information(){
     $("#nav-title").text(title);
     $("#paragraph-video").text(desc);
 
-
+    console.log(id);
     $.ajax({
         type: "POST",
         url: "../php/start-course.php",
@@ -47,7 +47,7 @@ function information(){
             "opition": "information"
         },
         success: function (response) {
-            
+            console.log(response)
             var json = JSON.parse(response);
    
             $("#h4-students").append("Estudiantes: "+json.lessons.students);
@@ -125,7 +125,7 @@ function materiales(){
     
                     if(json.materiales[i].type_material == "link"){
     
-                        $("#material-support").append("<a id='materiales-buttons' class='btn' href="+json.materiales[i].link+" target='_blank'>"+json.materiales[i].name_material+"</a>");
+                        $("#material-support").append("<a id='materiales-buttons' class='btn' href="+json.materiales[i].link+" target='_blank'>"+json.materiales[i].link+"</a>");
                     }
                     else{
     

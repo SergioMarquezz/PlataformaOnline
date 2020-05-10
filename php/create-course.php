@@ -45,6 +45,14 @@
         case "update name module":
             updateNameModule();
         break;
+
+        case "update name theme":
+            updateNameTheme();
+        break;
+
+        case "update url course":
+            updateEmptyIdUrl();
+        break;
     }  
     //FUncion para mostrar todas las categorias
     function categoriesInstructor(){
@@ -399,7 +407,7 @@
 
         try{
 
-            $name_module = $_POST['name_module'];
+            $name_module = utf8_decode($_POST['name_module']);
             $id_module = $_POST['id_module'];
 
             $update_name_module = "UPDATE modules SET name = '$name_module' WHERE id_module = $id_module";
@@ -414,6 +422,48 @@
         }catch(Exception $e){
 
             echo 'Excepción capturada (update Name Module): ',  $e->getMessage(), "\n";
+        }
+    }
+
+    function updateNameTheme(){
+
+        try{
+
+            $new_name_theme = utf8_decode($_POST['new_theme']);
+            $key_theme = $_POST['id_theme'];
+
+            $update_name_theme = "UPDATE themes SET name = '$new_name_theme'
+            WHERE id_themes = $key_theme";
+
+            $result_name_theme = executeQuery($update_name_theme);
+
+            if($result_name_theme){
+                echo "theme update";
+            }
+
+        }catch(Exception $e){
+            echo 'Excepción capturada (update Name Theme): ',  $e->getMessage(), "\n";
+        }
+    }
+
+
+    function updateEmptyIdUrl(){
+
+        try{
+
+            $id_course = $_POST['key_course'];
+                
+            $update_empty = "UPDATE courses SET id_url_main = ' '
+            WHERE id_course = $id_course";
+
+            executeQuery($update_empty);
+
+                
+            
+
+        }catch(Exception $e){
+
+            echo 'Excepción capturada (update Empty IdU rl):',  $e->getMessage(), "\n";
         }
     }
 ?>

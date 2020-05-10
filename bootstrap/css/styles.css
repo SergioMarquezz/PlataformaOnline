@@ -48,7 +48,7 @@ hr{
     margin-left: 40px;
 }
 
-#btn-accept-new,#btn-yes,#btn-save-course,#btn-evaluation,#show-material,#select-themes,#btn-themes,#btn-continue,#btn-start,#btn-answer-correct,
+#btn-finish-program,#btn-accept-new,#btn-yes,#btn-save-course,#btn-evaluation,#show-material,#select-themes,#btn-themes,#btn-continue,#btn-start,#btn-answer-correct,
 #btn-update-actualizacion,#btn-delete-theme,#btn-update-new-theme,#btn-modules-course,#button-video,#btn-modal-files,#button-vide,.btn-save-questions,.btn-update,.material-add,
 .save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
     background-color: #70b52c;

@@ -89,7 +89,9 @@
                                             </div>
                                         </div> 
                                     </div>
+                                    
                                 </div>
+                                <button class="btn text-white" id="btn-finish-program">Finalizar creación del curso</button>
                             </div>
                         </div>
                     </div>
@@ -205,16 +207,19 @@
                                 <p><strong> Puedes realizar cambios para este módulo.</strong>
                                     <ul>
                                         <li>
-                                            <strong>Cambiar nombre del módulo:</strong> Solo escribe el nuevo nombre del módulo y presiona el botón guardar actualización
+                                            <strong>Actualizar nombre del módulo:</strong> Solo escribe el nuevo nombre del módulo y presiona el botón guardar actualización
                                         </li>
                                         <li>
-                                            <strong>Cambiar nombre de algún tema:</strong> Selecciona el tema que deseas actualizar, cambia el nombre y despues presiona el botón guardar actualización
+                                            <strong>Actualizar nombre de algún tema:</strong> Selecciona el tema que deseas actualizar, cambia el nombre y despues presiona el botón guardar actualización
+                                        </li>
+                                        <li>
+                                            <strong>Eliminar un tema: </strong> Selecciona el tema que quieres eliminar y posteriormente presiona el botón eliminar tema seleccionado
                                         </li>
                                         <li>
                                             <strong>Agregar material de apoyo o video para un tema:</strong> Selecciona el tema al que desea agregar material o video y suba el contenido 
                                         </li>
                                         <li>
-                                            <strong>Agregar nuevo tema para el módulo:</strong> Simplemente escribe el nombre de un nuevo tema y presiona el botón de guardar actualización
+                                            <strong>Agregar nuevo tema para el módulo:</strong> Simplemente escribe el nombre de un nuevo tema y presiona el botón de agregar tema
                                         </li>
                                     </ul>
                                 </p>

@@ -228,10 +228,11 @@ function urlVideo(){
 
         },
         success: function (response) {
+            
             var json = JSON.parse(response);
             $("#video-source").append("<source src=../"+json.url_singned.url+" type='video/mp4'>");
 
-            if(json.url_singned.students == 0){
+            if(json.url_singned.students == 0 || json.url_singned.students == null){
 
                 $("#singned-studnets").text("No hay alumnos inscritos todavía. INSCRIBETE SOLO CON AGREGAR ESTE CURSO A TU LISTA");
             }

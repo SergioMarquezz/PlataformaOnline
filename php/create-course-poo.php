@@ -212,9 +212,19 @@
 
             try{
 
+                $modify = $_POST['modificador'];
+
+                if($modify == "theme normal"){
+                 $id_module =  $this->create_course->moduleLasted();
+                }
+
+                else{
+                    $id_module = $_POST['val_module'];
+                }
+
                 $name_theme = utf8_decode($_POST['theme']);
                 $id_course = $_POST['id_course'];
-                $id_module =  $this->create_course->moduleLasted();
+                
                 $id_category = $_POST['id_category'];
 
                 $this->create_course->setTitle($name_theme);
@@ -227,7 +237,7 @@
 
                 if($msj_themes == "save theme"){
 
-                    echo "exito";
+                    echo "exito theme";
                 }
 
 
