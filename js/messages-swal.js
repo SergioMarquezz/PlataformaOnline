@@ -322,5 +322,25 @@ function swalSimple(condition) {
 				allowOutsideClick: false,
 			})
 			break;
+		case 'theme witout select':
+			Swal.fire({
+				title: 'Seleccionar tema',
+				text: 'Elije el tema que quieres eliminar',
+				icon: 'warning',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			})
+			break;
+		case 'delete theme':
+			Swal.fire({
+				title: 'Eliminación satisfactoria',
+				text: 'El tema fue borrado de este módulo',
+				icon: 'success',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			})
+			break;
 	}
 }

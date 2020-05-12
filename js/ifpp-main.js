@@ -34,7 +34,7 @@ function buttonDenied() {
 		Swal.fire({
 			title: 'La plataforma te detecto que eres Instructor(a)',
 			text:
-				'Acceso denegado, únicamente puedes crear cursos como instructor(a), aquí se podrá ver tu curso cuando lo hayas creado',
+				'Acceso denegado, únicamente puedes crear cursos como instructor(a), aquí se podrán ver tus cursos creados',
 			icon: 'warning',
 			confirmButtonText: 'Entendido',
 			confirmButtonColor: '#092432',

@@ -632,7 +632,13 @@
 
                         $json_video["videos"][] = array_map("utf8_encode", $name_video);
                     }
-                    return $json_video["videos"];
+                    if(isset($json_video)){
+                        return $json_video["videos"];
+                    }
+                    else{
+                        return "theme without videos";
+                    }
+                    
                 }
 
                             

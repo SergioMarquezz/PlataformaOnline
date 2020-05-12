@@ -1,6 +1,7 @@
 <?php
     
     require_once "../core/main-bd.php";
+    require "./getters-setters.php";
 
     $ident = $_POST['identy'];
 
@@ -53,7 +54,12 @@
         case "update url course":
             updateEmptyIdUrl();
         break;
-    }  
+
+        case "delete one theme":
+            deleteOneThemeUpdate();
+        break;
+    }
+   
     //FUncion para mostrar todas las categorias
     function categoriesInstructor(){
 
@@ -458,12 +464,55 @@
 
             executeQuery($update_empty);
 
-                
-            
 
         }catch(Exception $e){
 
-            echo 'Excepción capturada (update Empty IdU rl):',  $e->getMessage(), "\n";
+            echo 'Excepción capturada (update Empty Id Url):',  $e->getMessage(), "\n";
+        }
+    }
+
+    function deleteOneThemeUpdate(){
+
+        try{
+
+            $create_course = new CreateCourse();
+        
+            $id_theme = $_POST['key_theme'];
+
+            $msj_video = $create_course->deleteVideoServer($id_theme);
+
+            if($msj_video != 'theme without videos'){
+
+                for($i = 0; $i < count($create_course->deleteVideoServer($id_theme)); $i++){
+
+                    $path_video = $create_course->deleteVideoServer($id_theme)[$i]["url_video"];
+                    unlink("../".$path_video);
+                 }
+                 updateEmptyIdUrl();
+            }
+            for($j = 0; $j < count($create_course->deleteMaterialServer($id_theme)); $j++){
+
+                $path_material = $create_course->deleteMaterialServer($id_theme)[$j]["path_material"];
+
+                if($path_material != ""){
+                    unlink($path_material);
+                }
+             }
+
+            $delete_one_theme = "DELETE FROM themes WHERE id_themes = $id_theme";
+            $delete_one_material = "DELETE FROM support_material WHERE id_themes = $id_theme";
+            $delete_one_video = "DELETE FROM video_url WHERE id_themes = $id_theme";
+
+            $result_delete_one_theme = executeQuery($delete_one_theme);
+            executeQuery($delete_one_material);
+            executeQuery($delete_one_video);
+
+            if($result_delete_one_theme){
+                echo "theme delete";
+            }
+
+        }catch(Exception $e){
+            echo 'Excepción capturada (delete One Theme Update):',  $e->getMessage(), "\n";
         }
     }
 ?>

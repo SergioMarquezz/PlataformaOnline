@@ -1231,7 +1231,10 @@ function saveUpdateModule() {
 		} else {
 			Swal.fire({
 				title: 'Se agregara un nuevo tema',
-				text: 'El tema '+ $('#input-new-theme-update').val()+' se guardara para este módulo ¿Quieres continuar?',
+				text:
+					'El tema ' +
+					$('#input-new-theme-update').val() +
+					' se guardara para este módulo ¿Quieres continuar?',
 				icon: 'question',
 				showCancelButton: true,
 				cancelButtonColor: '#bb1825',
@@ -1239,11 +1242,45 @@ function saveUpdateModule() {
 				confirmButtonText: 'Continuar',
 				cancelButtonText: 'Cancelar',
 				allowOutsideClick: false,
-			}).then(result=>{
-				if(result.value){
+			}).then((result) => {
+				if (result.value) {
 					optionsUpdate('add theme new');
 				}
-			})
+			});
+		}
+	});
+	btnDeleteTheme();
+}
+
+function btnDeleteTheme() {
+	$('#btn-delete-theme').click(function (e) {
+		e.preventDefault();
+
+		var text_select = $('#update-themes option:selected').text();
+
+		if (text_select == 'Seleccionar tema') {
+			swalSimple('theme witout select');
+		} else {
+			Swal.fire({
+				title: 'Eliminación de un tema',
+				text:
+					'El tema ' +
+					text_select +
+					' será eliminado, al igual que el material y video correspondiente, ¿Quieres eliminarlo?',
+				icon: 'question',
+				showCancelButton: true,
+				cancelButtonColor: '#bb1825',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Eliminar',
+				cancelButtonText: 'Cancelar',
+				allowOutsideClick: false,
+			}).then((result) => {
+				if (result.value) {
+					optionsUpdate('delete theme one');
+					$("#update-themes").attr('disabled', true);
+					$(this).attr('disabled', true);
+				}
+			});
 		}
 	});
 }
@@ -1292,10 +1329,26 @@ function optionsUpdate(option) {
 					val_module: $('#value-id-module').val(),
 					detect: 'save themes',
 					modificador: 'theme distinto',
-					id_category: 2007,
+					id_category: category.val(),
 				},
 				function (params) {
 					console.log(params);
+				}
+			);
+			break;
+		case 'delete theme one':
+			$.post(
+				'../php/create-course.php',
+				{
+					key_theme: $('#update-themes').val(),
+					identy: 'delete one theme',
+					key_course: value_course.value
+				},
+				function (data) {
+					console.log(data);
+					if(data == "theme delete"){
+						swalSimple('delete theme');
+					}
 				}
 			);
 			break;
@@ -1306,10 +1359,10 @@ function disableUpdateInputs() {
 	$('#update-themes').change(function (e) {
 		e.preventDefault();
 
-		if($("#btn-delete-theme").is(':disabled')){
+		if ($('#btn-delete-theme').is(':disabled')) {
 			var text_select = $('#update-themes option:selected').text();
 			$('#input-new-theme').val(text_select);
-	
+
 			$('#input-new-theme').attr('disabled', false);
 			$('#btn-update-actualizacion').attr('disabled', false);
 		}
