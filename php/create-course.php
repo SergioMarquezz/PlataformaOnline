@@ -478,8 +478,9 @@
             $create_course = new CreateCourse();
         
             $id_theme = $_POST['key_theme'];
-
+        
             $msj_video = $create_course->deleteVideoServer($id_theme);
+            $msj_material = $create_course->deleteMaterialServer($id_theme);
 
             if($msj_video != 'theme without videos'){
 
@@ -490,14 +491,16 @@
                  }
                  updateEmptyIdUrl();
             }
-            for($j = 0; $j < count($create_course->deleteMaterialServer($id_theme)); $j++){
+            if($msj_material != "without material"){
+                for($j = 0; $j < count($create_course->deleteMaterialServer($id_theme)); $j++){
 
-                $path_material = $create_course->deleteMaterialServer($id_theme)[$j]["path_material"];
-
-                if($path_material != ""){
-                    unlink($path_material);
-                }
-             }
+                    $path_material = $create_course->deleteMaterialServer($id_theme)[$j]["path_material"];
+    
+                    if($path_material != ""){
+                        unlink($path_material);
+                    }
+                 }
+            }
 
             $delete_one_theme = "DELETE FROM themes WHERE id_themes = $id_theme";
             $delete_one_material = "DELETE FROM support_material WHERE id_themes = $id_theme";

@@ -225,11 +225,15 @@ function swalSimple(condition) {
 			Swal.fire({
 				title: 'Material registrado',
 				text:
-					'Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo o finaliza la creación del curso',
+					'Si deseas agregar más módulos a tu curso presiona el botón de agregar nuevo módulo ó finaliza los módulos',
 				icon: 'success',
 				confirmButtonColor: '#092432',
 				confirmButtonText: 'Aceptar',
 				allowOutsideClick: false,
+			}).then((result) => {
+				if (result.value) {
+					$('#btn-finish-program').attr('disabled', false);
+				}
 			});
 			break;
 		case 'curso':
@@ -294,23 +298,6 @@ function swalSimple(condition) {
 				allowOutsideClick: false,
 			});
 			break;
-		case 'finish course':
-			Swal.fire({
-				title: 'Creación del curso finalizada',
-				text: '¿Estas seguro de querer finalizar la creación de tu curso?',
-				icon: 'question',
-				confirmButtonColor: '#092432',
-				confirmButtonText: 'Finalizar',
-				cancelButtonColor: '#bb1825',
-				cancelButtonText: 'Cancelar',
-				showCancelButton: true,
-				allowOutsideClick: false,
-			}).then((result) => {
-				if (result.value) {
-					window.location.href = '../views/all-courses';
-				}
-			});
-			break;
 
 		case 'empty new theme':
 			Swal.fire({
@@ -320,7 +307,7 @@ function swalSimple(condition) {
 				confirmButtonColor: '#092432',
 				confirmButtonText: 'Aceptar',
 				allowOutsideClick: false,
-			})
+			});
 			break;
 		case 'theme witout select':
 			Swal.fire({
@@ -330,7 +317,7 @@ function swalSimple(condition) {
 				confirmButtonColor: '#092432',
 				confirmButtonText: 'Aceptar',
 				allowOutsideClick: false,
-			})
+			});
 			break;
 		case 'delete theme':
 			Swal.fire({
@@ -340,7 +327,58 @@ function swalSimple(condition) {
 				confirmButtonColor: '#092432',
 				confirmButtonText: 'Aceptar',
 				allowOutsideClick: false,
-			})
+			});
+			break;
+
+		case 'update name':
+			Swal.fire({
+				title: 'Actualización satisfactoria',
+				text: 'El nombre del módulo se actualizo de forma correcta',
+				icon: 'success',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			});
+			$('#update_name, #btn-update-actualizacion').attr('disabled', true);
+			break;
+
+		case 'update theme':
+			Swal.fire({
+				title: 'Actualización satisfactoria',
+				text: 'El nombre del tema se actualizo de forma correcta',
+				icon: 'success',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			});
+			$('#btn-update-actualizacion, #update-themes, #input-new-theme').attr('disabled', true);
+			break;
+
+		case 'add new theme':
+			Swal.fire({
+				title: 'Actualización satisfactoria',
+				text: 'Un nuevo tema se agrego a este módulo',
+				icon: 'success',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			});
+			$('#input-new-theme-update, #btn-update-new-theme').attr('disabled', true);
+			$('#input-new-theme-update').val('');
+			break;
+
+		case 'material insert':
+			Swal.fire({
+				title: 'Material guardado',
+				text: 'El material se guardo correctamente en la plataforma',
+				icon: 'success',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			});
+			$('#btn-update-actualizacion').text('Guardar actualización');
+			$('#update-themes, #customFileLang, #btn-update-actualizacion').attr('disabled', true);
+
 			break;
 	}
 }

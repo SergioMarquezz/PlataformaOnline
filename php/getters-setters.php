@@ -466,6 +466,7 @@
                     if($result_video){
 
                        $this->urlMainEmpty();
+                       echo "insertado material";
                     }
 
                 }
@@ -607,7 +608,13 @@
 
                         $json_material["material"][] = array_map("utf8_encode", $name_material);
                     }
-                    return $json_material["material"];
+                    if(isset($json_material)){
+                        return $json_material["material"];
+                    }
+                    else{
+                        return "without material";
+                    }
+                   
                 }
 
                             

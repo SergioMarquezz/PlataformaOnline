@@ -40,9 +40,10 @@ $(document).ready(function () {
 	disableUpdateInputs();
 	disabledUpdateNewTheme();
 	selectOptions();
-	finishCreateCourse();
+	finishModules();
 	$('#row-modules').slideUp();
 	$('#modalCreateCourse').modal('show');
+	$('#btn-finish-program').attr('disabled', true);
 	$('#btn-finish-program').hide();
 });
 
@@ -690,17 +691,16 @@ function addNewModule() {
 		id++;
 		clave = 1;
 		contentCourse(id);
-
 		$(this).attr('disabled', true);
+		$('#btn-finish-program').attr('disabled', true);
 		$('#btn-finish-program').show();
 	});
 }
 
-function finishCreateCourse() {
+function finishModules() {
 	$('#btn-finish-program').click(function (e) {
 		e.preventDefault();
-
-		swalSimple('finish course');
+		window.location.href = '../views/all-courses';
 	});
 }
 
@@ -970,7 +970,9 @@ function addModules() {
 
 function contentCourse(key) {
 	$('#col-modules').append(
-		"<div class='alert' role='alert'>" +
+		"<div class='alert alerta" +
+			key +
+			"' role='alert'>" +
 			'<h4 id=' +
 			key +
 			'>Módulo ' +
@@ -1043,7 +1045,9 @@ function contentCourseModules(module, key, id_modules) {
 	var nav = 'navbar';
 
 	$('#col-modules').append(
-		'<div class="alert" role="alert">' +
+		'<div class="alert alerta' +
+			key +
+			'" role="alert">' +
 			'<h4>Módulo ' +
 			key +
 			': ' +
@@ -1085,7 +1089,6 @@ function updateModule() {
 	$(document).on('click', '.btn-update', function (e) {
 		e.preventDefault();
 
-		$('#update-themes').empty();
 		$('#value-id-module').val($(this).attr('href'));
 
 		$.post(
@@ -1099,32 +1102,36 @@ function updateModule() {
 			}
 		);
 
-		$.post(
-			'../php/create-course.php',
-			{
-				identy: 'show modules themes',
-				id_module: $(this).attr('href'),
-			},
-			function (response) {
-				var json = JSON.parse(response);
-
-				var tamanio = json.themes_module.length;
-
-				for (var i = 0; i < tamanio; i++) {
-					$('#update-themes').append(
-						'<option value=' +
-							json.themes_module[i].id_themes +
-							'>' +
-							json.themes_module[i].name +
-							'</option>'
-					);
-				}
-			}
-		);
-
+		comboUpdateThemes($(this).attr('href'));
 		$('#modalUpdate').modal('show');
 		$('#update-themes').append('<option value="0" selected disabled>Seleccionar tema</option>');
 	});
+}
+
+function comboUpdateThemes(key_modules) {
+	$('#update-themes').empty();
+	$.post(
+		'../php/create-course.php',
+		{
+			identy: 'show modules themes',
+			id_module: key_modules,
+		},
+		function (response) {
+			var json = JSON.parse(response);
+
+			var tamanio = json.themes_module.length;
+
+			for (var i = 0; i < tamanio; i++) {
+				$('#update-themes').append(
+					'<option value=' +
+						json.themes_module[i].id_themes +
+						'>' +
+						json.themes_module[i].name +
+						'</option>'
+				);
+			}
+		}
+	);
 }
 
 function selectOptions() {
@@ -1195,31 +1202,58 @@ function saveUpdateModule() {
 		e.preventDefault();
 
 		var name_new_theme = $('#input-new-theme').val();
-		var title, msj, options;
+		var title, msj, options, icon, btn_cancel, text_btn;
 
 		if (!$('#update_name').is(':disabled')) {
 			title = 'Actualizar nombre del módulo';
 			msj = '¿Quieres cambiar el nombre del módulo?';
+			icon = 'question';
+			btn_cancel = true;
+			text_btn = 'Si';
 			options = 'name module';
 		} else if (!$('#update-themes').is(':disabled') && !$('#input-new-theme').is(':disabled')) {
 			title = 'Actualizar nombre del tema';
 			msj = 'El nuevo tema del módulo es ' + name_new_theme + ' ¿estas seguro/a de cambiarlo?';
+			icon = 'question';
+			btn_cancel = true;
+			text_btn = 'Si';
 			options = 'name theme';
+		} else {
+			if ($('#update-themes option:selected').text() != 'Seleccionar tema') {
+				title = 'Subir el contenido';
+				msj =
+					'El material de apoyo para el tema ' +
+					$('#update-themes option:selected').text() +
+					' será guardado en la plataforma' +
+					' ¿estas seguro/a?';
+				icon = 'question';
+				btn_cancel = true;
+				text_btn = 'Si';
+				options = 'upload material';
+			} else {
+				title = 'Seleccionar tema';
+				msj = 'Elija el tema en el cuál quiere agregar el material';
+				icon = 'warning';
+				btn_cancel = false;
+				text_btn = 'Aceptar';
+			}
 		}
 
 		Swal.fire({
 			title: title,
 			text: msj,
-			icon: 'question',
-			showCancelButton: true,
+			icon: icon,
+			showCancelButton: btn_cancel,
 			cancelButtonColor: '#bb1825',
 			confirmButtonColor: '#092432',
-			confirmButtonText: 'Si',
+			confirmButtonText: text_btn,
 			cancelButtonText: 'No',
 			allowOutsideClick: false,
 		}).then((result) => {
 			if (result.value) {
-				optionsUpdate(options);
+				if (btn_cancel) {
+					optionsUpdate(options);
+				}
 			}
 		});
 	});
@@ -1277,7 +1311,7 @@ function btnDeleteTheme() {
 			}).then((result) => {
 				if (result.value) {
 					optionsUpdate('delete theme one');
-					$("#update-themes").attr('disabled', true);
+					$('#update-themes').attr('disabled', true);
 					$(this).attr('disabled', true);
 				}
 			});
@@ -1302,6 +1336,9 @@ function optionsUpdate(option) {
 				},
 				function (data) {
 					console.log(data);
+					if (data == 'name update') {
+						swalSimple('update name');
+					}
 				}
 			);
 			break;
@@ -1315,7 +1352,11 @@ function optionsUpdate(option) {
 					identy: 'update name theme',
 				},
 				function (data) {
-					console.log(data);
+					if (data == 'theme update') {
+						swalSimple('update theme');
+						comboUpdateThemes(keys_module);
+						$('#update-themes').append('<option value="0" selected>Seleccionar tema</option>');
+					}
 				}
 			);
 			break;
@@ -1326,13 +1367,17 @@ function optionsUpdate(option) {
 				{
 					theme: $('#input-new-theme-update').val(),
 					id_course: value_course.value,
-					val_module: $('#value-id-module').val(),
+					val_module: keys_module,
 					detect: 'save themes',
 					modificador: 'theme distinto',
 					id_category: category.val(),
 				},
 				function (params) {
-					console.log(params);
+					if (params == 'exito theme') {
+						swalSimple('add new theme');
+						comboUpdateThemes(keys_module);
+						$('#update-themes').append('<option value="0" selected>Seleccionar tema</option>');
+					}
 				}
 			);
 			break;
@@ -1340,32 +1385,101 @@ function optionsUpdate(option) {
 			$.post(
 				'../php/create-course.php',
 				{
-					key_theme: $('#update-themes').val(),
+					key_theme: key_modules,
 					identy: 'delete one theme',
-					key_course: value_course.value
+					key_course: value_course.value,
 				},
 				function (data) {
 					console.log(data);
-					if(data == "theme delete"){
+					if (data == 'theme delete') {
 						swalSimple('delete theme');
+						comboUpdateThemes(keys_module);
+						$('#update-themes').append('<option value="0" selected>Seleccionar tema</option>');
 					}
 				}
 			);
 			break;
+
+		case 'upload material':
+			var file = document.getElementById('customFileLang').files[0];
+
+			var dataForm = new FormData();
+
+			dataForm.append('files_material', file);
+			dataForm.append('detect', 'material save');
+
+			$.ajax({
+				type: 'POST',
+				url: '../php/create-course-poo.php',
+				data: dataForm,
+				contentType: false,
+				processData: false,
+				cache: false,
+				success: function (response) {
+					if (response == 'archivo almacenado') {
+						var id_course = value_course.value;
+						var key_themes = $('#update-themes').val();
+
+						updateUploadMaterial(file, id_course, key_themes);
+					}
+				},
+			});
+			break;
 	}
 }
 
+function updateUploadMaterial(upload_file, curso_key, tema_key) {
+
+	var form = new FormData();
+
+	form.append('files_material', upload_file);
+	form.append('detect', 'material insert');
+	form.append('key_course', curso_key);
+	form.append('key_theme', tema_key);
+	form.append('links', '');
+
+	$.ajax({
+		type: 'POST',
+		url: '../php/create-course-poo.php',
+		data: form,
+		contentType: false,
+		processData: false,
+		cache: false,
+		success: function (response) {
+			console.log(response);
+			if(response == 'insertado material'){
+				swalSimple('material insert');
+			}
+		},
+	});
+}
+
 function disableUpdateInputs() {
+	updateAddMaterial();
+
 	$('#update-themes').change(function (e) {
 		e.preventDefault();
 
-		if ($('#btn-delete-theme').is(':disabled')) {
+		if ($('#btn-delete-theme').is(':disabled') && $('#customFileLang').is(':disabled')) {
 			var text_select = $('#update-themes option:selected').text();
 			$('#input-new-theme').val(text_select);
 
 			$('#input-new-theme').attr('disabled', false);
 			$('#btn-update-actualizacion').attr('disabled', false);
+		} else if (
+			$('#btn-update-actualizacion').is(':disabled') &&
+			$('#customFileLang').is(':disabled')
+		) {
+			$('#input-new-theme').attr('disabled', true);
 		}
+	});
+}
+
+function updateAddMaterial() {
+	$('#customFileLang').change(function (e) {
+		e.preventDefault();
+		$('#btn-update-actualizacion').attr('disabled', false);
+		$('#btn-update-actualizacion').text('Subir contenido');
 	});
 }
 

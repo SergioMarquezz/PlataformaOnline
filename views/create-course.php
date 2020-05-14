@@ -87,11 +87,10 @@
                                             <div class="col-md-6 col-sm-12">
                                                 <input id="ad-module" class="mt-3" title="Agregar nuevo modulo" type="image" src="../img/icons/new-theme.png" width="48" height="48">
                                             </div>
-                                        </div> 
+                                        </div>
                                     </div>
-                                    
                                 </div>
-                                <button class="btn text-white" id="btn-finish-program">Finalizar creación del curso</button>
+                                <button class="btn text-white" id="btn-finish-program">Finalizar módulos</button> 
                             </div>
                         </div>
                     </div>
