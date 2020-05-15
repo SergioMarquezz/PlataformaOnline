@@ -26,6 +26,18 @@
                 case "verify modules":
                         modulesCourse();
                 break;
+
+                case "show questions":
+                        showQuestions();
+                break;
+
+                case "show answers":
+                        showAnswers();
+                break;
+
+                case "show correct asnwers":
+                        showAnswerCorrects();
+                break;
         }
 
         function showCourses(){
@@ -192,6 +204,97 @@
         
                     echo 'Excepción capturada (modules Course): ',  $e->getMessage(), "\n";
                 }
+            }
+
+            function showQuestions(){
+
+                try{
+                        $course = $_POST['key_course'];
+
+                        $query_show_questions = "SELECT id_question,number_question,question
+                        FROM questions
+                        WHERE id_course = $course";
+
+                        $result_show_questions = executeQuery($query_show_questions);
+
+                        if($result_show_questions){
+                                while($questions = odbc_fetch_array($result_show_questions)){
+                                        $json_questions["questions"][] = array_map("utf8_encode", $questions);
+                                        $questions_json = json_encode($json_questions);  
+                                }
+
+                                if(!isset($questions_json)){
+                                        echo "without questions";
+                                        
+                                }
+                                else{
+                                        echo $questions_json;
+                                }
+                        }
+
+                }catch(Exception $e){
+                        echo 'Excepción capturada (show Questions): ',  $e->getMessage(), "\n";
+                }
+            }
+
+            function showAnswers(){
+                    try{
+
+                        $courses = $_POST['course_key'];
+                        $question_key = $_POST['key_question'];
+
+                        $query_show_answers = "SELECT id_answers,number_answers,answer
+                        FROM answers
+                        WHERE id_course = $courses AND id_question =  $question_key
+                        ORDER BY number_answers";
+
+                        $result_show_answers = executeQuery($query_show_answers);
+
+                        if($result_show_answers){
+                                while($answers = odbc_fetch_array($result_show_answers)){
+                                        $json_answers["answers"][] = array_map("utf8_encode", $answers);
+                                        $answers_json = json_encode($json_answers);
+                                }
+                                echo $answers_json;
+                        }
+
+                    }catch(Exception $e){
+                        echo 'Excepción capturada (show Answers): ',  $e->getMessage(), "\n";
+                    }
+            }
+
+            function showAnswerCorrects(){
+                    try{
+
+                        $in_question1 = $_POST['in_question1'];
+                        $in_question2 = $_POST['in_question2'];
+                        $in_question3 = $_POST['in_question3'];
+                        $in_question4 = $_POST['in_question4'];
+                        $in_question5 = $_POST['in_question5'];
+                        $in_question6 = $_POST['in_question6'];
+                        $in_question7 = $_POST['in_question7'];
+                        $in_question8 = $_POST['in_question8'];
+                        $in_question9 = $_POST['in_question9'];
+                        $in_question10 = $_POST['in_question10'];
+
+                        $answer_correct = "SELECT corre.correct_answer,ans.answer
+                        FROM answers ans, answers_corrects corre
+                        WHERE ans.id_question = corre.id_question AND ans.number_answers = corre.correct_answer
+                        AND corre.id_question IN($in_question1,$in_question2,$in_question3,$in_question4,$in_question5,$in_question6,$in_question7,$in_question8,$in_question9,$in_question10)";
+
+                        $result_answer_correct = executeQuery($answer_correct);
+
+                        if($result_answer_correct){
+                                while($correct = odbc_fetch_array($result_answer_correct)){
+                                        $json_correct["answers_corrects"][] = array_map("utf8_encode", $correct);
+                                        $correct_json = json_encode($json_correct);
+                                }
+                                echo $correct_json;
+                        }
+
+                    }catch(Exception $e){
+                        echo 'Excepción capturada (show Answer Corrects): ',  $e->getMessage(), "\n"; 
+                    }
             }
         
 

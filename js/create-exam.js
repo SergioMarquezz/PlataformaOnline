@@ -88,30 +88,212 @@ function selectCreateExam() {
 
 		var value_course = document.getElementById('title-select-course').value;
 
-		 $.post("../php/create-exam.php",{
-            option: 'verify modules',
-            key: value_course
-        },function(response){
-			if(response == "sin modulos"){
-
-				Swal.fire({
-					title: 'Este curso no tiene módulos',
-					text: 'Para crear el examen de este curso primero debe agregar los módulos correspondientes',
-					icon: 'info',
-					confirmButtonText: 'De acuerdo',
-					confirmButtonColor: '#092432',
-					allowOutsideClick: false,
-				}).then(result=>{
-					if(result.value){
-						window.location.href = '../views/create-course'
-					}
-				})
+		$.post(
+			'../php/create-exam.php',
+			{
+				option: 'verify modules',
+				key: value_course,
+			},
+			function (response) {
+				if (response == 'sin modulos') {
+					Swal.fire({
+						title: 'Este curso no tiene módulos',
+						text:
+							'Para crear el examen de este curso primero debe agregar los módulos correspondientes',
+						icon: 'info',
+						confirmButtonText: 'De acuerdo',
+						confirmButtonColor: '#092432',
+						allowOutsideClick: false,
+					}).then((result) => {
+						if (result.value) {
+							window.location.href = '../views/create-course';
+						}
+					});
+				}
 			}
-			
-		})
-
-		
+		);
+		questionsShow(value_course);
 	});
+}
+
+function answersShow(key_course, question_key, option_num) {
+	$.post(
+		'../php/create-exam.php',
+		{
+			course_key: key_course,
+			key_question: question_key,
+			option: 'show answers',
+		},
+		function (data) {
+			var json = JSON.parse(data);
+
+			switch (option_num) {
+				case 0:
+					value_answer_1_1.val(json.answers[0].answer);
+					value_answer_1_2.val(json.answers[1].answer);
+					value_answer_1_3.val(json.answers[2].answer);
+					value_answer_1_4.val(json.answers[3].answer);
+					break;
+				case 1:
+					value_answer_2_1.val(json.answers[0].answer);
+					value_answer_2_2.val(json.answers[1].answer);
+					value_answer_2_3.val(json.answers[2].answer);
+					value_answer_2_4.val(json.answers[3].answer);
+					break;
+				case 2:
+					value_answer_3_1.val(json.answers[0].answer);
+					value_answer_3_2.val(json.answers[1].answer);
+					value_answer_3_3.val(json.answers[2].answer);
+					value_answer_3_4.val(json.answers[3].answer);
+					break;
+				case 3:
+					value_answer_4_1.val(json.answers[0].answer);
+					value_answer_4_2.val(json.answers[1].answer);
+					value_answer_4_3.val(json.answers[2].answer);
+					value_answer_4_4.val(json.answers[3].answer);
+					break;
+
+				case 4:
+					value_answer_5_1.val(json.answers[0].answer);
+					value_answer_5_2.val(json.answers[1].answer);
+					value_answer_5_3.val(json.answers[2].answer);
+					value_answer_5_4.val(json.answers[3].answer);
+					break;
+				case 5:
+					value_answer_6_1.val(json.answers[0].answer);
+					value_answer_6_2.val(json.answers[1].answer);
+					value_answer_6_3.val(json.answers[2].answer);
+					value_answer_6_4.val(json.answers[3].answer);
+					break;
+				case 6:
+					value_answer_7_1.val(json.answers[0].answer);
+					value_answer_7_2.val(json.answers[1].answer);
+					value_answer_7_3.val(json.answers[2].answer);
+					value_answer_7_4.val(json.answers[3].answer);
+					break;
+				case 7:
+					value_answer_8_1.val(json.answers[0].answer);
+					value_answer_8_2.val(json.answers[1].answer);
+					value_answer_8_3.val(json.answers[2].answer);
+					value_answer_8_4.val(json.answers[3].answer);
+					break;
+				case 8:
+					value_answer_9_1.val(json.answers[0].answer);
+					value_answer_9_2.val(json.answers[1].answer);
+					value_answer_9_3.val(json.answers[2].answer);
+					value_answer_9_4.val(json.answers[3].answer);
+					break;
+				case 9:
+					value_answer_10_1.val(json.answers[0].answer);
+					value_answer_10_2.val(json.answers[1].answer);
+					value_answer_10_3.val(json.answers[2].answer);
+					value_answer_10_4.val(json.answers[3].answer);
+
+					break;
+			}
+		}
+	);
+}
+
+function questionsShow(key) {
+	$.post(
+		'../php/create-exam.php',
+		{
+			key_course: key,
+			option: 'show questions',
+		},
+		function (params) {
+			if (params != 'without questions') {
+				var json = JSON.parse(params);
+				console.log(json);
+
+				var json0, json1, json2, json3, json4, json5, json6, json7, json8, json9;
+				json0 = json.questions[0].id_question;
+				json1 = json.questions[1].id_question;
+				json2 = json.questions[2].id_question;
+				json3 = json.questions[3].id_question;
+				json4 = json.questions[4].id_question;
+				json5 = json.questions[5].id_question;
+				json6 = json.questions[6].id_question;
+				json7 = json.questions[7].id_question;
+				json8 = json.questions[8].id_question;
+				json9 = json.questions[9].id_question;
+
+				value_question_one.val(json.questions[0].question);
+				value_question_two.val(json.questions[1].question);
+				value_question_three.val(json.questions[2].question);
+				value_question_four.val(json.questions[3].question);
+				value_question_five.val(json.questions[4].question);
+				value_question_six.val(json.questions[5].question);
+				value_question_seven.val(json.questions[6].question);
+				value_question_eight.val(json.questions[7].question);
+				value_question_nine.val(json.questions[8].question);
+				value_question_ten.val(json.questions[9].question);
+
+				answersShow(key, json0, 0);
+				answersShow(key, json1, 1);
+				answersShow(key, json2, 2);
+				answersShow(key, json3, 3);
+				answersShow(key, json4, 4);
+				answersShow(key, json5, 5);
+				answersShow(key, json6, 6);
+				answersShow(key, json7, 7);
+				answersShow(key, json8, 8);
+				answersShow(key, json9, 9);
+
+				$.post(
+					'../php/create-exam.php',
+					{
+						option: 'show correct asnwers',
+						in_question1: json0,
+						in_question2: json1,
+						in_question3: json2,
+						in_question4: json3,
+						in_question5: json4,
+						in_question6: json5,
+						in_question7: json6,
+						in_question8: json7,
+						in_question9: json8,
+						in_question10: json9,
+					},
+					function (param) {
+						var json = JSON.parse(param);
+						console.log(json);
+						$("#response-1").text('Respueta correcta: '+json.answers_corrects[0].answer);
+						$("#response-2").text('Respueta correcta: '+json.answers_corrects[1].answer);
+						$("#response-3").text('Respueta correcta: '+json.answers_corrects[2].answer);
+						$("#response-4").text('Respueta correcta: '+json.answers_corrects[3].answer);
+						$("#response-5").text('Respueta correcta: '+json.answers_corrects[4].answer);
+						$("#response-6").text('Respueta correcta: '+json.answers_corrects[5].answer);
+						$("#response-7").text('Respueta correcta: '+json.answers_corrects[6].answer);
+						$("#response-8").text('Respueta correcta: '+json.answers_corrects[7].answer);
+						$("#response-9").text('Respueta correcta: '+json.answers_corrects[8].answer);
+						$("#response-10").text('Respueta correcta: '+json.answers_corrects[9].answer);
+					}
+				);
+
+				$('#btn-1,#btn-2,#btn-3,#btn-4,#btn-5,#btn-6,#btn-7,#btn-8,#btn-9,#btn-10').hide();
+				$(
+					'#question-one,#question-two,#question-three,#question-four,#question-five,#question-six,#question-seven,#question-eight,#question-nine,#question-ten'
+				).attr('readonly', true);
+				$(
+					'#answer-1-1,#answer-1-2,#answer-1-3,#answer-1-4,#answer-2-1,#answer-2-2,#answer-2-3,#answer-2-4'
+				).attr('readonly', true);
+				$(
+					'#answer-3-1,#answer-3-2,#answer-3-3,#answer-3-4,#answer-4-1,#answer-4-2,#answer-4-3,#answer-4-4'
+				).attr('readonly', true);
+				$(
+					'#answer-5-1,#answer-5-2,#answer-5-3,#answer-5-4,#answer-6-1,#answer-6-2,#answer-6-3,#answer-6-4'
+				).attr('readonly', true);
+				$(
+					'#answer-7-1,#answer-7-2,#answer-7-3,#answer-7-4,#answer-8-1,#answer-8-2,#answer-8-3,#answer-8-4'
+				).attr('readonly', true);
+				$(
+					'#answer-9-1,#answer-9-2,#answer-9-3,#answer-9-4,#answer-10-1,#answer-10-2,#answer-10-3,#answer-10-4'
+				).attr('readonly', true);
+			}
+		}
+	);
 }
 
 function showTitleCourses() {
@@ -720,7 +902,6 @@ function chooseAswerCorrect() {
 			var id_btn = $(this).attr('id');
 			var number_button = $(this).text().substr(17);
 			var option_id = $('#title-select-course option:selected').val();
-
 			switch (id_btn) {
 				case 'btn-1':
 					var question_one = value_question_one.val();

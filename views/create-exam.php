@@ -41,7 +41,7 @@
                                             <li>
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-one"></strong></label>
-                                                    <input type="text" class="form-control" id="question-one" placeholder="Pregunta 1">
+                                                    <input type="text" class="form-control questions-exam" id="question-one" placeholder="Pregunta 1">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -58,11 +58,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-1">Guardar pregunta 1</button></h5>
+                                                <p id="response-1" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-two"></strong></label>
-                                                    <input type="text" class="form-control" id="question-two" placeholder="Pregunta 2">
+                                                    <input type="text" class="form-control questions-exam" id="question-two" placeholder="Pregunta 2">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -79,11 +80,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-2">Guardar pregunta 2</button></h5>
+                                                <p id="response-2" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-three"></strong></label>
-                                                    <input type="text" class="form-control" id="question-three" placeholder="Pregunta 3">
+                                                    <input type="text" class="form-control questions-exam" id="question-three" placeholder="Pregunta 3">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -100,11 +102,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-3">Guardar pregunta 3</button></h5>
+                                                <p id="response-3" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-four"></strong></label>
-                                                    <input type="text" class="form-control" id="question-four" placeholder="Pregunta 4">
+                                                    <input type="text" class="form-control questions-exam" id="question-four" placeholder="Pregunta 4">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -121,11 +124,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-4">Guardar pregunta 4</button></h5>
+                                                <p id="response-4" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-five"></strong></label>
-                                                    <input type="text" class="form-control" id="question-five" placeholder="Pregunta 5">
+                                                    <input type="text" class="form-control questions-exam" id="question-five" placeholder="Pregunta 5">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -142,11 +146,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-5">Guardar pregunta 5</button></h5>
+                                                <p id="response-5" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-six"></strong></label>
-                                                    <input type="text" class="form-control" id="question-six" placeholder="Pregunta 6">
+                                                    <input type="text" class="form-control questions-exam" id="question-six" placeholder="Pregunta 6">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -163,11 +168,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-6">Guardar pregunta 6</button></h5>
+                                                <p id="response-6" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-seven"></strong></label>
-                                                    <input type="text" class="form-control" id="question-seven" placeholder="Pregunta 7">
+                                                    <input type="text" class="form-control questions-exam" id="question-seven" placeholder="Pregunta 7">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -184,11 +190,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-7">Guardar pregunta 7</button></h5>
+                                                <p id="response-7" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-eight"></strong></label>
-                                                    <input type="text" class="form-control" id="question-eight" placeholder="Pregunta 8">
+                                                    <input type="text" class="form-control questions-exam" id="question-eight" placeholder="Pregunta 8">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -205,11 +212,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-8">Guardar pregunta 8</button></h5>
+                                                <p id="response-8" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-nine"></strong></label>
-                                                    <input type="text" class="form-control" id="question-nine" placeholder="Pregunta 9">
+                                                    <input type="text" class="form-control questions-exam" id="question-nine" placeholder="Pregunta 9">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -226,11 +234,12 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-9">Guardar pregunta 9</button></h5>
+                                                <p id="response-9" class="mt-2"></p>
                                             </li>
                                             <li class="mt-5">
                                                 <div class="form-group">
                                                     <label for="" class="col-form-label"><strong id="label-ten"></strong></label>
-                                                    <input type="text" class="form-control" id="question-ten" placeholder="Pregunta 10">
+                                                    <input type="text" class="form-control questions-exam" id="question-ten" placeholder="Pregunta 10">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 col-sm-12">
@@ -247,6 +256,7 @@
                                                     </div>
                                                 </div>
                                                 <h5 class=""><button class="btn btn-sm btn-save-questions text-white" id="btn-10">Guardar pregunta 10</button></h5>
+                                                <p id="response-10" class="mt-2"></p>
                                             </li>
                                         </ol>
                                     </div>
