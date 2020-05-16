@@ -29,6 +29,10 @@
         case "update detail":
             modulesNull();
         break;
+
+        case "show all videos":
+            showAllVideos();
+        break;
     }
 
     //Funcion para mostrar total de clases y estudiantes totales del curso
@@ -156,6 +160,36 @@
         }
     }
 
+   /*function updateDurationVideo(){
+
+        try{
+
+        }catch(Exec)
+    }*/
+
+    function showAllVideos(){
+        try{
+
+            $id = $_POST['key'];
+
+            $query_all_videos = "SELECT id_url,url_video
+                             FROM video_url WHERE id_course = $id";
+
+            $result_alll_videos = executeQuery($query_all_videos);
+
+            if($result_alll_videos){
+                while($all_videos = odbc_fetch_array($result_alll_videos)){
+                    $json_all_videos["all_videos"][] = array_map("utf8_encode", $all_videos);
+                    $all_videos_json= json_encode($json_all_videos); 
+                }
+                echo $all_videos_json;
+            }
+
+        }catch(Exception $e){
+
+            echo 'Excepción capturada (show videos): ',  $e->getMessage(), "\n";
+        }
+    }
 
     //Funcion para mostrar los material de apoyo segun el tema del curso
     function showMaterial(){

@@ -26,6 +26,10 @@
         case "update student":
             updateStudents();
         break;
+
+        case "all themes course":
+            allThemesCourse();
+        break;
     }
   
     //Funcion para mostrar los modulos del curso
@@ -71,14 +75,15 @@
         $pass = $_POST['password'];
         $title = $_POST['title'];
 
+        $utf_title = utf8_decode($title);
+
         try{
 
             $sql_course_up = "SELECT DISTINCT cour.id_course, title
             FROM detail_course 
             INNER JOIN persons p ON detail_course.id_person = p.id_person
             INNER JOIN courses cour ON detail_course.id_course = cour.id_course
-           
-            WHERE p.number_employee = $number AND p.password = '$pass' AND title = '$title'";
+            WHERE p.number_employee = $number AND p.password = '$pass' AND title = '$utf_title'";
 
             $result_course_up = executeQuery($sql_course_up);
 
@@ -87,7 +92,9 @@
                 $id = odbc_result($result_course_up,"id_course");
                 $name = odbc_result($result_course_up,"title");
 
-                $json_course_up["signed_up"] = array("id"=>$id,"title"=>$name);
+                $utf = utf8_encode($name);
+
+                $json_course_up["signed_up"] = array("id"=>$id,"title"=>$utf);
                 $course_up_json= json_encode($json_course_up);
             
                 echo  $course_up_json;
@@ -223,6 +230,29 @@
 
             echo 'Excepción capturada (update student): ',  $e->getMessage(), "\n";
 
+        }
+    }
+    function allThemesCourse(){
+
+        try{
+
+            $keys_course = $_POST['course_key'];
+
+            $all_themes = "SELECT name FROM themes
+                            WHERE id_course =  $keys_course";
+
+            $result_all_themes = executeQuery($all_themes);
+            
+            if($result_all_themes){
+                while($themes_all = odbc_fetch_array($result_all_themes)){
+                    $json_all_themes["all_themes_course"][] = array_map("utf8_encode", $themes_all);
+                    $all_themes_json = json_encode($json_all_themes);
+                }
+                echo  $all_themes_json;
+            }
+
+        }catch(Exception $e){
+            echo 'Excepción capturada (all Themes Course): ',  $e->getMessage(), "\n";
         }
     }
 

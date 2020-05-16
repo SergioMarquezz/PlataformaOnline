@@ -119,6 +119,16 @@ hr{
     font-weight: bold;
 }
 
+#themes-tab:hover{
+    
+    background-color: #092432; 
+}
+#themes-tab:link{
+    
+    color:  #70b52c;
+    font-weight: bold;
+}
+
 #login-name, #login-password, #materiales-buttons{
     border-radius: 22px;
     border: 1px solid #044c70;

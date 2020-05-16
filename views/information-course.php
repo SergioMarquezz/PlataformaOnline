@@ -31,7 +31,10 @@
                            
                         </div>
                         <div class="alert alert-success alert-information-free" role="alert">
-                            Este curso es gratuito puedes acceder al contenido en cualquier momento.
+                            ESTE CURSO ES GRATUITO PUEDES ACCEDER AL CONTENIDO EN CUALQUIER MOMENTO
+                        </div>
+                        <div class="alert alert-success alert-information-free" role="alert">
+                            INSCRIBETE SOLO CON AGREGAR ESTE CURSO A TU LISTA
                         </div>
                     </div>
                 </div>
@@ -59,6 +62,11 @@
                                     Módulos del curso
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="themes-tab" data-toggle="tab" href="#themes" role="tab" aria-controls="themes" aria-selected="false">
+                                    Todos los temas del curso
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -71,6 +79,11 @@
                             <div class="tab-pane fade modules" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <div id="div-modules">
                                 
+                                </div>
+                            </div>
+                            <div class="tab-pane fade modules" id="themes" role="tabpanel" aria-labelledby="themes-tab">
+                                <div id="div-themes">
+                                    
                                 </div>
                             </div>
                         </div>

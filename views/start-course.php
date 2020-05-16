@@ -22,29 +22,29 @@
         <div id="page-content-wrapper">
             <button class="btn btn-sm btn-success" id="menu-toggle">Mostrar Menú</button>
             <div class="container-fluid mt-4">
-               <!-- <div class="row justify-content-end">
+                <div class="row justify-content-end">
                     <div class="col-md-4 col-sm-12">
                         <h6 for="" style="font-size: 25px;">Mis Avances</label>
                         <div class="progress mb-3" style="height: 25px;">
                             <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
                         </div>
                     </div>
-                </div>-->
+                </div>
                 <nav class="navbar navbar-dark" style="background-color: #4B515D;">
                     <a class="navbar-brand" href="#" id="nav-title"></a>
                     <div class="row justify-content-end">
                         <div class="col-md-12 col-sm-12">
-                            <button class="btn btn-sm btn-content text-white">Anterior</button>
-                            <button class="btn btn-sm btn-content text-white">Siguiente</button>
+                            <button class="btn btn-sm btn-content text-white" id="btn-full-screen">Pantalla completa</button>
+                            <button class="btn btn-sm btn-content text-white" id="btn-play-pause">Play/Pause</button>
+                            <button class="btn btn-sm btn-content text-white" id="btn-anterior">Anterior</button>
+                            <button class="btn btn-sm btn-content text-white" id="btn-siguiente">Siguiente</button>
                         </div>
                     </div>
                 </nav>
                 <div class="row">
                     <div class="col-md-8 col-sm-12">
                         <div id="div-video">
-                            <video class="embed-responsive embed-responsive-16by9" id="video-start" controls>
-                           
-                            </video>
+                         
                         </div>
                         <h2 class="mt-3">Acerca de este curso</h2>
                         <hr>
