@@ -25,8 +25,8 @@
                 <div class="row justify-content-end">
                     <div class="col-md-4 col-sm-12">
                         <h6 for="" style="font-size: 25px;">Mis Avances</label>
-                        <div class="progress mb-3" style="height: 25px;">
-                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                        <div class="progress mb-3" style="height: 25px;" id="bar-progress"> 
+                            <div id=barra-progreso class="progress-bar progress-bar-striped bg-success" role="progressbar"></div>
                         </div>
                     </div>
                 </div>
@@ -34,6 +34,7 @@
                     <a class="navbar-brand" href="#" id="nav-title"></a>
                     <div class="row justify-content-end">
                         <div class="col-md-12 col-sm-12">
+                            <input type="hidden" id="input-id-video">
                             <button class="btn btn-sm btn-content text-white" id="btn-full-screen">Pantalla completa</button>
                             <button class="btn btn-sm btn-content text-white" id="btn-play-pause">Play/Pause</button>
                             <button class="btn btn-sm btn-content text-white" id="btn-anterior">Anterior</button>

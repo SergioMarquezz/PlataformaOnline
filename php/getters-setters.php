@@ -458,8 +458,8 @@
 
                     $hoy = date("Y-m-d");  
 
-                    $insert_video = "INSERT INTO video_url(url_video,id_course,percentage_video,date_upload,id_themes)
-                                    VALUES('$route_bd','$this->id_cour',1,'$hoy','$this->id_theme')";
+                    $insert_video = "INSERT INTO video_url(url_video,id_course,date_upload,id_themes)
+                                    VALUES('$route_bd','$this->id_cour','$hoy','$this->id_theme')";
 
                     $result_video = executeQuery($insert_video);
 

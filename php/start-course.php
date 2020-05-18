@@ -1,3 +1,4 @@
+
 <?php
 
     require_once "../core/main-bd.php";
@@ -18,20 +19,28 @@
             themesCourse();
         break;
 
-        case "show video":
+       /* case "show video":
             showVideos();
-        break;
+        break;*/
 
         case "material course":
             showMaterial();
         break;
 
         case "update detail":
-            modulesNull();
+            verifyTheme();
         break;
 
         case "show all videos":
             showAllVideos();
+        break;
+
+        case "video duration":
+            updateDurationCourse();
+        break;
+
+        case "progress bar":
+            avanceBarraProgress();
         break;
     }
 
@@ -133,7 +142,7 @@
     }
 
     //Funcion para mostrar los videos de cada tema
-    function showVideos(){
+   /* function showVideos(){
 
         try{
 
@@ -158,14 +167,67 @@
 
             echo 'Excepción capturada (show videos): ',  $e->getMessage(), "\n";
         }
-    }
+    }*/
 
-   /*function updateDurationVideo(){
+    function updateDurationCourse(){
 
         try{
 
-        }catch(Exec)
-    }*/
+            $url_id = $_POST['url_id'];
+            $duration = $_POST['duration_video'];
+
+            $update_duration = "UPDATE video_url SET duration_video = $duration
+            WHERE id_url = $url_id";
+
+            $result_duration = executeQuery($update_duration);
+
+            if($result_duration){
+                echo "update duration";
+            }
+
+        }catch(Exception $e){
+            echo 'Excepción capturada (show videos): ',  $e->getMessage(), "\n";
+        }
+    }
+
+    function avanceBarraProgress(){
+
+        try{
+            $keys_course = $_POST['course_keys'];
+
+            $course_total = "SELECT((SELECT COUNT(id_url) FROM video_url
+            WHERE id_course = $keys_course) + (SELECT COUNT(id_themes) FROM themes WHERE id_course = $keys_course )
+            ) AS total_curso";
+
+            $course_avance = "SELECT((SELECT COUNT(id_themes) FROM detail_course
+            WHERE id_course = $keys_course) + (SELECT COUNT(id_url) FROM video_url WHERE id_course = $keys_course AND duration_video <> 0)
+            ) AS avance_curso";
+            
+            $result_total_course = executeQuery($course_total);
+            $result_avance_course = executeQuery($course_avance);
+
+            if($result_total_course && $result_avance_course){
+                
+                $all_course = odbc_result($result_total_course,"total_curso");
+                $avance = odbc_result($result_avance_course,"avance_curso");
+                
+            echo porcentajeCourse($all_course,$avance);
+            }
+
+            
+
+        }catch(Exception $e){
+            echo 'Excepción capturada (show videos): ',  $e->getMessage(), "\n";
+        }
+    }
+
+    function porcentajeCourse($total_course,$avance_curso){
+
+        $resultado = (100 * $avance_curso) / $total_course;
+
+        return round($resultado);
+    }
+
 
     function showAllVideos(){
         try{
@@ -197,11 +259,11 @@
         try{
 
             $course_key = $_POST['key_course'];
-            $themes_key = $_POST['key_theme'];
+            //$themes_key = $_POST['key_theme'];
 
             $sql_material = "SELECT path_material, name_material, type_material, link
                              FROM support_material
-                             WHERE id_course = $course_key AND id_themes = $themes_key";
+                             WHERE id_course = $course_key";
 
             $result_material = executeQuery($sql_material);
 
@@ -229,50 +291,69 @@
             echo 'Excepción capturada (show material): ',  $e->getMessage(), "\n";
         }
     }
-
-    //Funcion para seleccionar los modulos vacios de la tabla de detalle cursos para despues actualizarlos
-    function modulesNull(){
-
+//Funcion para seleccionar los modulos vacios de la tabla de detalle cursos para despues actualizarlos
+    function verifyTheme(){
         try{
+
 
             $person = $_POST['key_person'];
             $course = $_POST['key_course'];
             $module = $_POST['key_module'];
             $themes = $_POST['key_themes'];
+            $insert = false;
+            $update = false;
 
-            $query_null = "SELECT id_module, id_themes, id_detail
+            $query_theme_verify = "SELECT id_themes,id_module,id_detail
                            FROM detail_course
                            WHERE id_person = $person AND id_course = $course";
 
-            $result_null = executeQuery($query_null);
+            $result_theme_verify = executeQuery($query_theme_verify);
 
-            if($result_null){
+            if($result_theme_verify){
 
-                while($null = odbc_fetch_array($result_null)){
- 
-                    if($null['id_module'] == ""){
+                while($verify_theme = odbc_fetch_array($result_theme_verify)){
 
-                        $datil = $null['id_detail'];
+                    if($verify_theme['id_module'] == ""){
+                        $datil = $verify_theme['id_detail'];
 
                         $update_detail = " UPDATE detail_course SET id_module = $module, id_themes = $themes
-                                           WHERE id_person = $person AND id_course = $course AND id_detail = $datil";
+                        WHERE id_person = $person AND id_course = $course AND id_detail = $datil";
 
                         $result_detail = executeQuery($update_detail);
 
                         if($result_detail){
 
-                             echo "update detaile";
-                
-                        }
+                            echo 1;
+                           
+                          $update = true;  
+                       }
+                    }
+
+                    $column_theme = $verify_theme['id_themes'];
+                    $array_themes = array($column_theme);
+
+                    if(in_array($themes,$array_themes)){
+                        $insert = true;
+                    }
+                   
+                }
+                if(!$insert && !$update){
+                    
+                    $insert_detail = "INSERT INTO detail_course(id_person,id_course,id_module,id_themes)
+                    values($person,$course,$module,$themes)";
+
+                    $result_insert_detail = executeQuery($insert_detail);
+
+                    if($result_insert_detail){
+                        echo 1;
                     }
                 }
-
             }
 
         }catch(Exception $e){
-
-            echo 'Excepción capturada (modules null): ',  $e->getMessage(), "\n";
+            echo 'Excepción capturada (verify Theme): ',  $e->getMessage(), "\n";
         }
     }
+
 
 ?>

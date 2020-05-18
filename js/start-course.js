@@ -1,10 +1,10 @@
 var id = getUrl('value');
 var key_module;
-var i = 0;
+var z = 0;
+var id_video = $('#input-id-video');
+var barra_progreso = $('#barra-progreso');
 
 $(document).ready(function () {
-	document.getElementById('select-themes').addEventListener('click', selectTheme);
-	document.getElementById('select-themes').addEventListener('click', materiales);
 	document.getElementById('select-themes').addEventListener('click', updateDetail);
 
 	information();
@@ -14,7 +14,10 @@ $(document).ready(function () {
 	showOneVideo();
 	btnExamen();
 	btnPlayAndPause();
+	materiales();
+	llenarProgreesBar();
 });
+
 
 function btnPlayAndPause() {
 	$(document).on('click', '#btn-play-pause', function () {
@@ -28,36 +31,85 @@ function btnPlayAndPause() {
 	$(document).on('click', '#btn-full-screen', function () {
 		var my_video = document.getElementById('video-start');
 		if (my_video.requestFullscreen) {
-            my_video.requestFullscreen();
-            my_video.controls = false;
+			my_video.requestFullscreen();
+			my_video.controls = false;
 		} else {
-            my_video.webkitRequestFullscreen();
-            my_video.controls = false;
+			my_video.webkitRequestFullscreen();
+			my_video.controls = false;
 		}
 	});
 }
 
+function llenarProgreesBar() {
+	$.post(
+		'../php/start-course.php',
+		{
+			course_keys: id,
+			opition: 'progress bar',
+		},
+		function (data) {
+			$('#barra-progreso').css('width', data + '%');
+			$('#barra-progreso').attr('aria-valuenow', data);
+			$('#barra-progreso').text(data + '%');
+		
+			if(data == 100){
+				Swal.fire({
+					title: 'Avances al 100%',
+					text: 'Tu avance en el curso es del 100%, puedes continuar realizando tu examen',
+					icon: 'success',
+					confirmButtonColor: '#092432',
+					confirmButtonText: 'Aceptar',
+					allowOutsideClick: false,
+				});
+				$("#content-courses").hide();
+				
+
+			}
+		}
+	);
+}
+
 function btnExamen() {
-	var minutes;
+	var minutes = 0;
 	var seconds;
-	$('#btn-evaluation').click(function (e) {
-		e.preventDefault();
-        var my_video = document.getElementById('video-start');
-		var i = setInterval(function () {
+	$(document).on('click', '#btn-evaluation', function () {
+		
+		console.log(barra_progreso);
+		if (barra_progreso.attr('aria-valuenow') == 100) {
+			window.location.href = '../views/final-evaluation';
+		} else {
+				Swal.fire({
+				title: 'Aún no puedes acceder a tu examen',
+				text:
+					'Para poder realizar el examen del curso es neceario que tu avance este completado al 100%',
+				icon: 'info',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Aceptar',
+				allowOutsideClick: false,
+			});
+		}
+	});
+	//$('#btn-evaluation').click(function (e) {
+	//e.preventDefault();
+
+	/*var my_video = document.getElementById('video-start');
+		setInterval(function () {
 			if (my_video.readyState > 0) {
 				minutes = parseInt(my_video.duration / 60, 10);
 				seconds = my_video.duration % 60;
-
 			}
 		}, 200);
-    
-        if(my_video.duration.toFixed() == my_video.currentTime.toFixed()){
-            alert("finish");
-        }
-	});
+
+		console.log(my_video.duration.toFixed());
+
+		if (my_video.duration.toFixed() == my_video.currentTime.toFixed()) {
+			alert('finish');
+		}*/
+	//});
 }
 
 function showOneVideo() {
+	$('#btn-anterior').attr('disabled', true);
 	$.post(
 		'../php/start-course.php',
 		{
@@ -67,19 +119,39 @@ function showOneVideo() {
 		function (datos) {
 			var json = JSON.parse(datos);
 			console.log(json);
-            $('#div-video').append(
+			$('#div-video').append(
 				'<video class="embed-responsive embed-responsive-16by9" id=video-start>' +
 					'<source id=source-video src=../' +
 					json.all_videos[0].url_video +
 					' type="video/mp4">' +
 					'</video>'
 			);
+			id_video.val(json.all_videos[0].id_url);
+		}
+	);
+}
+
+function durationUpdate() {
+	var my_video = document.getElementById('video-start');
+	var duration = my_video.duration.toFixed();
+
+	$.post(
+		'../php/start-course.php',
+		{
+			url_id: id_video.val(),
+			duration_video: duration,
+			opition: 'video duration',
+		},
+		function (param) {
+			console.log(param);
 		}
 	);
 }
 
 function allVideos() {
-	$('#div-video').load(' #div-video');
+	$('#div-video').load(' #div-video', function () {
+		llenarProgreesBar();
+	});
 	$.post(
 		'../php/start-course.php',
 		{
@@ -92,17 +164,17 @@ function allVideos() {
 
 			var size = json.all_videos.length;
 
-			if (i >= size - 1) {
+			if (z >= size) {
 				$('#btn-siguiente').attr('disabled', true);
 			}
-
 			$('#div-video').append(
 				'<video class="embed-responsive embed-responsive-16by9" id=video-start>' +
 					'<source id=source-video src=../' +
-					json.all_videos[i].url_video +
+					json.all_videos[z].url_video +
 					' type="video/mp4">' +
 					'</video>'
 			);
+			id_video.val(json.all_videos[z].id_url);
 		}
 	);
 }
@@ -110,16 +182,35 @@ function allVideos() {
 function btnSiguienteAnterior() {
 	$('#btn-siguiente').click(function (e) {
 		e.preventDefault();
-		i++;
-		allVideos();
-		$('#btn-anterior').attr('disabled', false);
+		var my_video = document.getElementById('video-start');
+		if (my_video.duration.toFixed() == my_video.currentTime.toFixed()) {
+			z++;
+			allVideos();
+			durationUpdate();
+			$('#btn-anterior').attr('disabled', false);
+		}
+		else if(barra_progreso.attr('aria-valuenow') == 100){
+			z++;
+			allVideos();
+			$('#btn-anterior').attr('disabled', false);
+		}
+		else{
+			Swal.fire({
+				title: 'Continua viendo este video',
+				text: 'Para ir pasando de video y finalizar el curso debes ver todos los videos completos',
+				icon: 'info',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'De acuerdo',
+				allowOutsideClick: false,
+			});
+		}
 	});
 	$('#btn-anterior').click(function (e) {
 		e.preventDefault();
-		i--;
+		z--;
 		allVideos();
 		$('#btn-siguiente').attr('disabled', false);
-		if (i == 0) {
+		if (z == 0) {
 			$(this).attr('disabled', true);
 		}
 	});
@@ -206,7 +297,7 @@ function courseModules() {
 
 function materiales() {
 	$('#material-support').addClass('row');
-	var theme = $('#option-themes option:selected').val();
+	//var theme = $('#option-themes option:selected').val();
 
 	$.ajax({
 		type: 'POST',
@@ -214,11 +305,10 @@ function materiales() {
 		data: {
 			opition: 'material course',
 			key_course: id,
-			key_theme: theme,
+			//	key_theme: theme,
 		},
 
 		success: function (response) {
-            console.log(response)
 			var json = JSON.parse(response);
 
 			if (json == 'without material') {
@@ -228,7 +318,7 @@ function materiales() {
 				for (i = 0; i < size; i++) {
 					if (json.materiales[i].type_material == 'link') {
 						$('#material-support').append(
-							"<a id='materiales-buttons' class='btn' href=" +
+							"<a disabled id='materiales-buttons' class='btn' href=" +
 								json.materiales[i].link +
 								" target='_blank'>" +
 								json.materiales[i].link +
@@ -236,7 +326,7 @@ function materiales() {
 						);
 					} else {
 						$('#material-support').append(
-							"<a id='materiales-buttons' class='btn' href=../material/" +
+							"<a disabled id='materiales-buttons' class='btn' href=../material/" +
 								json.materiales[i].path_material +
 								" target='_blank'>" +
 								json.materiales[i].name_material +
@@ -252,10 +342,10 @@ function materiales() {
 function themes() {
 	$(document).on('click', '#btn-themes', function (e) {
 		e.preventDefault();
+
 		var module = $(this).attr('href');
 		key_module = module;
-		$('#material-support').empty();
-	//	$('#div-video').load(' #div-video');
+		//$('#material-support').empty();
 
 		$.ajax({
 			type: 'POST',
@@ -300,72 +390,61 @@ function themes() {
 	});
 }
 
-function selectTheme() {
+function updateDetail() {
 	var theme = $('#option-themes option:selected').val();
+	var person = document.getElementById('value-person').value;
+	var modules = key_module;
+
 	var index = document.getElementById('option-themes').selectedIndex;
 
 	if (index == 0) {
 		Swal.fire({
 			title: 'No has elegido algún tema del módulo',
-			text: 'Elije el tema para poder visualizar el video',
+			text: 'Elije un tema para que avances en el curso y puedas finalizarlo',
 			icon: 'warning',
 			confirmButtonColor: '#092432',
 			confirmButtonText: 'Aceptar',
 			allowOutsideClick: false,
 		});
 	} else {
-		$('#modalThemes').modal('hide');
-
-		/*$.ajax({
+		$.ajax({
 			type: 'POST',
 			url: '../php/start-course.php',
 			data: {
-				opition: 'show video',
-				key_theme: theme,
+				key_person: person,
+				key_course: id,
+				key_module: modules,
+				key_themes: theme,
+				opition: 'update detail',
 			},
 			success: function (response) {
-				var json = JSON.parse(response);
-
-				if (json.videos.video == false) {
+				console.log(response);
+				if(response == 1){
+					llenarProgreesBar();
+					$('#modalThemes').modal('hide');
+				}
+				else if(barra_progreso.attr('aria-valuenow') == 100){
 					Swal.fire({
-						title: 'No existe todavía un video para este tema',
-						text: 'Puedes continuar con el curso eligiendo otro tema de algún módulo',
-						icon: 'warning',
+						title: 'Avances al 100%',
+						text: 'Tu avance en el curso es del 100%, puedes continuar realizando tu examen',
+						icon: 'success',
 						confirmButtonColor: '#092432',
 						confirmButtonText: 'Aceptar',
 						allowOutsideClick: false,
 					});
-				} else {
-					$('#video-start').append(
-						"<source id='source-video' src=../" + json.videos.video + " type='video/mp4'></source>"
-					);
+				}
+				
+				else{
+					Swal.fire({
+						title: 'El tema ya fue visto',
+						text: 'Sigue elegiendo temas y viendo todos los videos del curso para que puedas avanzar y realizar tu examen de evaluación',
+						icon: 'info',
+						confirmButtonColor: '#092432',
+						confirmButtonText: 'Aceptar',
+						allowOutsideClick: false,
+					});
 				}
 			},
-		});*/
+		});
 	}
-}
-
-function updateDetail() {
-	var theme = $('#option-themes option:selected').val();
-	var person = document.getElementById('value-person').value;
-	var modules = key_module;
-
-	$.ajax({
-		type: 'POST',
-		url: '../php/start-course.php',
-		data: {
-			key_person: person,
-			key_course: id,
-			key_module: modules,
-			key_themes: theme,
-			opition: 'update detail',
-		},
-		success: function (response) {
-			console.log(response);
-			if (response === '') {
-				//Poner insert
-				console.log('hols');
-			}
-		},
-	});
 }
