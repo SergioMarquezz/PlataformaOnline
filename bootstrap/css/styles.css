@@ -129,9 +129,15 @@ hr{
     font-weight: bold;
 }
 
-#login-name, #login-password, #materiales-buttons{
-    border-radius: 22px;
+#login-name, #login-password, #materiales-buttons,#time-exam{
+    border-radius: 100px;
     border: 1px solid #044c70;
+}
+#time-trascurrido{
+    font-size: 25px;
+}
+#minutes,#seconds,#dos-points{
+    font-size: 35px;
 }
 
 #select-category,#date-start,#select-duration,#select-ordey-by{

@@ -76,7 +76,7 @@ function btnExamen() {
 		
 		console.log(barra_progreso);
 		if (barra_progreso.attr('aria-valuenow') == 100) {
-			window.location.href = '../views/final-evaluation';
+			window.location.href = '../views/final-evaluation?course='+id+'';
 		} else {
 				Swal.fire({
 				title: 'Aún no puedes acceder a tu examen',

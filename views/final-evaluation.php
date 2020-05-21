@@ -33,8 +33,9 @@
                         </p>
                         <p>
                             <strong>
-                                El examen se ah eleborado con la información disponible en los videos del curso.
-                                Para aprobar el examen necesitaras una calificación mínima de 6.
+                                El examen se ah eleborado con la información disponible en los videos y material de apoyo de cada
+                                tema del curso. Para aprobar el examen necesitaras una calificación mínima de 6.
+                                
                             </strong>
                         </p>
                         <p>
@@ -43,8 +44,9 @@
                                 tendras la opción de descargarla e imprimirla.
                             </label>
                         </p>
-                       <a href="exam"><button class="btn btn-sm btn-success" id="">Comenzar Examen</button></a>
-                       *Recuerda que solo tendrás 1 hora para realizar el examen* ¡Mucho Exito!
+                       <a href=""><button class="btn btn-sm btn-success" id="start-exam">Comenzar Examen</button></a>
+                      <strong>*Recuerda que solo tendrás 1 hora para realizar el examen despues de ese tiempo
+                          el examen se cerrara automaticamente* ¡Mucho Exito! </strong>
                     </div>
                 </div>
             </div>
@@ -53,5 +55,26 @@
     <?php require_once "../includes/footer.php"?>
     <?php require_once "../includes/scripts.php"?>
     <script type="text/javascript" src="../js/ifpp-main.js"></script>
+    <script>
+        
+        function getUrl(sParam) {
+            var sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+        
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+        
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+        }
+        $("#start-exam").click(function (e) { 
+            e.preventDefault();
+            window.location.href = 'exam?idcourse='+getUrl('course');
+        });
+    </script>
 </body>
 </html>

@@ -25,7 +25,7 @@
             <img src="../img/icons/test.png" class="icon-text">
         </a>
     </div>
-    <input type="hidden" id="value-user" value="<?php echo  $_SESSION['num_employee']?>">
+    <input type="text" id="value-user" value="<?php echo  $_SESSION['num_employee']?>">
     <input type="hidden" id="value-pass" value="<?php echo  $_SESSION['password']?>">
-    <input type="hidden" id="value-person" value="<?php echo $_SESSION['key_person'] ?>">
+    <input type="text" id="value-person" value="<?php echo $_SESSION['key_person'] ?>">
 </div>
