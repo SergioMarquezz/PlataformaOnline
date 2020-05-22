@@ -1,4 +1,7 @@
-/*{
+{
+    "editor.fontFamily": "Fira Code",
+    "editor.fontLigatures": true
+}/*{
     "workbench.colorCustomizations": {
         "activityBar.background": "#fbed80",
         "activityBar.activeBackground": "#fbed80",

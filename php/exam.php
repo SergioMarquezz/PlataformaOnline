@@ -22,6 +22,22 @@ switch($options){
     case "show answers":
         showAnswers();
     break;
+
+    case "insert detail":
+        insertDetail();
+    break;
+
+    case "resultado exam":
+        resultExamen();
+    break;
+
+    case "question answers exam":
+        showQuestionAnswersExam();
+    break;
+
+    case "yours answers exam":
+        yourAnwers();
+    break;
 }
 
 function showQuestions(){
@@ -117,6 +133,120 @@ function showAnswers(){
 
     }catch(Exception $e){
         echo 'Excepción capturada (show Answers): ',  $e->getMessage(), "\n";
+    }
+}
+
+function resultExamen(){
+
+    try{
+
+        $course_id = $_POST['course_id'];
+
+        $select_answer_questions = "SELECT 'total', COUNT(*) AS resultado
+        FROM questions WHERE id_course = $course_id
+        UNION
+        SELECT 'incorrect', COUNT(*)
+        FROM answers_corrects anscor, detail_questions detail, answers ans
+        WHERE ans.id_answers = detail.id_answers AND anscor.correct_answer <> ans.number_answers
+        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id
+        UNION
+        SELECT 'correct', COUNT(*)
+        FROM answers_corrects anscor, detail_questions detail, answers ans
+        WHERE ans.id_answers = detail.id_answers AND anscor.correct_answer = ans.number_answers
+        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id";
+
+        $result_select = executeQuery($select_answer_questions);
+
+        if($result_select){
+            while($result = odbc_fetch_array($result_select)){
+
+                
+                $json_resultados["resultados"][] = array_map("utf8_encode", $result);
+                $resultados_json = json_encode($json_resultados);  
+            }
+            echo $resultados_json;
+        }
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (result Examen): ',  $e->getMessage(), "\n";
+    }
+}
+
+function showQuestionAnswersExam(){
+
+    try{
+
+        $clave_course = $_POST['clave_course'];
+
+        $query_question_answers = "SELECT que.question, ans.answer
+        FROM questions que, answers ans, answers_corrects corre
+        WHERE corre.id_question = que.id_question AND ans.id_question = corre.id_question
+        AND ans.number_answers = corre.correct_answer AND que.id_course = $clave_course";
+
+        $result_question_answers = executeQuery($query_question_answers);
+
+        if($result_question_answers){
+            while($question_answers = odbc_fetch_array($result_question_answers)){
+                $json_question_answer["questions_answers"][] = array_map("utf8_encode", $question_answers);
+                $question_answer_json = json_encode($json_question_answer);  
+            }
+            echo $question_answer_json;
+        }
+
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (show Question AnswersExam): ',  $e->getMessage(), "\n";
+    }
+}
+
+function yourAnwers(){
+
+    try{
+
+        $course_clave = $_POST['course_clave'];
+
+        $query_your_answer = "SELECT que.question, ans.answer, ans.number_answers AS answer_student,anscor.correct_answer
+        FROM answers_corrects anscor, detail_questions detail, answers ans, questions que
+        WHERE anscor.id_question = detail.id_question AND ans.id_answers = detail.id_answers 
+        AND que.id_question = detail.id_question AND detail.id_course = $course_clave";
+
+        $result_your_answer = executeQuery($query_your_answer);
+
+        if($result_your_answer){
+            while($your_answer = odbc_fetch_array($result_your_answer)){
+                $json_yout_answer["your_answers"][] = array_map("utf8_encode", $your_answer);
+                $your_anwer_json = json_encode($json_yout_answer);  
+            }
+            echo $your_anwer_json;
+        }
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (your Anwers): ',  $e->getMessage(), "\n";
+    }
+}
+
+
+function insertDetail(){
+
+    try{
+
+        $course = $_POST['course'];
+        $answer = $_POST['answer'];
+        $question = $_POST['question'];
+        $person = $_POST['person'];
+
+        $insert_detail = "INSERT INTO detail_questions(id_course,id_answers,id_question,id_person)
+        VALUES($course,$answer,$question,$person)";
+
+        $result_insert_detail = executeQuery($insert_detail);
+
+        if($result_insert_detail){
+
+            echo "save detail";
+        }
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (insert Detail): ',  $e->getMessage(), "\n";
     }
 }
 

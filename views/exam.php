@@ -54,13 +54,14 @@
                     </div>
                
                 </div>
-                <div class="row">
+                <div class="row" id="div-radio">
                     <div class="col-md-6 col-sm-6">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><b>1</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="one-question" disabled>
+                            <input type="hidden" class="form-control" id="1-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input input-1" id="answer-correct-1-1" name="name-answer-correct-1">
@@ -83,6 +84,7 @@
                                 <span class="input-group-text"><b>2</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="two-question" disabled>
+                            <input type="hidden" class="form-control" id="2-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-2-1" name="name-answer-correct-2">
@@ -105,6 +107,7 @@
                                 <span class="input-group-text"><b>3</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="three-question" disabled>
+                            <input type="hidden" class="form-control" id="3-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-3-1" name="name-answer-correct-3">
@@ -127,6 +130,7 @@
                                 <span class="input-group-text"><b>4</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="four-question" disabled>
+                            <input type="hidden" class="form-control" id="4-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-4-1" name="name-answer-correct-4">
@@ -149,6 +153,7 @@
                                 <span class="input-group-text"><b>5</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="five-question" disabled>
+                            <input type="hidden" class="form-control" id="5-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-5-1" name="name-answer-correct-5">
@@ -173,6 +178,7 @@
                                 <span class="input-group-text"><b>6</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="six-question" disabled>
+                            <input type="hidden" class="form-control" id="6-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-6-1" name="name-answer-correct-6">
@@ -195,6 +201,7 @@
                                 <span class="input-group-text"><b>7</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="seven-question" disabled>
+                            <input type="hidden" class="form-control" id="7-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-7-1" name="name-answer-correct-7">
@@ -217,6 +224,7 @@
                                 <span class="input-group-text"><b>8</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="eigth-question" disabled>
+                            <input type="hidden" class="form-control" id="8-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-8-1" name="name-answer-correct-8">
@@ -239,6 +247,7 @@
                                 <span class="input-group-text"><b>9</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="nine-question" disabled>
+                            <input type="hidden" class="form-control" id="9-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-9-1" name="name-answer-correct-9">
@@ -261,6 +270,7 @@
                                 <span class="input-group-text"><b>10</b></span>
                             </div>
                             <input type="text" class="form-control input-questions-course" id="ten-question" disabled>
+                            <input type="hidden" class="form-control" id="10-question-hidden" >
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-3">
                             <input type="radio" class="custom-control-input" id="answer-correct-10-1" name="name-answer-correct-10">
@@ -282,52 +292,114 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12 col-sm-12">
-                        <button class="btn btn-block btn-success mb-4 mt-5" id="" data-toggle="modal" data-target="#modal-qualification">Enviar respuestas</button>
+                        <button class="btn btn-block btn-success mb-4 mt-5" id="submit-answers">Enviar respuestas</button>
                     </div>
                 </div>
             </div>
-            <!-- Modal qualification-->
-            <div class="modal fade" id="modal-qualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
+             <!-- Modal qualification-->
+            <div class="modal fade top" data-backdrop="static" data-keyboard="false" id="modalqualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-frame modal-notify modal-top modal-success" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title w-100 text-white" id="myModalLabel">Mis resultados</h4>
+                                <button id="" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-7 col-sm-12">
-                                    <!-- <img src="../img/secuestro.png" alt=""> -->
-                                    <h4 class="card-title"><strong>Detención en robo de vehículos</strong></h4>
+                                <video class="embed-responsive embed-responsive-16by9" id="video-modal">
+                                    <source src="../videos/Qué-es-word-y-para-que-sirve.mp4" type="video/mp4">
+                                </video>
+                                <h4 class="card-title"><strong id="title-course-result"></strong></h4>
                                 </div>
                                 <div class="col-md-5 col-sm-12">
-                                    <div class="alert alert-success alert-information-student" role="alert">
-                                        <h4>Felicitaciones has aprobado el examen del curso</h4>
-                                        <p>La calificación mínima para aprobar es de 6.</p>
+                                    <h2 class="mb-4" id="h4-name-student"></h2>
+                                    <div class="alert-information-student" role="alert">
+                                        <h2 id="felicitaciones" class="text-justify"></h2>
+                                        <p id="the-calification" class="text-justify">La calificación mínima para aprobar es de 6.</p>
                                     </div>
-                                    <div class="alert alert-success alert-information-free" role="alert">
-                                        <h4 class="text-center">Tu calificación final</h4>
-                                        <p class="text-center">8</p>
+                                    <div class="alert-information-free" role="alert">
+                                        <h2 class="text-center">Tu calificación final</h2>
+                                        <p class="text-center" id="qualification"></p>
+                                    </div>
+                                    <h5 class="text-justify" id="text-exam-aprobado">
+                                      
+                                    </h5>
+                                </div>
+                            </div>
+                                <div class="row col-md-6 col-sm-6">
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-info justify-content-between align-items-center">
+                                            Total de preguntas
+                                            <span class="badge badge-info badge-pill" id="span_total"></span>
+                                        </li>
+                                        <li class="list-group-item list-group-item-success justify-content-between align-items-center">
+                                            Respuestas correctas
+                                            <span class="badge badge-success badge-pill" id="span_correct"></span>
+                                        </li>
+                                        <li class="list-group-item list-group-item-danger justify-content-between align-items-center">
+                                            Respuestas incorrectas
+                                            <span class="badge badge-danger badge-pill" id="span_incorrect"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="row mt-5">
+                                    <div class="col-md-4 col-sm-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item justify-content-between align-items-center list-result text-white">Pregunta</li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-1"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-2"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-3"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-4"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-5"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-6"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-7"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-8"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-9"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-question-10"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item justify-content-between align-items-center list-result text-white">Respuesta correcta</li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-1"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-2"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-3"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-4"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-5"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-6"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-7"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-8"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-9"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="list-answer-10"></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        <ul class="list-group">
+                                            <li class="list-group-item justify-content-between align-items-center list-result text-white">Tu respuesta</li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-1"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-2"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-3"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-4"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-5"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-6"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-7"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-8"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-9"></li>
+                                            <li class="list-group-item justify-content-between align-items-center" id="your-answer-10"></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12">
-                                    <p>
-                                        El examen lo has aprobado y puedes obtener tu constancia de acreditación
-                                        la cual estará siempre disponible en tu perfil de la plataforma
-                                    </p>
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success">Obtener mi constancia</button>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success">Obtener mi constancia</button>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
     <?php require_once "../includes/footer.php"?>

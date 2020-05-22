@@ -10,7 +10,7 @@ h3{
 hr{
     border-color: rgb(136, 136, 136);
 }
-.navbar-ifpp, #button-add-course{
+.navbar-ifpp, #button-add-course, .list-result{
     background-color: #092432; 
 }
 
@@ -22,7 +22,7 @@ hr{
     background-color: #bb1825;
 }
 
-.footer,.list-group-item,#sidebar-wrapper{
+.footer,.list-main,#sidebar-wrapper{
     background-color: #092432; 
 }
 
@@ -50,7 +50,7 @@ hr{
 
 #btn-finish-program,#btn-accept-new,#btn-yes,#btn-save-course,#btn-evaluation,#show-material,#select-themes,#btn-themes,#btn-continue,#btn-start,#btn-answer-correct,
 #btn-update-actualizacion,#btn-delete-theme,#btn-update-new-theme,#btn-modules-course,#button-video,#btn-modal-files,#button-vide,.btn-save-questions,.btn-update,.material-add,
-.save-module,.file-boton,#btn-registry,#all-courses,.list-group-item:hover{
+.save-module,.file-boton,#btn-registry,#all-courses,.list-main:hover{
     background-color: #70b52c;
 }
 .form-control-feedback {
@@ -133,10 +133,11 @@ hr{
     border-radius: 100px;
     border: 1px solid #044c70;
 }
-#time-trascurrido{
+
+#time-trascurrido,#the-calification{
     font-size: 25px;
 }
-#minutes,#seconds,#dos-points{
+#minutes,#seconds,#dos-points,#qualification{
     font-size: 35px;
 }
 
@@ -152,5 +153,10 @@ hr{
 .alert{
      background-color: #092432; 
      color: white;
+}
+
+.reprobado{
+     color: #721c24;
+     background-color: #f5c6cb;
 }
 

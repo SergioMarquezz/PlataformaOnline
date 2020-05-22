@@ -828,7 +828,7 @@ function btnAnswerCorrect() {
 			});
 		} else {
 			Swal.fire({
-				title: '¿Esta seguro de la respuesta?',
+				title: '¿Esta seguro(a) de la respuesta?',
 				text: 'La respuesta quedara guardada',
 				icon: 'question',
 				confirmButtonText: 'Si',
