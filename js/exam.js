@@ -24,7 +24,8 @@ var seven_id_hide = $('#7-question-hidden');
 var eigth_id_hide = $('#8-question-hidden');
 var nine_id_hide = $('#9-question-hidden');
 var ten_id_hide = $('#10-question-hidden');
-
+var chronometer;
+var oportunity_exam = 0;
 
 $(document).ready(function () {
 	questionsShow();
@@ -32,6 +33,7 @@ $(document).ready(function () {
 	titleCourses();
 	answersShow();
 	btnSubmitAnswers();
+	oportunityExam();
 });
 
 function chronometer() {
@@ -41,7 +43,7 @@ function chronometer() {
 	var seconds = document.getElementById('seconds');
 	var minutes = document.getElementById('minutes');
 
-	var chronometer = setInterval(function () {
+		chronometer = setInterval(function () {
 		if (accountant_seconds == 60) {
 			accountant_seconds = 0;
 			accountant_minutes++;
@@ -216,6 +218,7 @@ function insertDetail(){
 					person: id_person,
 					question: valor_question,
 					answer: valor_answer,
+					oportunity: oportunity_exam,
 					option: 'insert detail',
 				},
 				function (data) {
@@ -232,6 +235,8 @@ function showYourAnswer(){
 
 	$.post('../php/exam.php',{
 		course_clave: id_course,
+		person_id: key_person.val(),
+		oportunity: oportunity_exam,
 		option: 'yours answers exam'
 	},function(params){
 		var json = JSON.parse(params);
@@ -258,16 +263,41 @@ function showYourAnswer(){
 	
 		if(qualification >= 6){
 			$(".alert-information-student, .alert-information-free").addClass('alert');
+			$(".alert-information-student, .alert-information-free").removeClass('reprobado');
 			$("#felicitaciones").text('Felicitaciones has aprobado el examen del curso');
 			$("#text-exam-aprobado").text('El examen lo has aprobado y puedes obtener tu constancia de acreditación la cual estará siempre disponible en tu perfil de la plataforma');
 		}
 		else{
 			$(".alert-information-student, .alert-information-free").addClass('reprobado');
+			$(".alert-information-student, .alert-information-free").removeClass('alert');
 			$("#felicitaciones").text('Lo sentimos, no aprobaste el examen');
-			$("#text-exam-aprobado").text('Aprueba el examen para conseguir tu constancia de acreditación y la puedas tener siempre disponible en tu perfil de la plataforma')
+			$("#text-exam-aprobado").text('Aprueba el examen para conseguir tu constancia de acreditación y la puedas tener siempre disponible en tu perfil de la plataforma');
+			$("#btn-resultados-exam").text('Volver a realizar examen');
 		}
 	})
 	
+}
+
+function oportunityExam(){
+
+	$("#btn-resultados-exam").click(function (e) { 
+		e.preventDefault();
+		oportunity_exam = 1;
+		$("#modalqualification").modal('hide');
+	});
+}
+
+function showVideoExam(){
+
+	$.post('../php/exam.php',{
+		key_course_video: id_course,
+		option: 'show video course'
+	},function(param){
+		
+		console.log(param);
+		$("#video-modal-resultados").append('<source src=../'+param+' type="video/mp4">');
+
+	})
 }
 
 function showResultados(){
@@ -303,6 +333,7 @@ function showResultados(){
 		}
 	})
 	showYourAnswer();
+	showVideoExam();
 }
 
 function btnSubmitAnswers() {
@@ -347,6 +378,7 @@ function btnSubmitAnswers() {
 				if(result.value){
 					
 					insertDetail();
+					clearInterval(chronometer);
 						Swal.fire({
 							title: 'Examen contestado',
 							html: 'Has contestado tu examen del curso, si tu calificación es mayor a 6 obtendras tu constancia de acreditacion.<br>'+

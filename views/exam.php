@@ -310,8 +310,8 @@
                             <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-7 col-sm-12">
-                                <video class="embed-responsive embed-responsive-16by9" id="video-modal">
-                                    <source src="../videos/Qué-es-word-y-para-que-sirve.mp4" type="video/mp4">
+                                <video class="embed-responsive embed-responsive-16by9" id="video-modal-resultados">
+                                   
                                 </video>
                                 <h4 class="card-title"><strong id="title-course-result"></strong></h4>
                                 </div>
@@ -395,7 +395,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-success">Obtener mi constancia</button>
+                                <button type="button" class="btn btn-success" id="btn-resultados-exam">Obtener mi constancia</button>
                             </div>
                         </div>
                     </div>

@@ -38,6 +38,10 @@ switch($options){
     case "yours answers exam":
         yourAnwers();
     break;
+
+    case "show video course":
+        showVideoExam();
+    break;
 }
 
 function showQuestions(){
@@ -204,11 +208,15 @@ function yourAnwers(){
     try{
 
         $course_clave = $_POST['course_clave'];
+        $person = $_POST['person_id'];
+        $opor = $_POST['oportunity'];
 
         $query_your_answer = "SELECT que.question, ans.answer, ans.number_answers AS answer_student,anscor.correct_answer
         FROM answers_corrects anscor, detail_questions detail, answers ans, questions que
         WHERE anscor.id_question = detail.id_question AND ans.id_answers = detail.id_answers 
-        AND que.id_question = detail.id_question AND detail.id_course = $course_clave";
+        AND que.id_question = detail.id_question AND detail.id_course = $course_clave AND detail.oportunity = $opor AND detail.id_person = $person
+        ORDER BY que.id_question";
+        
 
         $result_your_answer = executeQuery($query_your_answer);
 
@@ -225,6 +233,29 @@ function yourAnwers(){
     }
 }
 
+function showVideoExam(){
+
+    try{
+
+        $course_video = $_POST["key_course_video"];
+
+        $query_video = "SELECT vide.url_video, vide.duration_video
+        FROM courses cour, video_url vide
+        WHERE cour.id_url_main = vide.id_url AND cour.id_course = $course_video";
+
+        $result_video = executeQuery($query_video);
+
+        if($result_video){
+
+            $video = odbc_result($result_video,"url_video");
+            echo utf8_encode($video);
+        }
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (show Video Exam): ',  $e->getMessage(), "\n";
+    }
+}
+
 
 function insertDetail(){
 
@@ -234,15 +265,18 @@ function insertDetail(){
         $answer = $_POST['answer'];
         $question = $_POST['question'];
         $person = $_POST['person'];
+        $oportunity = $_POST['oportunity'];
 
-        $insert_detail = "INSERT INTO detail_questions(id_course,id_answers,id_question,id_person)
-        VALUES($course,$answer,$question,$person)";
+        $insert_detail = "INSERT INTO detail_questions(id_course,id_answers,id_question,id_person,oportunity)
+        VALUES($course,$answer,$question,$person,$oportunity)";
 
         $result_insert_detail = executeQuery($insert_detail);
 
         if($result_insert_detail){
 
-            echo "save detail";
+            //TODO:pendiente de revisar porque talvez no sea necesario
+            $update_oportunity = "UPDATE persons SET oportunity_exam = $oportunity WHERE id_person = $person";
+            executeQuery($update_oportunity);
         }
 
     }catch(Exception $e){
