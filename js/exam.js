@@ -25,7 +25,7 @@ var eigth_id_hide = $('#8-question-hidden');
 var nine_id_hide = $('#9-question-hidden');
 var ten_id_hide = $('#10-question-hidden');
 var chronometer;
-var oportunity_exam = 0;
+var oportunity_exam;
 
 $(document).ready(function () {
 	questionsShow();
@@ -33,7 +33,8 @@ $(document).ready(function () {
 	titleCourses();
 	answersShow();
 	btnSubmitAnswers();
-	oportunityExam();
+	examOportunity();
+	showOportunityExam();
 });
 
 function chronometer() {
@@ -236,7 +237,7 @@ function showYourAnswer(){
 	$.post('../php/exam.php',{
 		course_clave: id_course,
 		person_id: key_person.val(),
-		oportunity: oportunity_exam,
+		persona:  key_person.val(),
 		option: 'yours answers exam'
 	},function(params){
 		var json = JSON.parse(params);
@@ -251,11 +252,13 @@ function showYourAnswer(){
 			
 			if(answer_correct == your_answer){
 				$("#your-answer-"+j).addClass('list-group-item-success');
+				$("#your-answer-"+j).removeClass('list-group-item-danger');
 				$("#your-answer-"+j).html(html + '&nbsp;&nbsp; <span class="badge badge-success"><i class="fa fa-check" aria-hidden="true"></i></span>');
 				qualification++;
 			}
 			else{
 				$("#your-answer-"+j).addClass('list-group-item-danger');
+				$("#your-answer-"+j).removeClass('list-group-item-success');
 				$("#your-answer-"+j).html(html + '&nbsp;&nbsp; <span class="badge badge-danger"><i class="fa fa-times" aria-hidden="true"></i></span>');
 			}
 		}
@@ -266,6 +269,7 @@ function showYourAnswer(){
 			$(".alert-information-student, .alert-information-free").removeClass('reprobado');
 			$("#felicitaciones").text('Felicitaciones has aprobado el examen del curso');
 			$("#text-exam-aprobado").text('El examen lo has aprobado y puedes obtener tu constancia de acreditación la cual estará siempre disponible en tu perfil de la plataforma');
+			$("#btn-resultados-exam").text('Obtener mi constancia');
 		}
 		else{
 			$(".alert-information-student, .alert-information-free").addClass('reprobado');
@@ -278,12 +282,42 @@ function showYourAnswer(){
 	
 }
 
-function oportunityExam(){
+function showOportunityExam(){
+
+	$.post('../php/exam.php',{
+		option: 'oportunity exam',
+		persona: key_person.val()
+	},function(params){
+
+		if(params == 1){
+			Swal.fire({
+				title: 'Nueva oportunidad para el examen',
+				text: 'Esta es tu segunda y ultima oportunidad para realizar el examen',
+				icon: 'warning',
+				confirmButtonColor: '#092432',
+				confirmButtonText: 'Enterado',
+				allowOutsideClick: false,
+			});
+			oportunity_exam = 2;
+		}
+		else{
+			oportunity_exam = 1
+		}
+		console.log(params);
+	})
+}
+
+function examOportunity(){
+
 
 	$("#btn-resultados-exam").click(function (e) { 
 		e.preventDefault();
-		oportunity_exam = 1;
-		$("#modalqualification").modal('hide');
+
+		if($(this).text() == 'Volver a realizar examen'){
+			showOportunityExam();
+			$("#modalqualification").modal('hide');
+		}
+	
 	});
 }
 
@@ -308,7 +342,8 @@ function showResultados(){
 
 	$.post('../php/exam.php',{
 		course_id: id_course,
-		option: 'resultado exam'
+		option: 'resultado exam',
+		persona: key_person.val()
 	},function(param){
 		var json = JSON.parse(param);
 		total_questions.text(json.resultados[2].resultado);
@@ -364,6 +399,7 @@ function btnSubmitAnswers() {
 					allowOutsideClick: false,
 				});
 		   }else{
+			   console.log(oportunity_exam);
 			Swal.fire({
 				title: 'Las respuestas se guardaran',
 				text: 'Tus respuestas de este examen quedaran guardadas ¿Quieres continuar?',

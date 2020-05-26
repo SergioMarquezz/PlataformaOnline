@@ -42,6 +42,10 @@ switch($options){
     case "show video course":
         showVideoExam();
     break;
+
+    case "oportunity exam":
+       echo selectOportunity();
+    break;
 }
 
 function showQuestions(){
@@ -140,11 +144,36 @@ function showAnswers(){
     }
 }
 
+function selectOportunity(){
+
+    try{
+
+        $per = $_POST['persona'];
+
+        $query_oportunity = "SELECT oportunity_exam
+        FROM persons WHERE id_person = $per";
+
+        $result_oportunity = executeQuery($query_oportunity);
+
+        if($result_oportunity){
+
+            $oportunity_exam = odbc_result($result_oportunity,"oportunity_exam");
+
+            return $oportunity_exam;
+        }
+    
+
+    }catch(Exception $e){
+        echo 'Excepción capturada (select Oportunity): ',  $e->getMessage(), "\n";
+    }
+}
+
 function resultExamen(){
 
     try{
 
         $course_id = $_POST['course_id'];
+        $oportunidad = selectOportunity();
 
         $select_answer_questions = "SELECT 'total', COUNT(*) AS resultado
         FROM questions WHERE id_course = $course_id
@@ -152,12 +181,12 @@ function resultExamen(){
         SELECT 'incorrect', COUNT(*)
         FROM answers_corrects anscor, detail_questions detail, answers ans
         WHERE ans.id_answers = detail.id_answers AND anscor.correct_answer <> ans.number_answers
-        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id
+        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id AND detail.oportunity = $oportunidad
         UNION
         SELECT 'correct', COUNT(*)
         FROM answers_corrects anscor, detail_questions detail, answers ans
         WHERE ans.id_answers = detail.id_answers AND anscor.correct_answer = ans.number_answers
-        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id";
+        AND anscor.id_question = detail.id_question AND detail.id_course = $course_id AND detail.oportunity = $oportunidad";
 
         $result_select = executeQuery($select_answer_questions);
 
@@ -209,7 +238,7 @@ function yourAnwers(){
 
         $course_clave = $_POST['course_clave'];
         $person = $_POST['person_id'];
-        $opor = $_POST['oportunity'];
+        $opor = selectOportunity();//$_POST['oportunity'];
 
         $query_your_answer = "SELECT que.question, ans.answer, ans.number_answers AS answer_student,anscor.correct_answer
         FROM answers_corrects anscor, detail_questions detail, answers ans, questions que
@@ -274,7 +303,6 @@ function insertDetail(){
 
         if($result_insert_detail){
 
-            //TODO:pendiente de revisar porque talvez no sea necesario
             $update_oportunity = "UPDATE persons SET oportunity_exam = $oportunity WHERE id_person = $person";
             executeQuery($update_oportunity);
         }
